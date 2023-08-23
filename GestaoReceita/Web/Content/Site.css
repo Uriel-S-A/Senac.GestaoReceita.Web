@@ -1,5 +1,4 @@
 ﻿body {
-    padding-top: 50px;
     padding-bottom: 20px;
 }
 
@@ -20,5 +19,30 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 100%;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    background-color: #777;
+    border-color: #fff
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.curson-pointer {
+    cursor: pointer;
+}
+
+.cor {
+    background-color: cornflowerblue;
+    justify-content: center;
+    font-family: Verdana, sans-serif;
+}
+
+.botaoEditar {
+    width: 95px;
 }
