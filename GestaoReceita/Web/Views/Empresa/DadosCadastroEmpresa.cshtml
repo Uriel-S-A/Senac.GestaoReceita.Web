@@ -1,0 +1,143 @@
+﻿@model CadEmpresa.Models.CadastroEmpresaViewModel
+@{
+    ViewBag.Title = "Dados Empresa";
+}
+
+
+@if (Model.CNPJ != null)
+{
+
+    using (Html.BeginForm("DadosCadastroEmpresa", "Empresa", FormMethod.Post, new { @class = "row g-3 mt-5 needs-validation" }))
+    {
+
+        <h2 class="row">DADOS EMPRESA</h2>
+
+
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label>CNPJ</label>
+                <input type="text" class="form-control" id="inputCNPJ" name="CNPJ" required value="@Model.CNPJ">
+            </div>
+
+            <div class="col-md-5">
+                <label>Razão Sosial</label>
+                <input type="text" class="form-control" id="inputRazaoSosial" name="razaoSosial" required value="@Model.razaoSosial">
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-5">
+                <label>Rua</label>
+                <input type="text" class="form-control" id="inputRua" name="rua" required value="@Model.rua">
+            </div>
+
+            <div class="col-md-3">
+                <label>Bairro</label>
+                <input type="text" class="form-control" id="inputBairro" name="bairro" required value="@Model.bairro">
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <label>Número de Endereço</label>
+                <input type="text" class="form-control" id="inputNumeroEndereco" name="numeroEndereco" required value="@Model.numeroEndereco">
+            </div>
+
+            <div class="col-md-5">
+                <label>Complemento</label>
+                <input type="text" class="form-control" id="inputComplemento" name="complemento" required value="@Model.complemento">
+            </div>
+        </div>
+
+
+        <div class="row g-3">
+            <div class="col-md-5">
+                <label>Nome Fantasia</label>
+                <input type="text" class="form-control" id="inputNomeFantasia" name="nomeFantasia" required value="@Model.nomeFantasia">
+            </div>
+
+            <div class="col-md-3">
+                <label>Email</label>
+                <input type="text" class="form-control" id="inputEmail" name="email" required value="@Model.email">
+            </div>
+        </div>
+
+        <div class="row g-2 text-center">
+            <div class="col">
+                <button class="btn btn-success"> Gravar Dados</button>
+                @Html.ActionLink("Voltar Página Empresas", "Index", "Empresas", new { @class = "btn btn-success" })
+            </div>
+        </div>
+    }
+
+}
+
+@if (@Model.CNPJ == null)
+{
+    using (Html.BeginForm("DadosCadastroEmpresa", "Empresa", FormMethod.Post, new { @class = "row g-3 mt-5 needs-validation" }))
+    {
+
+        <h2 class="row">DADOS EMPRESA</h2>
+
+
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label>CNPJ</label>
+                <input type="text" class="form-control" id="inputCNPJ" name="CNPJ" required placeholder="CNPJ da empresa">
+            </div>
+
+            <div class="col-md-5">
+                <label>Razão Sosial</label>
+                <input type="text" class="form-control" id="inputRazaoSosial" name="razaoSosial" required placeholder=" Razão social">
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-5">
+                <label>Rua</label>
+                <input type="text" class="form-control" id="inputRua" name="rua" required placeholder=" Rua">
+            </div>
+
+            <div class="col-md-3">
+                <label>Bairro</label>
+                <input type="text" class="form-control" id="inputBairro" name="bairro" required placeholder="Bairro">
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-3">
+                <label>Número de Endereço</label>
+                <input type="text" class="form-control" id="inputNumeroEndereco" name="numeroEndereco" required placeholder="Número de endereço">
+            </div>
+
+            <div class="col-md-5">
+                <label>Complemento</label>
+                <input type="text" class="form-control" id="inputComplemento" name="complemento" required placeholder="Complemento">
+            </div>
+        </div>
+
+
+        <div class="row g-3">
+            <div class="col-md-5">
+                <label>Nome Fantasia</label>
+                <input type="text" class="form-control" id="inputNomeFantasia" name="nomeFantasia" required placeholder="Nome fantasia">
+            </div>
+
+            <div class="col-md-3">
+                <label>Email</label>
+                <input type="text" class="form-control" id="inputEmail" name="email" required placeholder="Email">
+            </div>
+        </div>
+
+        <div class="row g-2 text-center">
+            <div class="col">
+                <button class="btn btn-success"> Gravar Dados</button>
+                @Html.ActionLink("Voltar Página Empresas", "Index", "Empresas", new { @class = "btn btn-success" })
+            </div>
+        </div>
+    }
+}
