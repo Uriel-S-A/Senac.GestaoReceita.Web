@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Web.Models
+namespace CadEmpresa.Models
 {
     public class IndexViewModel
     {
+        public string inputCNPJ { get; set; }
+        public List<CadastroEmpresaViewModel> listaEmpresa { get; set; } = new List<CadastroEmpresaViewModel>();
     }
 }
