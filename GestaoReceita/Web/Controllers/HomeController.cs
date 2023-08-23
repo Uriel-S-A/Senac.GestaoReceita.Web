@@ -15,7 +15,7 @@ namespace Web.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "asdfasdfasdfadfasdfasdf";
+            ViewBag.Message = "agora o gabriel fez um ajuste";
 
             return View();
         }
