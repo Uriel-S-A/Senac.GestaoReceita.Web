@@ -1,5 +1,5 @@
 ﻿body {
-    padding-bottom: 20px;
+    padding-top: 70px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -26,23 +26,4 @@ textarea {
 .navbar-inverse .navbar-toggle:focus {
     background-color: #777;
     border-color: #fff
-}
-
-.row {
-    display: flex;
-    justify-content: center;
-}
-
-.curson-pointer {
-    cursor: pointer;
-}
-
-.cor {
-    background-color: cornflowerblue;
-    justify-content: center;
-    font-family: Verdana, sans-serif;
-}
-
-.botaoEditar {
-    width: 95px;
 }

@@ -1,9 +1,10 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Meu Aplicativo ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -26,12 +27,16 @@
     </nav>
     <div class="container body-content">
         @RenderBody()
+        <hr />
+        <footer>
+            <p>
+                &copy; @DateTime.Now.Year -
+
+                @*@Html.ActionLink("Meu Aplicativo ASP.NET", "https://github.com/DanielKloh", new { @class = "link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"})</p>*@
+                <a class="curson-pointer link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Daniel Kloh - Patrick Figueiredo - Sandrizio Gomes </a>
+            </p>
+        </footer>
     </div>
-    <footer class="fixed-bottom">
-        <div class="container">
-            <p>&copy; @DateTime.Now.Year - Senac/RS Turma info 9</p>
-        </div>
-    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
