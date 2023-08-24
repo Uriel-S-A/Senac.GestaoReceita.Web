@@ -85,6 +85,24 @@ namespace CadEmpresa.Controllers
         }
 
 
+        public JsonResult PesquisarItem(string inputCNPJ)
+        {
+            IndexViewModel resultadoPesquisa = new IndexViewModel();
+
+            listaEmpresas = new List<CadastroEmpresaViewModel>()
+            {
+                new CadastroEmpresaViewModel(){ id = 1, nomeFantasia = "Mercor", bairro = "Centro", CNPJ = "34.397.453/0001-15", complemento = "Fabrica", email = "Merco@gmail.com", razaoSosial = "Mercor S/A",rua ="julio de Castilho", numeroEndereco=532},
+                new CadastroEmpresaViewModel(){ id = 2, nomeFantasia = "Apple", bairro = "Avanida", CNPJ = "98.076.736/0001-48", complemento = "Predio", email = "Aple@hotmail.com", razaoSosial = "Apple LTDA" ,rua ="Coronle",numeroEndereco=565},
+                new CadastroEmpresaViewModel(){ id = 3, nomeFantasia = "Senac", bairro = "João Pessoa", CNPJ = "14.369.549/0001-62", complemento = "Escola", email = "Senac@gmail.com", razaoSosial = "Senac Santa Cruz", rua="Maceio",numeroEndereco=656},
+                new CadastroEmpresaViewModel(){ id = 4, nomeFantasia = "Alura", bairro = "Fernando Abot", CNPJ = "47.660.588/0001-73", complemento = "Escola", email = "Alura@outlok.com", razaoSosial = "Alura Ltda", rua="Henrique Santos",numeroEndereco=824},
+                new CadastroEmpresaViewModel(){ id = 5, nomeFantasia = "Magalu", bairro = "Ipiranga", CNPJ = "53.285.725/0001-30", complemento = "Loja", email = "Magalu@email.com", razaoSosial = "Magazine Luiza" ,rua="brono brenoso",numeroEndereco=287},
+                new CadastroEmpresaViewModel(){ id = 6, nomeFantasia = "Kabum", bairro = "Centro", CNPJ = "35.685.837/0001-04", complemento = "Loja", email = "Kabum@hotmail.com", razaoSosial = "Kabum Kabum" ,rua="Kleitom Machado",numeroEndereco=179},
+                new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Clip", bairro = "Igenopolis", CNPJ = "34.883.475/0001-95", complemento = "Predio", email = "Clip@gmail.com", razaoSosial = "Clip Papelaria", rua="julio Sesar",numeroEndereco=752},
+                new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Sansung", bairro = "Margarida", CNPJ = "95.253.315/0001-57", complemento = "Edificio", email = "Sansung@outlok.com", razaoSosial = "Sansung Mobile", rua="Napoleon",numeroEndereco=951} ,
+            };
+            return Json(new { listaEmpresas }, JsonRequestBehavior.AllowGet);
+        }
+
 
         public ActionResult DadosCadastroEmpresa(int? id)
         {
@@ -109,22 +127,6 @@ namespace CadEmpresa.Controllers
         {
             return View();
         }
-
-
-        //public ActionResult Empresa(string CNPJ)
-        //{
-
-        //    for(int i = 0; i < listaEmpresas.Count; i++)
-        //    {
-        //        if (CNPJ == listaEmpresas[i].CNPJ)
-        //        {
-        //            return View(listaEmpresas[i]);
-        //        }
-        //    }
-
-        //    return View();
-
-        //}
 
 
     }
