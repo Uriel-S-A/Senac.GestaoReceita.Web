@@ -1,0 +1,63 @@
+﻿table {
+    border-collapse: collapse;
+    border: 1px solid #0d6efd;
+    width: 605px;
+    margin-top: 20px;
+    margin: 8px;
+}
+
+td, th {
+    border: 1px solid #0d6efd;
+    padding: 3px;
+    margin: 5px;
+    text-align: center;
+}
+
+th {
+    text-align: center;
+    font-weight: bolder;
+}
+
+.PesquisaIngrediente {
+    border-color: #0d6efd;
+    border: 2px solid #0d6efd;
+    background-color: #fff;
+    color: black;
+    height: 38px;
+    border-radius: 6px;
+}
+
+    .PesquisaIngrediente:focus {
+        outline: none;
+    }
+
+    .PesquisaIngrediente::placeholder {
+        color: #0d6efd;
+    }
+
+.NovoIngrediente {
+    border-color: #0d6efd;
+    border: 1px solid #0d6efd;
+    background-color: #0d6efd;
+    color: #fff;
+    height: 38px;
+    border-radius: 6px;
+}
+
+.EditarIngrediente {
+    border-color: #0d6efd;
+    border: 1px solid #0d6efd;
+    background-color: #0d6efd;
+    color: #fff;
+    height: 38px;
+    border-radius: 6px;
+}
+
+.labelModalEditar {
+    font-size: 12px;
+}
+
+.labelModalEditarU {
+    font-size: 12px;
+    margin-top: 5px;
+}

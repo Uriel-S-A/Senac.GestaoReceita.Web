@@ -1,0 +1,133 @@
+﻿
+
+<link rel="stylesheet" href="~/Content/Ingrediente/Index.css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+    @using (Html.BeginForm("CadastroIngrediente", "Ingrediente", FormMethod.Post))
+    {
+
+        <div class="row">
+            <div class="col-12 m-2">
+                <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" />
+                <button type="button" class=" NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Novo Ingrediente
+                </button>
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Unidade de medida</th>
+                    <th>Preço</th>
+                    <th>Empresa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.listaIngredientesCadastrados)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.NomeIngrediente</td>
+                        <td>@item.QuantidadeUnidade</td>
+                        <td>@item.UnidadeMedidaId</td>
+                        <td>@item.PrecoIngrediente</td>
+                        <td>@item.EmpresaId</td>
+                        <td><button type="button" class=" EditarIngrediente m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1">Editar</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
+                            </div>
+                            <div class="col">
+                                <input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input type="number" name="QuantidadeIngrediente" placeholder="Quantidade" required />
+                            </div>
+                            <div class="col">
+                                <input type="number" step="0.01" name="PreçoIngrediente" placeholder="Preço" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Cadastar</button>
+                        <button type="reset" class="btn btn-primary">Limpar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel1">Editar Ingrediente</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <label class="labelModalEditar">Nome Ingrediente</label>
+                                <input type="text" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
+                            </div>
+                            <div class="col">
+                                <label class="labelModalEditar">Nome Empresa</label>
+                                <input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label class="labelModalEditar">Quantidade</label>
+                                <input type="number" name="QuantidadeIngrediente" placeholder="Quantidade" required />
+                            </div>
+                            <div class="col">
+                                <label class="labelModalEditar">Preço</label>
+                                <input type="number" step="0.01" name="PreçoIngrediente" placeholder="Preço" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="labelModalEditarU">Unidade de Medida</label>
+                            <div class="col">
+
+                                <input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
