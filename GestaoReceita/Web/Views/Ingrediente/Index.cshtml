@@ -1,4 +1,4 @@
-﻿
+﻿@model Web.Models.IndexViewModel
 
 <link rel="stylesheet" href="~/Content/Ingrediente/Index.css" />
 
@@ -9,7 +9,6 @@
 <div class="container">
     @using (Html.BeginForm("CadastroIngrediente", "Ingrediente", FormMethod.Post))
     {
-
         <div class="row">
             <div class="col-12 m-2">
                 <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" />
@@ -18,33 +17,62 @@
                 </button>
             </div>
         </div>
+
+        <!-- TABELA -->
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Quantidade</th>
-                    <th>Unidade de medida</th>
-                    <th>Preço</th>
-                    <th>Empresa</th>
+                    @*<th scope="col">ID</th>*@
+                    <th scope="col">Nome</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Unidade de medida</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Empresa</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.listaIngredientesCadastrados)
                 {
                     <tr>
-                        <td>@item.Id</td>
-                        <td>@item.NomeIngrediente</td>
-                        <td>@item.QuantidadeUnidade</td>
-                        <td>@item.UnidadeMedidaId</td>
-                        <td>@item.PrecoIngrediente</td>
-                        <td>@item.EmpresaId</td>
-                        <td><button type="button" class=" EditarIngrediente m-1" data-bs-toggle="modal" data-bs-target="#exampleModal1">Editar</button></td>
+                        @*<td>
+                                @item.Id
+                                <input data-item="item_id" value="@item.Id" type="hidden" />
+                            </td>*@
+                        <td>
+                            @item.NomeIngrediente
+                            <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
+                        </td>
+                        <td>
+                            @item.QuantidadeUnidade
+                            <input data-item="item_quantidade" value="@item.QuantidadeUnidade" type="hidden" />
+                        </td>
+                        <td>
+                            @item.UnidadeMedidaId
+                            <input data-item="item_unidade_medida" value="@item.UnidadeMedidaId" type="hidden" />
+                        </td>
+                        <td>
+                            @item.PrecoIngrediente
+                            <input data-item="item_preco" value="@item.PrecoIngrediente" type="hidden" />
+                        </td>
+                        <td>
+                            @item.EmpresaId
+                            <input data-item="item_empresa" value="@item.EmpresaId" type="hidden" />
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class=" EditarIngrediente m-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal1"
+                                    onclick="editarIngrediente(this)">
+                                Editar
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <!-- Modal -->
+
+        <!-- MODAL CADASTRAR INGREDIENTE -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -84,6 +112,7 @@
             </div>
         </div>
 
+        <!-- MODAL EDITAR INGREDIENTE -->
         <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -95,28 +124,27 @@
                         <div class="row">
                             <div class="col">
                                 <label class="labelModalEditar">Nome Ingrediente</label>
-                                <input type="text" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
+                                <input id="modalNome" type="text" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
                             </div>
                             <div class="col">
                                 <label class="labelModalEditar">Nome Empresa</label>
-                                <input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />
+                                <input id="modalEmpresa" type="text" name="NomeEmpresa" placeholder="Nome empresa" required />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label class="labelModalEditar">Quantidade</label>
-                                <input type="number" name="QuantidadeIngrediente" placeholder="Quantidade" required />
+                                <input id="modalQuantidade" type="number" name="QuantidadeIngrediente" placeholder="Quantidade" required />
                             </div>
                             <div class="col">
                                 <label class="labelModalEditar">Preço</label>
-                                <input type="number" step="0.01" name="PreçoIngrediente" placeholder="Preço" required />
+                                <input id="modalPreco" type="number" step="0.01" name="PreçoIngrediente" placeholder="Preço" required />
                             </div>
                         </div>
                         <div class="row">
                             <label class="labelModalEditarU">Unidade de Medida</label>
                             <div class="col">
-
-                                <input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />
+                                <input id="modalMedida" type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />
                             </div>
                         </div>
                     </div>
@@ -130,4 +158,4 @@
     }
 </div>
 
-
+<script src="~/Scripts/Ingrediente/Ingrediente.js"></script>

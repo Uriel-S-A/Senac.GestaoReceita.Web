@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -15,7 +19,7 @@ namespace Web.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "aaaaaaaaaaaaaaaaaaaa";
+            ViewBag.Message = "About";
 
             return View();
         }
