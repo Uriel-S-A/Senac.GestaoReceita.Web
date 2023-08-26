@@ -1,9 +1,14 @@
 ﻿
 using CadEmpresa.Models;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
@@ -20,42 +25,30 @@ namespace CadEmpresa.Controllers
         IndexViewModel resultadoPesquisa = new IndexViewModel();
 
         private List<CadastroEmpresaViewModel> listaEmpresas = new List<CadastroEmpresaViewModel>()
-        {
-            new CadastroEmpresaViewModel(){ id = 1, nomeFantasia = "Mercor", bairro = "Centro", CNPJ = "34.397.453/0001-15", complemento = "Fabrica", email = "Merco@gmail.com", razaoSosial = "Mercor S/A",rua ="julio de Castilho", numeroEndereco=532},
-            new CadastroEmpresaViewModel(){ id = 2, nomeFantasia = "Apple", bairro = "Avanida", CNPJ = "98.076.736/0001-48", complemento = "Predio", email = "Aple@hotmail.com", razaoSosial = "Apple LTDA" ,rua ="Coronle",numeroEndereco=565},
-            new CadastroEmpresaViewModel(){ id = 3, nomeFantasia = "Senac", bairro = "João Pessoa", CNPJ = "14.369.549/0001-62", complemento = "Escola", email = "Senac@gmail.com", razaoSosial = "Senac Santa Cruz", rua="Maceio",numeroEndereco=656},
-            new CadastroEmpresaViewModel(){ id = 4, nomeFantasia = "Alura", bairro = "Fernando Abot", CNPJ = "47.660.588/0001-73", complemento = "Escola", email = "Alura@outlok.com", razaoSosial = "Alura Ltda", rua="Henrique Santos",numeroEndereco=824},
-            new CadastroEmpresaViewModel(){ id = 5, nomeFantasia = "Magalu", bairro = "Ipiranga", CNPJ = "53.285.725/0001-30", complemento = "Loja", email = "Magalu@email.com", razaoSosial = "Magazine Luiza" ,rua="brono brenoso",numeroEndereco=287},
-            new CadastroEmpresaViewModel(){ id = 6, nomeFantasia = "Kabum", bairro = "Centro", CNPJ = "35.685.837/0001-04", complemento = "Loja", email = "Kabum@hotmail.com", razaoSosial = "Kabum Kabum" ,rua="Kleitom Machado",numeroEndereco=179},
-            new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Clip", bairro = "Igenopolis", CNPJ = "34.883.475/0001-95", complemento = "Predio", email = "Clip@gmail.com", razaoSosial = "Clip Papelaria", rua="julio Sesar",numeroEndereco=752},
-            new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Sansung", bairro = "Margarida", CNPJ = "95.253.315/0001-57", complemento = "Edificio", email = "Sansung@outlok.com", razaoSosial = "Sansung Mobile", rua="Napoleon",numeroEndereco=951} ,
-        };
+        { };
 
         public ActionResult Index()
         {
-            return View(resultadoPesquisa);
+            var listaEmpresas = getEmpresa();
+
+            return View();
+
         }
+
 
         public string DataHoraAtual()
         {
             return DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss");
         }
 
-        //public JsonResult Pesquisar(string inputCNPJ)
         public ActionResult Pesquisar(string inputCNPJ)
         {
+
             IndexViewModel resultadoPesquisa = new IndexViewModel();
 
             listaEmpresas = new List<CadastroEmpresaViewModel>()
             {
-                new CadastroEmpresaViewModel(){ id = 1, nomeFantasia = "Mercor", bairro = "Centro", CNPJ = "34.397.453/0001-15", complemento = "Fabrica", email = "Merco@gmail.com", razaoSosial = "Mercor S/A",rua ="julio de Castilho", numeroEndereco=532},
-                new CadastroEmpresaViewModel(){ id = 2, nomeFantasia = "Apple", bairro = "Avanida", CNPJ = "98.076.736/0001-48", complemento = "Predio", email = "Aple@hotmail.com", razaoSosial = "Apple LTDA" ,rua ="Coronle",numeroEndereco=565},
-                new CadastroEmpresaViewModel(){ id = 3, nomeFantasia = "Senac", bairro = "João Pessoa", CNPJ = "14.369.549/0001-62", complemento = "Escola", email = "Senac@gmail.com", razaoSosial = "Senac Santa Cruz", rua="Maceio",numeroEndereco=656},
-                new CadastroEmpresaViewModel(){ id = 4, nomeFantasia = "Alura", bairro = "Fernando Abot", CNPJ = "47.660.588/0001-73", complemento = "Escola", email = "Alura@outlok.com", razaoSosial = "Alura Ltda", rua="Henrique Santos",numeroEndereco=824},
-                new CadastroEmpresaViewModel(){ id = 5, nomeFantasia = "Magalu", bairro = "Ipiranga", CNPJ = "53.285.725/0001-30", complemento = "Loja", email = "Magalu@email.com", razaoSosial = "Magazine Luiza" ,rua="brono brenoso",numeroEndereco=287},
-                new CadastroEmpresaViewModel(){ id = 6, nomeFantasia = "Kabum", bairro = "Centro", CNPJ = "35.685.837/0001-04", complemento = "Loja", email = "Kabum@hotmail.com", razaoSosial = "Kabum Kabum" ,rua="Kleitom Machado",numeroEndereco=179},
-                new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Clip", bairro = "Igenopolis", CNPJ = "34.883.475/0001-95", complemento = "Predio", email = "Clip@gmail.com", razaoSosial = "Clip Papelaria", rua="julio Sesar",numeroEndereco=752},
-                new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Sansung", bairro = "Margarida", CNPJ = "95.253.315/0001-57", complemento = "Edificio", email = "Sansung@outlok.com", razaoSosial = "Sansung Mobile", rua="Napoleon",numeroEndereco=951} ,
+
             };
 
 
@@ -80,29 +73,7 @@ namespace CadEmpresa.Controllers
             resultadoPesquisa.listaEmpresa = listaEmpresas;
 
             return RedirectToRoute(new { controller = "Empresa", action = "Index", resultadoPesquisa });
-
-            //return Json(new { listaEmpresas }, JsonRequestBehavior.AllowGet);
         }
-
-
-        public JsonResult PesquisarItem(string inputCNPJ)
-        {
-            IndexViewModel resultadoPesquisa = new IndexViewModel();
-
-            listaEmpresas = new List<CadastroEmpresaViewModel>()
-            {
-                new CadastroEmpresaViewModel(){ id = 1, nomeFantasia = "Mercor", bairro = "Centro", CNPJ = "34.397.453/0001-15", complemento = "Fabrica", email = "Merco@gmail.com", razaoSosial = "Mercor S/A",rua ="julio de Castilho", numeroEndereco=532},
-                new CadastroEmpresaViewModel(){ id = 2, nomeFantasia = "Apple", bairro = "Avanida", CNPJ = "98.076.736/0001-48", complemento = "Predio", email = "Aple@hotmail.com", razaoSosial = "Apple LTDA" ,rua ="Coronle",numeroEndereco=565},
-                new CadastroEmpresaViewModel(){ id = 3, nomeFantasia = "Senac", bairro = "João Pessoa", CNPJ = "14.369.549/0001-62", complemento = "Escola", email = "Senac@gmail.com", razaoSosial = "Senac Santa Cruz", rua="Maceio",numeroEndereco=656},
-                new CadastroEmpresaViewModel(){ id = 4, nomeFantasia = "Alura", bairro = "Fernando Abot", CNPJ = "47.660.588/0001-73", complemento = "Escola", email = "Alura@outlok.com", razaoSosial = "Alura Ltda", rua="Henrique Santos",numeroEndereco=824},
-                new CadastroEmpresaViewModel(){ id = 5, nomeFantasia = "Magalu", bairro = "Ipiranga", CNPJ = "53.285.725/0001-30", complemento = "Loja", email = "Magalu@email.com", razaoSosial = "Magazine Luiza" ,rua="brono brenoso",numeroEndereco=287},
-                new CadastroEmpresaViewModel(){ id = 6, nomeFantasia = "Kabum", bairro = "Centro", CNPJ = "35.685.837/0001-04", complemento = "Loja", email = "Kabum@hotmail.com", razaoSosial = "Kabum Kabum" ,rua="Kleitom Machado",numeroEndereco=179},
-                new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Clip", bairro = "Igenopolis", CNPJ = "34.883.475/0001-95", complemento = "Predio", email = "Clip@gmail.com", razaoSosial = "Clip Papelaria", rua="julio Sesar",numeroEndereco=752},
-                new CadastroEmpresaViewModel(){ id = 7, nomeFantasia = "Sansung", bairro = "Margarida", CNPJ = "95.253.315/0001-57", complemento = "Edificio", email = "Sansung@outlok.com", razaoSosial = "Sansung Mobile", rua="Napoleon",numeroEndereco=951} ,
-            };
-            return Json(new { listaEmpresas }, JsonRequestBehavior.AllowGet);
-        }
-
 
         public ActionResult DadosCadastroEmpresa(int? id)
         {
@@ -123,11 +94,71 @@ namespace CadEmpresa.Controllers
         }
 
 
-        public ActionResult CadastroEmpresa()
+        public JsonResult getEmpresa()
         {
-            return View();
+            using (var client = new HttpClient())
+            {
+                //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
+
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Empresas");
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                    var objectJson = JsonConvert.DeserializeObject<List<fooEmpresaDTO>>(stringResult.Result);
+
+                }
+                else
+                {
+                    //Erro de requisicao
+                    var content = response.Result.Content.ReadAsStringAsync();
+
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                }
+            }
+
+            return Json(new { });
         }
 
+
+        public class fooEmpresaDTO
+        {
+            public int id { get; set; }
+            public string CNPJ { get; set; }
+            public string razaoSosial { get; set; }
+            public string rua { get; set; }
+            public string bairro { get; set; }
+            public int? numeroEndereco { get; set; }
+            public string complemento { get; set; }
+            public string nomeFantasia { get; set; }
+            public string email { get; set; }
+            public fooEstadoRequestDTO cidade { get; set; }
+        }
+
+        public class fooCidadeRequestDTO
+        {
+            public int id { get; set; }
+            public string descricaoCidade { get; set; }
+            public int idEstado { get; set; }
+            public fooEstadoRequestDTO estado { get; set; }
+        }
+
+        public class fooEstadoRequestDTO
+        {
+            public int id { get; set; }
+            public string descricaoEstado { get; set; }
+            public int idPais { get; set; }
+            public fooPaisRequestDTO pais { get; set; }
+        }
+
+        public class fooPaisRequestDTO
+        {
+            public int id { get; set; }
+            public string descricaoPais { get; set; }
+        }
 
     }
 }
