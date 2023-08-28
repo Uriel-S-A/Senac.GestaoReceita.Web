@@ -27,13 +27,13 @@ th {
     border-radius: 6px;
 }
 
-    .PesquisaIngrediente:focus {
-        outline: none;
-    }
+.PesquisaIngrediente:focus {
+    outline: none;
+}
 
-    .PesquisaIngrediente::placeholder {
-        color: #0d6efd;
-    }
+.PesquisaIngrediente::placeholder {
+    color: #0d6efd;
+}
 
 .NovoIngrediente {
     border-color: #0d6efd;

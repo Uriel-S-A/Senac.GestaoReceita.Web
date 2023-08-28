@@ -73,7 +73,7 @@ namespace Web.Controllers
         //    {
         //        var formContentString = new StringContent(JsonConvert.SerializeObject(new { descricaoCidade = cidadeDescricao, IdEstado = 1 }), Encoding.UTF8, "application/json");
 
-        //        var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Cidades/3");
+        //        var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/3");
 
         //        response.Wait();
 
@@ -101,7 +101,7 @@ namespace Web.Controllers
         //    {
         //        //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
 
-        //        var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Cidades/3");
+        //        var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/3");
 
         //        response.Wait();
 
@@ -131,7 +131,7 @@ namespace Web.Controllers
         //    {
         //        //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
 
-        //        var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Cidades");
+        //        var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes");
 
         //        response.Wait();
 
