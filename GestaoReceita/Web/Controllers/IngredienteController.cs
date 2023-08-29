@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using Web.Models;
 using Web.Models.Ingrediente;
@@ -16,23 +18,23 @@ namespace Web.Controllers
     public class IngredienteController : Controller
     {
         // GET: Ingrediente
-        public ActionResult Index(DadosIngrediente dados)
+        public ActionResult Index()
         {
-            List<DadosIngrediente> listaIngredientesCadastrados = getDadosIngrediente();
-            //List<Empresas> listaDadosEmpresa = getDadosEmpresa();
+            List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
+            List<DadosEmpresa> listaDadosEmpresa = GetDadosEmpresa();
             //List<UnidadeMedas> listaUnidadeMedidas = getDadosUnidadeMedida();
 
             IndexViewModel indexViewModel = new IndexViewModel()
             {
                 listaIngredientesCadastrados = listaIngredientesCadastrados,
-                //listaDadosEmpresa = listaDadosEmpresa,
+                listaDadosEmpresa = listaDadosEmpresa,
                 //listaDadosUnidadeMedida = listaUnidadeMedidas,
             };
 
             return View(indexViewModel);
         }
 
-        public List<DadosIngrediente> getDadosIngrediente()
+        public List<DadosIngrediente> GetDadosIngrediente()
         {
             List<DadosIngrediente> listaDadosIngrediente = new List<DadosIngrediente>();
 
@@ -72,10 +74,56 @@ namespace Web.Controllers
 
             return listaDadosIngrediente;
         }
+
+        public List<DadosEmpresa> GetDadosEmpresa()
+        {
+            List<DadosEmpresa> listaDadosEmpresa = new List<DadosEmpresa>();
+
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("http://gestaoreceitaapi.com/api/empresas");
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                    var objectJson = JsonConvert.DeserializeObject<List<DadosEmpresa>>(stringResult.Result);
+
+                    foreach (var item in objectJson)
+                    {
+                        listaDadosEmpresa.Add(
+                            new DadosEmpresa()
+                            {
+                                id = item.id,
+                                CNPJ = item.CNPJ,
+                                razaoSosial = item.razaoSosial,
+                                rua = item.rua,
+                                bairro = item.bairro,
+                                numeroEndereco = item.numeroEndereco,
+                                complemento = item.complemento,
+                                nomeFantasia = item.nomeFantasia,
+                                email = item.email,
+                            }
+                        );
+                    }
+                }
+                else
+                {
+                    //Erro de requisicao
+                    throw new Exception(response.Result.ReasonPhrase);
+                }
+            }
+
+            return listaDadosEmpresa;
+        }
+
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())
             {
+                // json stringify
                 var formContentString = new StringContent(JsonConvert.SerializeObject
                     (new {
                             id = dados.Id,
@@ -85,36 +133,41 @@ namespace Web.Controllers
                             empresaId = dados.EmpresaId,
                             unidadeMedidaId = dados.UnidadeMedidaId
                          }
+                    // cabeçalho da requisição
                     ), Encoding.UTF8, "application/json"); ;
 
+                // prepara a variável para receber a resposta da requisição
                 Task<HttpResponseMessage> response = null;
 
+                // verifica se o ingrediente já tem Id, se tiver, significa que já está cadastrado
                 if (dados.Id > 0)
-                {
+                { // se está cadastrado, então chama o método PUT para atualizar / editar
                     response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
                 }
                 else
-                {
+                { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
                     response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
                 }
 
-
+                // espera a resposta da requisição
                 response.Wait();
 
+                // verifica se a resposta(requisição) teve sucesso
                 if (response.Result.IsSuccessStatusCode)
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
                 }
                 else
-                {
+                { // se não, joga um erro na tela
                     //Erro de requisicao
                     throw new Exception(response.Result.ReasonPhrase);
                 }
             }
+            // chama a index novamente para atualizar a tela
             return RedirectToAction("Index");
         }
 
-
+        // DELETE --------------------------------------------------
         //public JsonResult cadIngrediente(string cidadeDescricao)
         //{
         //    using (var client = new HttpClient())
@@ -143,6 +196,7 @@ namespace Web.Controllers
         //    return Json(new { });
         //}
 
+        // GET by Id ----------------------------------------------------------------------
         //public JsonResult getIngredienteById()
         //{
         //    using (var client = new HttpClient())
@@ -172,7 +226,7 @@ namespace Web.Controllers
         //}
 
 
-
+        // GET --------------------------------------------------------------------
         //public JsonResult getIngredientes()
         //{
         //    using (var client = new HttpClient())
@@ -204,10 +258,5 @@ namespace Web.Controllers
 
         //    return Json(new { });
         //}
-
-        public ActionResult MostrarItens(DadosIngrediente listaIngredientesCadastrados)
-        {
-            return RedirectToAction("Index");
-        }
     }
 }

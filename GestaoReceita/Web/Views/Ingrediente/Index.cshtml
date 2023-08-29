@@ -33,10 +33,10 @@
                 @foreach (var item in Model.listaIngredientesCadastrados)
                 {
                     <tr>
-                        @*<td>
-                            @item.Id*@
+                        <td class="visually-hidden">
+                            @*@item.Id*@
                             <input data-item="item_id" value="@item.Id" type="hidden" />
-                        @*</td>*@
+                        </td>
                         <td>
                             @item.NomeIngrediente
                             <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
@@ -71,12 +71,14 @@
             </tbody>
         </table>
 
-        <!-- MODAL CADASTRAR INGREDIENTE -->
+        <!-- MODAL -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 @using (Html.BeginForm("PersistirIngrediente", "Ingrediente", FormMethod.Post))
                 {
-                <div class="modal-content">
+
+
+<div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -92,7 +94,12 @@
                                 @*<input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />*@
                             <select id="selectEmpresa" name="EmpresaId" required>
                                 <option selected value="">Selecione a empresa</option>
-                                <option selected value="3">EmpresaTeste</option>
+                                <option value="3">EmpresaTeste</option>
+
+                                @foreach (var item in Model.listaDadosEmpresa)
+                                {
+                                    <option value="@item.id">@item.nomeFantasia</option>
+                                }
                             </select>
                             </div>
                         </div>
@@ -104,10 +111,10 @@
                             <div class="col">
                                 <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
                                 @*<input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
-                                <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
-                                    <option selected value="">Unidade de Medida</option>
-                                    <option selected value="2">Kilo</option>
-                                </select>
+                            <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
+                                <option selected value="">Unidade de Medida</option>
+                                <option value="2">Kilo</option>
+                            </select>
                             </div>
                         </div>
                         <div class="row">
@@ -119,8 +126,18 @@
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Cadastar</button>
-                        <button type="reset" class="btn btn-primary">Limpar</button>
+                        @*<button type="submit" class="btn btn-primary">Cadastar</button>
+                        <button type="reset" class="btn btn-primary">Limpar</button>*@
+
+                        @if ("variavelBotaoClicado" == "Novo Ingrediente")
+                        {
+                            <button type="submit" class="btn btn-primary">Cadastar</button>
+                            <button type="reset" class="btn btn-primary">Limpar</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                        }
                     </div>
                 </div>
                 }
