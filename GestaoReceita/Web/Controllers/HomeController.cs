@@ -26,5 +26,12 @@ namespace Web.Controllers
 
             return View();
         }
+
+        public ActionResult Estado()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }
