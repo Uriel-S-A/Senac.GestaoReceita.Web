@@ -24,6 +24,7 @@ namespace CadEmpresa.Controllers
         }
 
 
+        //Index da tela
         public ActionResult Index()
         {
             IndexViewModel indexViewModel = new IndexViewModel();
@@ -66,11 +67,11 @@ namespace CadEmpresa.Controllers
 
             }
 
-            resultadoPesquisa.listaEmpresa = listaEmpresas;
-
             return RedirectToRoute(new { controller = "Empresa", action = "Index", resultadoPesquisa });
         }
 
+
+        //carrega dados das empresas por id
         public ActionResult DadosCadastroEmpresa(int? id)
         {
             var empresa = new CadastroEmpresaViewModel();
@@ -79,21 +80,21 @@ namespace CadEmpresa.Controllers
                 empresa = _getDadosEmpresa(id);
             }
 
-            return View(empresa);
+            return View("DadosCadastroEmpresa", empresa);
         }
-
         private CadastroEmpresaViewModel _getDadosEmpresa(int? id)
         {
             var listaEmpresa = getEmpresaById(id);
+            return listaEmpresa;
 
-            var empresa = listaEmpresa.SingleOrDefault(search => search.id == id);
-
-            return new CadastroEmpresaViewModel();
+            //var listaEmpresa = getEmpresaById(id);
+            //var empresa = listaEmpresa.SingleOrDefault(search => search.id == id);
+            //return new CadastroEmpresaViewModel();
         }
 
 
 
-        //metudo para pegar todas as empresas
+        //métudo para pegar todas as empresas
         public List<CadastroEmpresaViewModel> getEmpresa()
         {
             var lista = new List<CadastroEmpresaViewModel>();
@@ -137,50 +138,64 @@ namespace CadEmpresa.Controllers
 
 
         //métudo para pegar uma única empresa
-        public List<CadastroEmpresaViewModel> getEmpresaById(int? id)
+        public CadastroEmpresaViewModel getEmpresaById(int? id)
         {
-            var lista = new List<CadastroEmpresaViewModel>();
+            var empresas = getEmpresa();
+            var empresa = empresas[0];
 
-            using (var client = new HttpClient())
+            for (int i = 0; i < empresas.Count; i++)
             {
-                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + id);
-
-                response.Wait();
-
-                if (response.Result.IsSuccessStatusCode)
+                if (empresas[i].id == id)
                 {
-                    var stringResult = response.Result.Content.ReadAsStringAsync();
-
-                    var objectJson = JsonConvert.DeserializeObject<List<fooEmpresaDTO>>(stringResult.Result);
-
-                    objectJson.ForEach(item => lista.Add(
-                        new CadastroEmpresaViewModel()
-                        {
-                            id = item.id,
-                            bairro = item.bairro,
-                            CNPJ = item.CNPJ,
-                            complemento = item.complemento,
-                            email = item.email,
-                            nomeFantasia = item.nomeFantasia,
-                            numeroEndereco = item.numeroEndereco,
-                            razaoSosial = item.razaoSosial,
-                            rua = item.rua,
-                        }));
-                }
-                else
-                {
-                    throw new Exception(response.Result.ReasonPhrase);
+                    empresa = empresas[i];
                 }
             }
 
-            return lista;
+            return empresa;
+
+
+            //var lista = new List<CadastroEmpresaViewModel>();
+
+            //using (var client = new HttpClient())
+            //{
+            //    var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + id);
+
+            //    response.Wait();
+
+            //    if (response.Result.IsSuccessStatusCode)
+            //    {
+            //        var stringResult = response.Result.Content.ReadAsStringAsync();
+
+            //        var objectJson = JsonConvert.DeserializeObject<List<fooEmpresaDTO>>(stringResult.Result);
+
+            //        objectJson.ForEach(item => lista.Add(
+            //            new CadastroEmpresaViewModel()
+            //            {
+            //                id = item.id,
+            //                bairro = item.bairro,
+            //                CNPJ = item.CNPJ,
+            //                complemento = item.complemento,
+            //                email = item.email,
+            //                nomeFantasia = item.nomeFantasia,
+            //                numeroEndereco = item.numeroEndereco,
+            //                razaoSosial = item.razaoSosial,
+            //                rua = item.rua,
+            //            }));
+            //    }
+            //    else
+            //    {
+            //        throw new Exception(response.Result.ReasonPhrase);
+            //    }
+            //}
+
+            //  return lista;
         }
     }
 
 
 
 
-
+   
     public class fooEmpresaDTO
     {
         public int id { get; set; }
