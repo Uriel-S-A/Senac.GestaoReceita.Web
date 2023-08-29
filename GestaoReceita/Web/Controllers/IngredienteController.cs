@@ -5,9 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
+using Web.Models.Ingrediente;
 
 namespace Web.Controllers
 {
@@ -16,56 +18,102 @@ namespace Web.Controllers
         // GET: Ingrediente
         public ActionResult Index(DadosIngrediente dados)
         {
-            //var ingredienteById = getIngredienteById();
-
-            //var retorno = cadIngrediente("Açúcar");
-
-            //var listaIngredientes = getIngredientes();
-
-            List<DadosIngrediente> listaIngredientesCadastrados = new List<DadosIngrediente>()
-            {
-                new DadosIngrediente()
-                {
-                    Id = dados.Id,
-                    NomeIngrediente = dados.NomeIngrediente,
-                    QuantidadeUnidade = dados.QuantidadeUnidade,
-                    PrecoIngrediente = dados.PrecoIngrediente,
-                    UnidadeMedidaId = dados.UnidadeMedidaId,
-                    EmpresaId = dados.EmpresaId
-                },
-                new DadosIngrediente(){
-                    Id = 1,
-                    NomeIngrediente = "Arroz",
-                    QuantidadeUnidade = 3,
-                    PrecoIngrediente = 10.00M,
-                    UnidadeMedidaId = 1,
-                    EmpresaId = 1
-                },
-                new DadosIngrediente(){
-                    Id = 2,
-                    NomeIngrediente = "Abacaxi",
-                    QuantidadeUnidade = 2,
-                    PrecoIngrediente = 5.00M,
-                    UnidadeMedidaId = 2,
-                    EmpresaId = 2
-                },
-                new DadosIngrediente(){
-                    Id = 3,
-                    NomeIngrediente = "Carne",
-                    QuantidadeUnidade = 9,
-                    PrecoIngrediente = 90.00M,
-                    UnidadeMedidaId = 3,
-                    EmpresaId = 3
-                },
-            };
+            List<DadosIngrediente> listaIngredientesCadastrados = getDadosIngrediente();
+            //List<Empresas> listaDadosEmpresa = getDadosEmpresa();
+            //List<UnidadeMedas> listaUnidadeMedidas = getDadosUnidadeMedida();
 
             IndexViewModel indexViewModel = new IndexViewModel()
             {
                 listaIngredientesCadastrados = listaIngredientesCadastrados,
+                //listaDadosEmpresa = listaDadosEmpresa,
+                //listaDadosUnidadeMedida = listaUnidadeMedidas,
             };
 
             return View(indexViewModel);
         }
+
+        public List<DadosIngrediente> getDadosIngrediente()
+        {
+            List<DadosIngrediente> listaDadosIngrediente = new List<DadosIngrediente>();
+
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes");
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                    var objectJson = JsonConvert.DeserializeObject<List<DadosIngredienteRequest>>(stringResult.Result);
+
+                    foreach(var item in objectJson)
+                    {
+                        listaDadosIngrediente.Add(
+                            new DadosIngrediente()
+                            {
+                                EmpresaId = item.empresaId,
+                                Id = item.id,
+                                NomeIngrediente = item.nomeIngrediente,
+                                PrecoIngrediente = item.precoIngrediente,
+                                QuantidadeUnidade = item.quantidadeUnidade,
+                                UnidadeMedidaId = item.unidadeMedidaId,
+                            }
+                        );
+                    }
+                }
+                else
+                {
+                    //Erro de requisicao
+                    throw new Exception(response.Result.ReasonPhrase);
+                }
+            }
+
+            return listaDadosIngrediente;
+        }
+        public ActionResult PersistirIngrediente(DadosIngrediente dados)
+        {
+            using (var client = new HttpClient())
+            {
+                var formContentString = new StringContent(JsonConvert.SerializeObject
+                    (new {
+                            id = dados.Id,
+                            nomeIngrediente = dados.NomeIngrediente,
+                            precoIngrediente = dados.PrecoIngrediente,
+                            quantidadeUnidade = dados.QuantidadeUnidade,
+                            empresaId = dados.EmpresaId,
+                            unidadeMedidaId = dados.UnidadeMedidaId
+                         }
+                    ), Encoding.UTF8, "application/json"); ;
+
+                Task<HttpResponseMessage> response = null;
+
+                if (dados.Id > 0)
+                {
+                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
+                }
+                else
+                {
+                    response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
+                }
+
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    //Erro de requisicao
+                    throw new Exception(response.Result.ReasonPhrase);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
 
         //public JsonResult cadIngrediente(string cidadeDescricao)
         //{

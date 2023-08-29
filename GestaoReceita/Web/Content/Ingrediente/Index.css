@@ -1,4 +1,12 @@
-﻿table {
+﻿ingredienteContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+    background-color: white;
+}
+
+table {
     border-collapse: collapse;
     border: 1px solid #0d6efd;
     width: 605px;

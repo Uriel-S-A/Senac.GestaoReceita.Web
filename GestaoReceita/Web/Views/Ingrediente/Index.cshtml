@@ -6,13 +6,11 @@
     ViewBag.Title = "Index";
 }
 
-<div class="container">
-    @using (Html.BeginForm("CadastroIngrediente", "Ingrediente", FormMethod.Post))
-    {
+<div class="container ingredienteContainer">
         <div class="row">
             <div class="col-12 m-2">
                 <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" />
-                <button type="button" class=" NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Novo Ingrediente
                 </button>
             </div>
@@ -36,9 +34,9 @@
                 {
                     <tr>
                         @*<td>
-                                @item.Id
-                                <input data-item="item_id" value="@item.Id" type="hidden" />
-                            </td>*@
+                            @item.Id*@
+                            <input data-item="item_id" value="@item.Id" type="hidden" />
+                        @*</td>*@
                         <td>
                             @item.NomeIngrediente
                             <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
@@ -61,10 +59,10 @@
                         </td>
                         <td>
                             <button type="button"
-                                    class=" EditarIngrediente m-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal1"
-                                    onclick="editarIngrediente(this)">
+                                class=" EditarIngrediente m-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                onclick="editarIngrediente(this)">
                                 Editar
                             </button>
                         </td>
@@ -76,6 +74,8 @@
         <!-- MODAL CADASTRAR INGREDIENTE -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
+                @using (Html.BeginForm("PersistirIngrediente", "Ingrediente", FormMethod.Post))
+                {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
@@ -85,33 +85,35 @@
                         <div class="row">
                             <div class="col">
                                 <label class="labelModalEditar" for="modalNome">Nome Ingrediente</label>
-                                <input type="text" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
+                                <input type="text" id="modalNome" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
                             </div>
                             <div class="col">
                                 <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
                                 @*<input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />*@
-                                <select id="selectEmpresa" required>
-                                    <option selected disabled value="">Selecione a empresa</option>
-                                </select>
+                            <select id="selectEmpresa" name="EmpresaId" required>
+                                <option selected value="">Selecione a empresa</option>
+                                <option selected value="3">EmpresaTeste</option>
+                            </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label class="labelModalEditar" for="modalQuantidade">Quantidade</label>
-                                <input type="number" name="QuantidadeIngrediente" placeholder="Quantidade" required />
+                                <input type="number" name="QuantidadeUnidade" id="modalQuantidade" placeholder="Quantidade" required />
                             </div>
                             <div class="col">
                                 <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
                                 @*<input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
-                                <select id="selectUnidadeMedida" required>
-                                    <option selected disabled value="">Unidade de Medida</option>
+                                <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
+                                    <option selected value="">Unidade de Medida</option>
+                                    <option selected value="2">Kilo</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <label class="labelModalEditarU" for="modalPreco">Preço</label>
                             <div class="col">
-                                <input type="number" step="0.01" name="PreçoIngrediente" placeholder="Preço" required />
+                                <input type="number" name="PrecoIngrediente" id="modalPreco" placeholder="Preço" required />
                             </div>
                         </div>
                     </div>
@@ -121,76 +123,32 @@
                         <button type="reset" class="btn btn-primary">Limpar</button>
                     </div>
                 </div>
+                }
             </div>
         </div>
-
-        <!-- MODAL EDITAR INGREDIENTE -->
-        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel1">Editar Ingrediente</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalNome">Nome Ingrediente</label>
-                                <input id="modalNome" type="text" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
-                            </div>
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
-                                @*<input id="modalEmpresa" type="text" name="NomeEmpresa" placeholder="Nome empresa" required />*@
-                                <select id="selectEmpresa" required>
-                                    <option selected disabled value="">Selecione a empresa</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalQuantidade">Quantidade</label>
-                                <input id="modalQuantidade" type="number" name="QuantidadeIngrediente" placeholder="Quantidade" required />
-                            </div>
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
-                                @*<input id="modalMedida" type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
-                                <select id="selectUnidadeMedida" required>
-                                    <option selected disabled value="">Unidade de Medida</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="labelModalEditarU" for="modalPreco">Preço</label>
-                            <div class="col">
-                                <input id="modalPreco" type="number" step="0.01" name="PreçoIngrediente" placeholder="Preço" required />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Editar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
 </div>
 
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>
 <script>
-    window.onload = function () {
-        carregaDropdown();
-    }
+    //window.onload = function () {
+    //    populaDropdown();
+    //}
 
-    function carregaDropdown(response) {
-        var selectMedida = document.getElementById("selectUnidadeMedida");
+    //function populaDropdown(response) {
+    //    var selectMedida = document.getElementById("selectUnidadeMedida");
 
-        var opcao = document.createElement("option");
-        opcao.value = response.unidadeMedida.sigla;
-        selectMedida.appendChild(opcao);
+    //    var opcao = document.createElement("option");
+    //    opcao.value = response.unidadeMedida.sigla;
+    //    selectMedida.appendChild(opcao);
 
-        var selectEmpresa = document.getElementById("selectEmpresa");
-        opcao.value = response.empresa.nomeFantasia;
-        selectEmpresa.appendChild(opcao);
-    }
+    //    var selectEmpresa = document.getElementById("selectEmpresa");
+    //    opcao.value = response.empresa.nomeFantasia;
+    //    selectEmpresa.appendChild(opcao);
+
+    //    //for (var i = 0; i < 2; i++) {
+    //    //    i == 0 ? selectId = "selectEmpresa" : selectId = "selectUnidadeMedida";
+
+    //    //    selectId == "selectEmpresa" ? opcao.value = response.unidadeMedida.sigla : opcao.value = response.empresa.nomeFantasia;
+    //    //}
+    //}
 </script>

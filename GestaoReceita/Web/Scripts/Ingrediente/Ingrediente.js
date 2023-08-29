@@ -17,10 +17,10 @@
     var modalQuantidade = document.getElementById("modalQuantidade");
     modalQuantidade.value = inputQuantidade.value;
 
-    var modalMedida = document.getElementById("modalMedida");
+    var modalMedida = document.getElementById("selectUnidadeMedida");
     modalMedida.value = inputUnidadeMedida.value;
 
-    var modalEmpresa = document.getElementById("modalEmpresa");
+    var modalEmpresa = document.getElementById("selectEmpresa");
     modalEmpresa.value = inputEmpresa.value;
 
     var modalPreco = document.getElementById("modalPreco");
