@@ -3,6 +3,7 @@ using CadEmpresa.Models;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,42 +20,37 @@ namespace CadEmpresa.Controllers
 
         public EmpresaController()
         {
-            resultadoPesquisa.listaEmpresa = listaEmpresas;
+
         }
 
-        IndexViewModel resultadoPesquisa = new IndexViewModel();
-
-        private List<CadastroEmpresaViewModel> listaEmpresas = new List<CadastroEmpresaViewModel>()
-        { };
 
         public ActionResult Index()
         {
+            IndexViewModel indexViewModel = new IndexViewModel();
+
             var listaEmpresas = getEmpresa();
 
-            return View();
+            indexViewModel.listaEmpresa = listaEmpresas;
+
+            return View(indexViewModel);
 
         }
 
 
-        public string DataHoraAtual()
-        {
-            return DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss");
-        }
-
+        //pesquisar empresas
         public ActionResult Pesquisar(string inputCNPJ)
         {
 
             IndexViewModel resultadoPesquisa = new IndexViewModel();
 
-            listaEmpresas = new List<CadastroEmpresaViewModel>()
+            var listaEmpresas = getEmpresa();
+
+            resultadoPesquisa.listaEmpresa = listaEmpresas;
+
+
+            for (int i = 0; i < resultadoPesquisa.listaEmpresa.Count; i++)
             {
-
-            };
-
-
-            for (int i = 0; i < listaEmpresas.Count; i++)
-            {
-                if (inputCNPJ == listaEmpresas[i].CNPJ)
+                if (inputCNPJ == resultadoPesquisa.listaEmpresa[i].CNPJ)
                 {
                     resultadoPesquisa.listaEmpresa = new List<CadastroEmpresaViewModel>();
                     resultadoPesquisa.listaEmpresa.Add(listaEmpresas[i]);
@@ -63,7 +59,7 @@ namespace CadEmpresa.Controllers
                     //return RedirectToRoute(new { controller = "Empresa", action = "Index", resultadoPesquisa });
                 }
 
-                if (i == listaEmpresas.Count - 1 && inputCNPJ != listaEmpresas[i].CNPJ)
+                if (i == resultadoPesquisa.listaEmpresa.Count - 1 && inputCNPJ != resultadoPesquisa.listaEmpresa[i].CNPJ)
                 {
                     return RedirectToRoute(new { controller = "Empresa", action = "DadosCadastroEmpresa" });
                 }
@@ -88,14 +84,20 @@ namespace CadEmpresa.Controllers
 
         private CadastroEmpresaViewModel _getDadosEmpresa(int? id)
         {
-            var empresa = listaEmpresas.SingleOrDefault(search => search.id == id);
+            var listaEmpresa = getEmpresaById(id);
 
-            return empresa;
+            var empresa = listaEmpresa.SingleOrDefault(search => search.id == id);
+
+            return new CadastroEmpresaViewModel();
         }
 
 
-        public JsonResult getEmpresa()
+
+        //metudo para pegar todas as empresas
+        public List<CadastroEmpresaViewModel> getEmpresa()
         {
+            var lista = new List<CadastroEmpresaViewModel>();
+
             using (var client = new HttpClient())
             {
                 //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
@@ -110,55 +112,109 @@ namespace CadEmpresa.Controllers
 
                     var objectJson = JsonConvert.DeserializeObject<List<fooEmpresaDTO>>(stringResult.Result);
 
+                    objectJson.ForEach(item => lista.Add(
+                        new CadastroEmpresaViewModel()
+                        {
+                            id = item.id,
+                            bairro = item.bairro,
+                            CNPJ = item.CNPJ,
+                            complemento = item.complemento,
+                            email = item.email,
+                            nomeFantasia = item.nomeFantasia,
+                            numeroEndereco = item.numeroEndereco,
+                            razaoSosial = item.razaoSosial,
+                            rua = item.rua,
+                        }));
                 }
                 else
                 {
-                    //Erro de requisicao
-                    var content = response.Result.Content.ReadAsStringAsync();
-
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                    throw new Exception(response.Result.ReasonPhrase);
                 }
             }
 
-            return Json(new { });
+            return lista;
         }
 
 
-        public class fooEmpresaDTO
+        //métudo para pegar uma única empresa
+        public List<CadastroEmpresaViewModel> getEmpresaById(int? id)
         {
-            public int id { get; set; }
-            public string CNPJ { get; set; }
-            public string razaoSosial { get; set; }
-            public string rua { get; set; }
-            public string bairro { get; set; }
-            public int? numeroEndereco { get; set; }
-            public string complemento { get; set; }
-            public string nomeFantasia { get; set; }
-            public string email { get; set; }
-            public fooEstadoRequestDTO cidade { get; set; }
-        }
+            var lista = new List<CadastroEmpresaViewModel>();
 
-        public class fooCidadeRequestDTO
-        {
-            public int id { get; set; }
-            public string descricaoCidade { get; set; }
-            public int idEstado { get; set; }
-            public fooEstadoRequestDTO estado { get; set; }
-        }
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + id);
 
-        public class fooEstadoRequestDTO
-        {
-            public int id { get; set; }
-            public string descricaoEstado { get; set; }
-            public int idPais { get; set; }
-            public fooPaisRequestDTO pais { get; set; }
-        }
+                response.Wait();
 
-        public class fooPaisRequestDTO
-        {
-            public int id { get; set; }
-            public string descricaoPais { get; set; }
-        }
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
 
+                    var objectJson = JsonConvert.DeserializeObject<List<fooEmpresaDTO>>(stringResult.Result);
+
+                    objectJson.ForEach(item => lista.Add(
+                        new CadastroEmpresaViewModel()
+                        {
+                            id = item.id,
+                            bairro = item.bairro,
+                            CNPJ = item.CNPJ,
+                            complemento = item.complemento,
+                            email = item.email,
+                            nomeFantasia = item.nomeFantasia,
+                            numeroEndereco = item.numeroEndereco,
+                            razaoSosial = item.razaoSosial,
+                            rua = item.rua,
+                        }));
+                }
+                else
+                {
+                    throw new Exception(response.Result.ReasonPhrase);
+                }
+            }
+
+            return lista;
+        }
     }
+
+
+
+
+
+    public class fooEmpresaDTO
+    {
+        public int id { get; set; }
+        public string CNPJ { get; set; }
+        public string razaoSosial { get; set; }
+        public string rua { get; set; }
+        public string bairro { get; set; }
+        public int? numeroEndereco { get; set; }
+        public string complemento { get; set; }
+        public string nomeFantasia { get; set; }
+        public string email { get; set; }
+        public fooEstadoRequestDTO cidade { get; set; }
+    }
+
+    public class fooCidadeRequestDTO
+    {
+        public int id { get; set; }
+        public string descricaoCidade { get; set; }
+        public int idEstado { get; set; }
+        public fooEstadoRequestDTO estado { get; set; }
+    }
+
+    public class fooEstadoRequestDTO
+    {
+        public int id { get; set; }
+        public string descricaoEstado { get; set; }
+        public int idPais { get; set; }
+        public fooPaisRequestDTO pais { get; set; }
+    }
+
+    public class fooPaisRequestDTO
+    {
+        public int id { get; set; }
+        public string descricaoPais { get; set; }
+    }
+
 }
