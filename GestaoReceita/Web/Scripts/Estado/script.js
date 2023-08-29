@@ -4,31 +4,33 @@
 
 function buttonCreate() {
     $('#createBtn').on('click', function () {
-        var pais = $('#pais-nome').val();
-        var estado = $('#pais-sigla').val();
+        var estadoPais = $('#estado-pais').val();
+        var estadoNome = $('#estado-nome').val();
+        var estadoSigla = $('#estado-sigla').val();
 
-        if (!paisNome || !paisSigla) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Por favor, preencha todos os campos.',
-            });
-            return false;
-        }
+        //if (!Estado || !Pais) {
+        //    swal.fire({
+        //        icon: 'error',
+        //        title: 'oops...',
+        //        text: 'por favor, preencha todos os campos.',
+        //    });
+        //    return false;
+        //}
 
         var data = {
-            PaisNome: paisNome,
-            PaisSigla: paisSigla
+            Pais : estadoPais,
+            Estado: estadoNome,
+            Sigla: estadoSigla
         };
 
         $.ajax({
-            url: '/Pais/AdicionarNovoPais',
+            url: '/Estado/AdicionarNovoEstado',
             type: 'POST',
             data: data,
             success: function () {
                 console.log('Dados enviados com sucesso!');
                 $('#exampleModal').modal('hide');
-                window.location.href = "/Pais/Index";
+                window.location.href = "/Estado/Index";
             },
             error: function (error) {
                 console.error('Erro ao enviar dados:', error);
@@ -44,18 +46,20 @@ function buttonEditar() {
 
         var rowSelected = this.parentNode.parentNode;
 
-        var id = $(rowSelected).find("td.paisId").text();
-        var paisNome = $(rowSelected).find("td.paisNome").text();
-        var paisSigla = $(rowSelected).find("td.paisSigla").text();
+        var id = $(rowSelected).find("td.estadoId").text();
+        var estadoPais = $(rowSelected).find("td.estadoPais").text();
+        var estadoNome = $(rowSelected).find("td.estadoNome").text();
+        var estadoSigla = $(rowSelected).find("td.estadoSigla").text();
 
-        preencherCamposEdicao(id, paisNome, paisSigla);
+        preencherCamposEdicao(id, estadoPais, estadoNome, estadoSigla);
     });
 }
 
-function preencherCamposEdicao(id, paisNome, paisSigla) {
+function preencherCamposEdicao(id, estadoPais, estadoNome, estadoSigla) {
     //preenchendo valores na modal.
-    $("#pais-nome-update").val(paisNome);
-    $("#pais-sigla-update").val(paisSigla);
+    $("#estado-pais-update").val(estadoPais);
+    $("#estado-nome-update").val(estadoNome);
+    $("#estado-sigla-update").val(estadoSigla)
 
     //quando clicar em update.
     $('#updateBtn').on('click', function () {
@@ -66,8 +70,9 @@ function preencherCamposEdicao(id, paisNome, paisSigla) {
 
         var data = {
             Id: id,
-            PaisNome: $('#pais-nome-update').val(),
-            PaisSigla: $('#pais-sigla-update').val()
+            Pais: $('#estado-pais-update').val(),
+            Estado: $('#estado-nome-update').val(),
+            Sigla: $('#estado-sigla-update').val()
         };
 
         enviarRequisicaoEditar(data);
@@ -76,10 +81,11 @@ function preencherCamposEdicao(id, paisNome, paisSigla) {
 
 function validarCamposEdicao() {
     //valores que estão na modal
-    var paisNomeUpdate = $("#pais-nome-update").val();
-    var paisSiglaUpdate = $("#pais-sigla-update").val();
+    var estadoPaisUpdate = $("#estado-pais-update").val();
+    var estadoNomeUpdate = $("#estado-nome-update").val();
+    var estadoSiglaUpdate = $("#estado-sigla-update").val();
 
-    if (!paisNomeUpdate || !paisSiglaUpdate) {
+    if (!estadoPaisUpdate || !estadoNomeUpdate || !estadoSiglaUpdate) {
 
         //REMOVER FORMATO DE ERRO, FAZER EXIBIÇÃO VIA MODAL(mensagem de erro com modal de cor vermelha ou ver sobre)
 
@@ -97,12 +103,12 @@ function validarCamposEdicao() {
 function enviarRequisicaoEditar(data) {
 
     $.ajax({
-        url: '/Pais/EditarPais',
+        url: '/Estado/EditarEstado',
         type: 'POST',
         data: data,
         success: function () {
             $('#exampleModal').modal('hide');
-            window.location.href = "/Pais/Index";
+            window.location.href = "/Estado/Index";
         },
         error: function (error) {
             console.error('Erro ao enviar dados:', error);
@@ -116,7 +122,7 @@ function buttonDeletar() {
     $('.btn-modal-delete').on('click', function () {
 
         var rowSelected = this.parentNode.parentNode;
-        var id = $(rowSelected).find("td.paisId").text();
+        var id = $(rowSelected).find("td.estadoId").text();
 
         $("#btnConfirmDelete").on("click", function () {
             var data = {
@@ -131,12 +137,12 @@ function buttonDeletar() {
 
 function enviarRequisicaoDeletar(data) {
     $.ajax({
-        url: '/Pais/DeletarPais',
+        url: '/Estado/DeletarEstado',
         type: 'POST',
         data: data,
         success: function () {
             $('#confirmModal').modal('hide');
-            window.location.href = "/Pais/Index";
+            window.location.href = "/Estado/Index";
         },
         error: function (error) {
             console.error('Erro ao enviar dados:', error);

@@ -61,8 +61,8 @@ namespace Web.Controllers
 
         public ActionResult EditarEstado(EstadoViewModel EstadoEditar)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 List<EstadoViewModel> listaEstados = ObterListaEstados();
 
                 var estadoToUpdate = listaEstados.FirstOrDefault(fd => fd.Id == EstadoEditar.Id);
@@ -78,7 +78,7 @@ namespace Web.Controllers
 
                     return RedirectToAction("Index");
                 }
-            }
+            //}
 
             return View("Index", ObterListaEstados());
         }
