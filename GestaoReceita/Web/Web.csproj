@@ -118,6 +118,7 @@
     <Compile Include="Models\Ingrediente\DadosEmpresa.cs" />
     <Compile Include="Models\Ingrediente\DadosIngrediente.cs" />
     <Compile Include="Models\Ingrediente\DadosIngredienteRequest.cs" />
+    <Compile Include="Models\Ingrediente\DadosUnidadeMedida.cs" />
     <Compile Include="Models\Ingrediente\IndexViewModel.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />

@@ -22,13 +22,13 @@ namespace Web.Controllers
         {
             List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
             List<DadosEmpresa> listaDadosEmpresa = GetDadosEmpresa();
-            //List<UnidadeMedas> listaUnidadeMedidas = getDadosUnidadeMedida();
+            List<DadosUnidadeMedida> listaDadosUnidadeMedida = GetDadosUnidadeMedida();
 
             IndexViewModel indexViewModel = new IndexViewModel()
             {
                 listaIngredientesCadastrados = listaIngredientesCadastrados,
                 listaDadosEmpresa = listaDadosEmpresa,
-                //listaDadosUnidadeMedida = listaUnidadeMedidas,
+                listaDadosUnidadeMedida = listaDadosUnidadeMedida,
             };
 
             return View(indexViewModel);
@@ -81,7 +81,7 @@ namespace Web.Controllers
 
             using (var client = new HttpClient())
             {
-                var response = client.GetAsync("http://gestaoreceitaapi.com/api/empresas");
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Empresas");
 
                 response.Wait();
 
@@ -119,6 +119,42 @@ namespace Web.Controllers
             return listaDadosEmpresa;
         }
 
+        public List<DadosUnidadeMedida> GetDadosUnidadeMedida()
+        {
+            List<DadosUnidadeMedida> listaDadosUnidadeMedida = new List<DadosUnidadeMedida>();
+
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/UnidadeMedidas");
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                    var objectJson = JsonConvert.DeserializeObject<List<DadosUnidadeMedida>>(stringResult.Result);
+
+                    foreach (var item in objectJson)
+                    {
+                        listaDadosUnidadeMedida.Add(
+                            new DadosUnidadeMedida()
+                            {
+                                Id = item.Id,
+                                descUnidMedIngrediente = item.descUnidMedIngrediente,
+                                Sigla = item.Sigla,
+                            }
+                        );
+                    }
+                }
+                else
+                {
+                    throw new Exception(response.Result.ReasonPhrase);
+                }
+            }
+            return listaDadosUnidadeMedida;
+        }
+ 
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())

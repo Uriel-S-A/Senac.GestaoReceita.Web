@@ -20,7 +20,7 @@
         <table>
             <thead>
                 <tr>
-                    @*<th scope="col">ID</th>*@
+                    <th class="visually-hidden" scope="col">ID</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Quantidade</th>
                     <th scope="col">Unidade de medida</th>
@@ -76,9 +76,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 @using (Html.BeginForm("PersistirIngrediente", "Ingrediente", FormMethod.Post))
                 {
-
-
-<div class="modal-content">
+                    <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -94,7 +92,7 @@
                                 @*<input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />*@
                             <select id="selectEmpresa" name="EmpresaId" required>
                                 <option selected value="">Selecione a empresa</option>
-                                <option value="3">EmpresaTeste</option>
+                                @*<option value="4">EmpresaTeste</option>*@
 
                                 @foreach (var item in Model.listaDadosEmpresa)
                                 {
@@ -113,7 +111,12 @@
                                 @*<input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
                             <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
                                 <option selected value="">Unidade de Medida</option>
-                                <option value="2">Kilo</option>
+                                @*<option value="2">Kilo</option>*@
+
+                                @foreach (var item in Model.listaDadosUnidadeMedida)
+                                {
+                                    <option value="@item.Id">@item.descUnidMedIngrediente</option>
+                                }
                             </select>
                             </div>
                         </div>
@@ -126,10 +129,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        @*<button type="submit" class="btn btn-primary">Cadastar</button>
-                        <button type="reset" class="btn btn-primary">Limpar</button>*@
+                        <button type="submit" class="btn btn-primary">Cadastar</button>
+                        <button type="reset" class="btn btn-primary">Limpar</button>
 
-                        @if ("variavelBotaoClicado" == "Novo Ingrediente")
+                        @*@if ("variavelBotaoClicado" == "Novo Ingrediente")
                         {
                             <button type="submit" class="btn btn-primary">Cadastar</button>
                             <button type="reset" class="btn btn-primary">Limpar</button>
@@ -137,7 +140,7 @@
                         else
                         {
                             <button type="submit" class="btn btn-primary">Editar</button>
-                        }
+                        }*@
                     </div>
                 </div>
                 }
