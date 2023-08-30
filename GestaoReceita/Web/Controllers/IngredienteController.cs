@@ -111,7 +111,6 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    //Erro de requisicao
                     throw new Exception(response.Result.ReasonPhrase);
                 }
             }
@@ -157,7 +156,6 @@ namespace Web.Controllers
  
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
-
             using (var client = new HttpClient())
             {
                 // json stringify
@@ -180,7 +178,7 @@ namespace Web.Controllers
                 // verifica se o ingrediente já tem Id, se tiver, significa que já está cadastrado
                 if (dados.Id > 0)
                 { // se está cadastrado, então chama o método PUT para atualizar / editar
-                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id, formContentString);
+                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/"+dados.Id, formContentString);
                 }
                 else
                 { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
@@ -206,34 +204,34 @@ namespace Web.Controllers
             return RedirectToAction("Index");
         }
 
-        // DELETE --------------------------------------------------
-        //public JsonResult cadIngrediente(string cidadeDescricao)
-        //{
-        //    using (var client = new HttpClient())
-        //    {
-        //        var formContentString = new StringContent(JsonConvert.SerializeObject(new { descricaoCidade = cidadeDescricao, IdEstado = 1 }), Encoding.UTF8, "application/json");
 
-        //        var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/3");
 
-        //        response.Wait();
+        //DELETE --------------------------------------------------
+        public JsonResult DeleteDadosIngrediente(DadosIngrediente dados)
+        {
+            using (var client = new HttpClient())
+            {
+                var formContentString = new StringContent(JsonConvert.SerializeObject(new { Id = dados.Id }), Encoding.UTF8, "application/json");
 
-        //        if (response.Result.IsSuccessStatusCode)
-        //        {
-        //            var stringResult = response.Result.Content.ReadAsStringAsync();
+                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/"+dados.Id);
 
-        //            var objectJson = JsonConvert.DeserializeObject<fooCidadeDTO>(stringResult.Result);
-        //        }
-        //        else
-        //        {
-        //            //Erro de requisicao
-        //            var content = response.Result.Content.ReadAsStringAsync();
+                response.Wait();
 
-        //            var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-        //        }
-        //    }
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    //Erro de requisicao
+                    var content = response.Result.Content.ReadAsStringAsync();
 
-        //    return Json(new { });
-        //}
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                }
+            }
+
+            return Json(new { });
+        }
 
         // GET by Id ----------------------------------------------------------------------
         //public JsonResult getIngredienteById()
