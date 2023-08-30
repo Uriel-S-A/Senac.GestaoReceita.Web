@@ -8,14 +8,14 @@ function buttonCreate() {
         var estadoNome = $('#estado-nome').val();
         var estadoSigla = $('#estado-sigla').val();
 
-        //if (!Estado || !Pais) {
-        //    swal.fire({
-        //        icon: 'error',
-        //        title: 'oops...',
-        //        text: 'por favor, preencha todos os campos.',
-        //    });
-        //    return false;
-        //}
+        if (!estadoPais || !estadoNome || !estadoSigla) {
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'por favor, preencha todos os campos.',
+            });
+            return false;
+        }
 
         var data = {
             Pais : estadoPais,
