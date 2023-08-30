@@ -15,7 +15,6 @@ namespace Web.Controllers
        
         public ActionResult Index()
         {
-            //var cidadeById = getCidadeById();            
             List<PaisViewModel> minhaLista = getPaises();            
             return View(minhaLista);
         }
@@ -97,7 +96,7 @@ namespace Web.Controllers
                         // adicionar mensagem de sucesso
 
                         var stringResult = response.Result.Content.ReadAsStringAsync();
-                        var objectJson = JsonConvert.DeserializeObject<PaisViewModel>(stringResult.Result);
+                        var objectJson = JsonConvert.DeserializeObject<PaisViewModel>(stringResult.Result); //todas info que vem do banco devem ser armazenadas num TO.
                     }
                     else
                     {
@@ -107,8 +106,8 @@ namespace Web.Controllers
                     }
                 }
             }
-            
-            return View("Index");            
+
+            return Index();
         }
         
         public ActionResult EditarPais(PaisViewModel paisEditar)
