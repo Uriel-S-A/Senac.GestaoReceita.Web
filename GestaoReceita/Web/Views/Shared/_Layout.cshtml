@@ -16,9 +16,23 @@
             <a class="navbar-brand" href="#">Gestão de Receitas</a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Página Inicial", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Sobre", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Contato", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Usuarios", "Cadastro", "Login", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                </svg>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Editar", "Editar", "Login", new { area = "" }, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Logout", "Logout", "Login", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -111,9 +111,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LoginExtention.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Usuarios\CadastroUsuarioRequest.cs" />
+    <Compile Include="Models\Usuarios\CadastroViewModel.cs" />
+    <Compile Include="Models\Usuarios\Empresa.cs" />
+    <Compile Include="Models\Usuarios\LoginUsuario.cs" />
+    <Compile Include="Models\Usuarios\LoginUsuarioRequest.cs" />
+    <Compile Include="Models\Usuarios\UsuarioEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -191,10 +199,13 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Login\Cadastro.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\Usuarios.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -217,7 +228,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50624</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50624/</IISUrl>
+          <IISUrl>http://localhost:1105/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.33026.149
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{DC41FFFD-9C6A-44C8-B591-398232EC01A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionWebCadastroLogin", "Web\SolutionWebCadastroLogin.csproj", "{DC41FFFD-9C6A-44C8-B591-398232EC01A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
