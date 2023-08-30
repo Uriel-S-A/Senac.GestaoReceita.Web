@@ -133,7 +133,7 @@
                     <div class="row">
                         <label class="labelModalEditarU" for="modalPreco">Preço</label>
                         <div class="col">
-                            <input type="number" name="PrecoIngrediente" id="modalPreco" placeholder="Preço" required />
+                            <input type="number" step=".01" name="PrecoIngrediente" id="modalPreco" placeholder="Preço" required />
                         </div>
                     </div>
                 </div>
@@ -141,16 +141,6 @@
                     <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar</button>
                     <button type="reset" class="btn btn-primary" id="limparCamposButton">Limpar</button>
-
-                    @*@if ("variavelBotaoClicado" == "Novo Ingrediente")
-                        {
-                            <button type="submit" class="btn btn-primary">Cadastar</button>
-                            <button type="reset" class="btn btn-primary">Limpar</button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="btn btn-primary">Editar</button>
-                        }*@
                 </div>
             </div>
         }
@@ -159,5 +149,13 @@
 
 <!-- NOVA MODAL DE CONFIRMAÇÃO -->
 
+
+<!-- Success Alert -->
+<div class="alert alert-success d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+    <div>
+        An example success alert with an icon
+    </div>
+</div>
 
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>
