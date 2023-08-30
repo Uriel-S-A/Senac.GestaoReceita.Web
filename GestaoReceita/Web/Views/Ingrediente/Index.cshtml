@@ -7,89 +7,89 @@
 }
 
 <div class="container ingredienteContainer">
-        <div class="row">
-            <div class="col-12 m-2">
-                <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" />
-                <button type="button" class="NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Novo Ingrediente
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-12 m-2">
+            <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" />
+            <button type="button" class="NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Novo Ingrediente
+            </button>
         </div>
+    </div>
 
-        <!-- TABELA -->
-        <table>
-            <thead>
+    <!-- TABELA -->
+    <table>
+        <thead>
+            <tr>
+                <th class="visually-hidden" scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Unidade de medida</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Empresa</th>
+                <th scope="col">Editar Ingrediente</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.listaIngredientesCadastrados)
+            {
                 <tr>
-                    <th class="visually-hidden" scope="col">ID</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Quantidade</th>
-                    <th scope="col">Unidade de medida</th>
-                    <th scope="col">Preço</th>
-                    <th scope="col">Empresa</th>
-                    <th scope="col">Editar Ingrediente</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.listaIngredientesCadastrados)
-                {
-                    <tr>
-                        <td class="visually-hidden">
-                            @*@item.Id*@
-                            <input data-item="item_id" value="@item.Id" type="hidden" />
-                        </td>
-                        <td>
-                            @item.NomeIngrediente
-                            <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
-                        </td>
-                        <td>
-                            @item.QuantidadeUnidade
-                            <input data-item="item_quantidade" value="@item.QuantidadeUnidade" type="hidden" />
-                        </td>
-                        <td>
-                            @item.UnidadeMedidaId
-                            <input data-item="item_unidade_medida" value="@item.UnidadeMedidaId" type="hidden" />
-                        </td>
-                        <td>
-                            @item.PrecoIngrediente
-                            <input data-item="item_preco" value="@item.PrecoIngrediente" type="hidden" />
-                        </td>
-                        <td>
-                            @item.EmpresaId
-                            <input data-item="item_empresa" value="@item.EmpresaId" type="hidden" />
-                        </td>
-                        <td>
-                            <button type="button"
+                    <td class="visually-hidden">
+                        @*@item.Id*@
+                        <input data-item="item_id" value="@item.Id" type="hidden" />
+                    </td>
+                    <td>
+                        @item.NomeIngrediente
+                        <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
+                    </td>
+                    <td>
+                        @item.QuantidadeUnidade
+                        <input data-item="item_quantidade" value="@item.QuantidadeUnidade" type="hidden" />
+                    </td>
+                    <td>
+                        @item.UnidadeMedidaId
+                        <input data-item="item_unidade_medida" value="@item.UnidadeMedidaId" type="hidden" />
+                    </td>
+                    <td>
+                        @item.PrecoIngrediente
+                        <input data-item="item_preco" value="@item.PrecoIngrediente" type="hidden" />
+                    </td>
+                    <td>
+                        @item.EmpresaId
+                        <input data-item="item_empresa" value="@item.EmpresaId" type="hidden" />
+                    </td>
+                    <td>
+                        <button type="button"
                                 class=" EditarIngrediente m-1"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
                                 onclick="editarIngrediente(this)">
-                                Editar
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <!-- MODAL -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                @using (Html.BeginForm("PersistirIngrediente", "Ingrediente", FormMethod.Post))
-                {
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalNome">Nome Ingrediente</label>
-                                <input type="text" id="modalNome" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
-                            </div>
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
-                                @*<input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />*@
+                            Editar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<!-- MODAL -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        @using (Html.BeginForm("PersistirIngrediente", "Ingrediente", FormMethod.Post))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <label class="labelModalEditar" for="modalNome">Nome Ingrediente</label>
+                            <input type="text" id="modalNome" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
+                        </div>
+                        <div class="col">
+                            <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
+                            @*<input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />*@
                             <select id="selectEmpresa" name="EmpresaId" required>
                                 <option selected value="">Selecione a empresa</option>
                                 @*<option value="4">EmpresaTeste</option>*@
@@ -99,16 +99,16 @@
                                     <option value="@item.id">@item.nomeFantasia</option>
                                 }
                             </select>
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalQuantidade">Quantidade</label>
-                                <input type="number" name="QuantidadeUnidade" id="modalQuantidade" placeholder="Quantidade" required />
-                            </div>
-                            <div class="col">
-                                <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
-                                @*<input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="labelModalEditar" for="modalQuantidade">Quantidade</label>
+                            <input type="number" name="QuantidadeUnidade" id="modalQuantidade" placeholder="Quantidade" required />
+                        </div>
+                        <div class="col">
+                            <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
+                            @*<input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
                             <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
                                 <option selected value="">Unidade de Medida</option>
                                 @*<option value="2">Kilo</option>*@
@@ -118,21 +118,21 @@
                                     <option value="@item.Id">@item.descUnidMedIngrediente</option>
                                 }
                             </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="labelModalEditarU" for="modalPreco">Preço</label>
-                            <div class="col">
-                                <input type="number" name="PrecoIngrediente" id="modalPreco" placeholder="Preço" required />
-                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Cadastar</button>
-                        <button type="reset" class="btn btn-primary">Limpar</button>
+                    <div class="row">
+                        <label class="labelModalEditarU" for="modalPreco">Preço</label>
+                        <div class="col">
+                            <input type="number" name="PrecoIngrediente" id="modalPreco" placeholder="Preço" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Cadastar</button>
+                    <button type="reset" class="btn btn-primary">Limpar</button>
 
-                        @*@if ("variavelBotaoClicado" == "Novo Ingrediente")
+                    @*@if ("variavelBotaoClicado" == "Novo Ingrediente")
                         {
                             <button type="submit" class="btn btn-primary">Cadastar</button>
                             <button type="reset" class="btn btn-primary">Limpar</button>
@@ -141,11 +141,10 @@
                         {
                             <button type="submit" class="btn btn-primary">Editar</button>
                         }*@
-                    </div>
                 </div>
-                }
             </div>
-        </div>
+        }
+    </div>
 </div>
 
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>

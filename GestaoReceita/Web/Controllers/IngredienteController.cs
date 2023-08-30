@@ -183,7 +183,7 @@ namespace Web.Controllers
                 else
                 { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
                     response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
-                }
+                } 
 
                 // espera a resposta da requisição
                 response.Wait();
