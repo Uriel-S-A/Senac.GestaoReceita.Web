@@ -165,6 +165,7 @@ namespace CadEmpresa.Controllers
                         numeroEndereco = objectJson.numeroEndereco,
                         razaoSosial = objectJson.razaoSosial,
                         rua = objectJson.rua,
+                        telefone = objectJson.telefone,
                         idCidade = objectJson.cidade.id,
                     };
                 }

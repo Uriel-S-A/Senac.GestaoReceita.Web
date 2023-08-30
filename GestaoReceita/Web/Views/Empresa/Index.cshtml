@@ -26,24 +26,36 @@
         <span class="input-group-text col-2 cor" id="basic-addon1"><strong>Ações</strong></span>
     </div>
 
-
-    @foreach (var item in Model.listaEmpresa)
+    @if (@Model.listaEmpresa != null)
     {
-        <div class="input-group mb-2 row">
-            <span class="input-group-text col-2" id="basic-addon1"> @item.CNPJ</span>
-            <span class="input-group-text col-6" id="basic-addon1"> @item.razaoSosial </span>
-            @using (Html.BeginForm("DadosCadastroEmpresa", "Empresa", FormMethod.Post, new { @class = "col-1 " }))
-            {
-                <input type="hidden" value="@item.id" name="id" />
-                <button type="submit" class="btn btn-success botaoEditar">Editar</button>
-            }
-            <div class="col-1">
-                <button class="btn btn-danger botaoEditar " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setIdDelete(@item.id)">
-                    Deletar
-                </button>
+
+        foreach (var item in Model.listaEmpresa)
+        {
+            <div class="input-group mb-2 row">
+                <span class="input-group-text col-2" id="basic-addon1"> @item.CNPJ</span>
+                <span class="input-group-text col-6" id="basic-addon1"> @item.razaoSosial </span>
+                @using (Html.BeginForm("DadosCadastroEmpresa", "Empresa", FormMethod.Post, new { @class = "col-1 " }))
+                {
+                    <input type="hidden" value="@item.id" name="id" />
+                    <button type="submit" class="btn btn-success botaoEditar">Editar</button>
+                }
+                <div class="col-1">
+                    <button class="btn btn-danger botaoEditar " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setIdDelete(@item.id)">
+                        Deletar
+                    </button>
+                </div>
             </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-success alert-dismissible fade show text-center mt-5" role="alert">
+            Nenhume empresa cadastrada
+                
         </div>
     }
+
+
 </div>
 
 
