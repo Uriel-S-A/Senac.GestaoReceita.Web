@@ -10,6 +10,7 @@ namespace CadEmpresa.Models
         public string inputCNPJ { get; set; }
         public List<CadastroEmpresaViewModel> listaEmpresa { get; set; } = new List<CadastroEmpresaViewModel>();
 
-        public string erro { get; set; }
+        public string mensagemErro { get; set; }
+        public string mensagemSucesso { get; set; }
     }
 }

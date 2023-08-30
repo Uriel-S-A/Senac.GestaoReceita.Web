@@ -38,7 +38,7 @@
                 <button type="submit" class="btn btn-success botaoEditar">Editar</button>
             }
             <div class="col-1">
-                <button class="btn btn-danger botaoEditar " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button class="btn btn-danger botaoEditar " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setIdDelete(@item.id)">
                     Deletar
                 </button>
             </div>
@@ -61,11 +61,38 @@
                 Você realmente deseja excluir os dados dessa empresa?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Deletar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+                @using (Html.BeginForm("DeletarEmpresa", "Empresa", FormMethod.Post))
+                {
+                    <input id="idItemDeletar" name="idDelete" type="hidden" />
+                    <button type="submit" class="btn btn-danger">Deletar</button>
+                }
             </div>
         </div>
     </div>
 </div>
+
+@if (!string.IsNullOrEmpty(Model.mensagemSucesso))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @Model.mensagemSucesso
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.mensagemErro))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @Model.mensagemErro
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<script>
+    function setIdDelete(id) {
+        document.getElementById("idItemDeletar").value = id;
+    }
+</script>
+
 
 <script src="~/Scripts/CadastrarEmpresaJs.js"></script>
