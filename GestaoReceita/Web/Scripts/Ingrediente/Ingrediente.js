@@ -1,8 +1,10 @@
 ﻿function editarIngrediente(button) {
 
+    document.getElementById("limparCamposButton").style.display = "none";
+
     var linhaItemClicado = button.closest("tr");
 
-    /* var inputId = $(linhaItemClicado).find("input[data-item='item_id']")[0];*/
+    var inputId = linhaItemClicado.querySelector("input[data-item='item_id']");
     var inputNome = linhaItemClicado.querySelector("input[data-item='item_nome']");
     var inputQuantidade = linhaItemClicado.querySelector("input[data-item='item_quantidade']")
     var inputUnidadeMedida = linhaItemClicado.querySelector("input[data-item='item_unidade_medida']");
@@ -10,6 +12,9 @@
     var inputEmpresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
 
     /*console.log(`Id: ${inputId.value} Nome: ${inputNome.value} Quantidade: ${inputQuantidade.value} Unidade Medida: ${inputUnidadeMedida.value} Preço: ${inputPreco.value} Empresa: ${inputEmpresa.value}`);*/
+
+    var modalId = document.getElementById("idIngredienteModal");
+    modalId.value = inputId.value;
 
     var modalNome = document.getElementById("modalNome");
     modalNome.value = inputNome.value;

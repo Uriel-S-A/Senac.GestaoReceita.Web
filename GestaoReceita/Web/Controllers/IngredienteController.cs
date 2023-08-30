@@ -157,18 +157,20 @@ namespace Web.Controllers
  
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
+
             using (var client = new HttpClient())
             {
                 // json stringify
                 var formContentString = new StringContent(JsonConvert.SerializeObject
-                    (new {
-                            id = dados.Id,
-                            nomeIngrediente = dados.NomeIngrediente,
-                            precoIngrediente = dados.PrecoIngrediente,
-                            quantidadeUnidade = dados.QuantidadeUnidade,
-                            empresaId = dados.EmpresaId,
-                            unidadeMedidaId = dados.UnidadeMedidaId
-                         }
+                    (new
+                    {
+                        id = dados.Id,
+                        nomeIngrediente = dados.NomeIngrediente,
+                        precoIngrediente = dados.PrecoIngrediente,
+                        quantidadeUnidade = dados.QuantidadeUnidade,
+                        empresaId = dados.EmpresaId,
+                        unidadeMedidaId = dados.UnidadeMedidaId
+                    }
                     // cabeçalho da requisição
                     ), Encoding.UTF8, "application/json"); ;
 
@@ -178,7 +180,7 @@ namespace Web.Controllers
                 // verifica se o ingrediente já tem Id, se tiver, significa que já está cadastrado
                 if (dados.Id > 0)
                 { // se está cadastrado, então chama o método PUT para atualizar / editar
-                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
+                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id, formContentString);
                 }
                 else
                 { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
@@ -199,6 +201,7 @@ namespace Web.Controllers
                     throw new Exception(response.Result.ReasonPhrase);
                 }
             }
+
             // chama a index novamente para atualizar a tela
             return RedirectToAction("Index");
         }

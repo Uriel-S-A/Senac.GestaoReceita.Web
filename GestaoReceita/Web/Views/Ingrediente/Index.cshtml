@@ -17,7 +17,7 @@
         </div>
 
         <!-- TABELA -->
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th class="visually-hidden" scope="col">ID</th>
@@ -39,6 +39,8 @@
                         </td>
                         <td>
                             @item.NomeIngrediente
+                            @Html.Editor(item.NomeIngrediente);
+                            @Html.Display(item.NomeIngrediente);
                             <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
                         </td>
                         <td>
@@ -78,7 +80,7 @@
                 {
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ingrediente</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -86,6 +88,7 @@
                             <div class="col">
                                 <label class="labelModalEditar" for="modalNome">Nome Ingrediente</label>
                                 <input type="text" id="modalNome" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
+                                <input id="idIngredienteModal" name="Id" type="hidden"/> 
                             </div>
                             <div class="col">
                                 <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
@@ -129,8 +132,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Cadastar</button>
-                        <button type="reset" class="btn btn-primary">Limpar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="reset" class="btn btn-primary" id="limparCamposButton">Limpar</button>
 
                         @*@if ("variavelBotaoClicado" == "Novo Ingrediente")
                         {
@@ -148,8 +151,10 @@
         </div>
 </div>
 
+
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>
 <script>
+
     //window.onload = function () {
     //    populaDropdown();
     //}
