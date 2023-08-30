@@ -7,3 +7,8 @@ body {
 	background: rgb(97,125,197);
 	background: linear-gradient(90deg, rgba(97,125,197,1) 33%, rgba(60,72,184,1) 100%);
 }
+
+.fadeOut {
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out; /* Tempo da animação e tipo de easing */
+}
