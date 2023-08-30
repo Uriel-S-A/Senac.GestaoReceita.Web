@@ -6,25 +6,6 @@
     background-color: white;
 }
 
-table {
-    border-collapse: collapse;
-    border: 1px solid #0d6efd;
-    width: 605px;
-    margin-top: 20px;
-    margin: 8px;
-}
-
-td, th {
-    border: 1px solid #0d6efd;
-    padding: 3px;
-    margin: 5px;
-    text-align: center;
-}
-
-th {
-    text-align: center;
-    font-weight: bolder;
-}
 
 .PesquisaIngrediente {
     border-color: #0d6efd;

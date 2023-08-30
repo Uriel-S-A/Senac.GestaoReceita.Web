@@ -10,14 +10,14 @@
     <div class="row">
         <div class="col-12 m-2">
             <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" />
-            <button type="button" class="NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button onclick="editarIngrediente(this, 'cadastro')" type="button" class="NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Novo Ingrediente
             </button>
         </div>
     </div>
 
     <!-- TABELA -->
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th class="visually-hidden" scope="col">ID</th>
@@ -26,7 +26,7 @@
                 <th scope="col">Unidade de medida</th>
                 <th scope="col">Preço</th>
                 <th scope="col">Empresa</th>
-                <th scope="col">Editar Ingrediente</th>
+                <th scope="col">Opções</th>
             </tr>
         </thead>
         <tbody>
@@ -34,11 +34,12 @@
             {
                 <tr>
                     <td class="visually-hidden">
-                        @*@item.Id*@
                         <input data-item="item_id" value="@item.Id" type="hidden" />
                     </td>
                     <td>
                         @item.NomeIngrediente
+                        @*@Html.Editor(item.NomeIngrediente);
+                            @Html.Display(item.NomeIngrediente);*@
                         <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
                     </td>
                     <td>
@@ -62,8 +63,15 @@
                                 class=" EditarIngrediente m-1"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
-                                onclick="editarIngrediente(this)">
+                                onclick="editarIngrediente(this, 'editar')">
                             Editar
+                        </button>
+                        <button disabled type="button"
+                                class=" EditarIngrediente m-1 bg-dark-subtle"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                onclick="excluirIngrediente(this)">
+                            Excluir
                         </button>
                     </td>
                 </tr>
@@ -71,6 +79,7 @@
         </tbody>
     </table>
 </div>
+
 <!-- MODAL -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -78,7 +87,7 @@
         {
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Ingrediente</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ingrediente</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -86,6 +95,7 @@
                         <div class="col">
                             <label class="labelModalEditar" for="modalNome">Nome Ingrediente</label>
                             <input type="text" id="modalNome" name="NomeIngrediente" placeholder="Nome Ingrediente" required />
+                            <input id="idIngredienteModal" name="Id" type="hidden" />
                         </div>
                         <div class="col">
                             <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
@@ -129,8 +139,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Cadastar</button>
-                    <button type="reset" class="btn btn-primary">Limpar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="reset" class="btn btn-primary" id="limparCamposButton">Limpar</button>
 
                     @*@if ("variavelBotaoClicado" == "Novo Ingrediente")
                         {
@@ -147,27 +157,7 @@
     </div>
 </div>
 
+<!-- NOVA MODAL DE CONFIRMAÇÃO -->
+
+
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>
-<script>
-    //window.onload = function () {
-    //    populaDropdown();
-    //}
-
-    //function populaDropdown(response) {
-    //    var selectMedida = document.getElementById("selectUnidadeMedida");
-
-    //    var opcao = document.createElement("option");
-    //    opcao.value = response.unidadeMedida.sigla;
-    //    selectMedida.appendChild(opcao);
-
-    //    var selectEmpresa = document.getElementById("selectEmpresa");
-    //    opcao.value = response.empresa.nomeFantasia;
-    //    selectEmpresa.appendChild(opcao);
-
-    //    //for (var i = 0; i < 2; i++) {
-    //    //    i == 0 ? selectId = "selectEmpresa" : selectId = "selectUnidadeMedida";
-
-    //    //    selectId == "selectEmpresa" ? opcao.value = response.unidadeMedida.sigla : opcao.value = response.empresa.nomeFantasia;
-    //    //}
-    //}
-</script>
