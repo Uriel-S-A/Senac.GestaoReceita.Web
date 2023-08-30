@@ -158,7 +158,7 @@ namespace CadEmpresa.Controllers
                     {
                         id = objectJson.id,
                         bairro = objectJson.bairro,
-                        CNPJ = String.Format("{0:00\\.000\\.000\\/0000\\-00}", Convert.ToUInt64(objectJson.CNPJ)),
+                        CNPJ = objectJson.CNPJ,
                         complemento = objectJson.complemento,
                         email = objectJson.email,
                         nomeFantasia = objectJson.nomeFantasia,
@@ -285,7 +285,7 @@ namespace CadEmpresa.Controllers
                 {
                     var formContentString = new StringContent(JsonConvert.SerializeObject(new
                     {
-                        cnpj = dados.CNPJ,
+                        CNPJ = String.Format("{0:00\\.000\\.000\\/0000\\-00}", Convert.ToUInt64(dados.CNPJ)),
                         razaoSosial = dados.razaoSosial,
                         rua = dados.rua,
                         bairro = dados.bairro,
