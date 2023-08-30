@@ -26,7 +26,7 @@
         <span class="input-group-text col-2 cor" id="basic-addon1"><strong>Ações</strong></span>
     </div>
 
-    @if (@Model.listaEmpresa != null)
+    @if (@Model.listaEmpresa.Count > 0)
     {
 
         foreach (var item in Model.listaEmpresa)

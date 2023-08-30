@@ -158,7 +158,7 @@ namespace CadEmpresa.Controllers
                     {
                         id = objectJson.id,
                         bairro = objectJson.bairro,
-                        CNPJ = objectJson.CNPJ,
+                        CNPJ = String.Format("{0:00\\.000\\.000\\/0000\\-00}", Convert.ToUInt64(objectJson.CNPJ)),
                         complemento = objectJson.complemento,
                         email = objectJson.email,
                         nomeFantasia = objectJson.nomeFantasia,
@@ -168,228 +168,229 @@ namespace CadEmpresa.Controllers
                         telefone = objectJson.telefone,
                         idCidade = objectJson.cidade.id,
                     };
+
+
                 }
                 else
                 {
                     throw new Exception(response.Result.ReasonPhrase);
                 }
+                return cadEmpresa;
             }
-
-            return cadEmpresa;
         }
 
 
-        //método para deletar empresa
-        public ActionResult DeletarEmpresa(int idDelete)
-        {
-            var mensagemSucesso = "";
-            var mensagemErro = "";
-
-            using (var client = new HttpClient())
+            //método para deletar empresa
+            public ActionResult DeletarEmpresa(int idDelete)
             {
-                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + idDelete);
+                var mensagemSucesso = "";
+                var mensagemErro = "";
 
-                response.Wait();
-
-                if (response.Result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + idDelete);
 
-                    mensagemSucesso = "Empresa deletada com sucesso";
+                    response.Wait();
+
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                        mensagemSucesso = "Empresa deletada com sucesso";
+                    }
+                    else
+                    {
+                        mensagemErro = "Erro ao realizar o delete: " + response.Result.ReasonPhrase;
+                    }
+                }
+
+                return RedirectToAction("Index", new { mensagemErro = mensagemErro, mensagemSucesso = mensagemSucesso });
+            }
+
+
+            //Atualiza ou cadastra empresa
+            public ActionResult PersistirCadastro(CadastroEmpresaViewModel dados)
+            {
+                var mensagemErro = "";
+                var mensagemSucesso = "";
+
+                var stringRetorno = "";
+                if (dados.id != null && dados.id > 0)
+                {
+                    stringRetorno = updateEmpresa(dados);
                 }
                 else
                 {
-                    mensagemErro = "Erro ao realizar o delete: " + response.Result.ReasonPhrase;
+                    stringRetorno = cadastrarEmpresa(dados);
                 }
-            }
 
-            return RedirectToAction("Index", new { mensagemErro = mensagemErro, mensagemSucesso = mensagemSucesso });
-        }
-
-
-        //Atualiza ou cadastra empresa
-        public ActionResult PersistirCadastro(CadastroEmpresaViewModel dados)
-        {
-            var mensagemErro = "";
-            var mensagemSucesso = "";
-
-            var stringRetorno = "";
-            if (dados.id != null && dados.id > 0)
-            {
-                stringRetorno = updateEmpresa(dados);
-            }
-            else
-            {
-                stringRetorno = cadastrarEmpresa(dados);
-            }
-
-            if (!string.IsNullOrEmpty(stringRetorno))
-            {
-                mensagemErro = stringRetorno;
-            }
-            else
-            {
-                mensagemSucesso = "Dados salvos com sucesso";
-            }
-
-            return RedirectToAction("Index", new { mensagemErro = mensagemErro, mensagemSucesso = mensagemSucesso });
-        }
-
-
-        //método para atualizar empresa
-        public string updateEmpresa(CadastroEmpresaViewModel dados)
-        {
-            var stringRetorno = "";
-            using (var client = new HttpClient())
-            {
-                var formContentString = new StringContent(JsonConvert.SerializeObject(new
+                if (!string.IsNullOrEmpty(stringRetorno))
                 {
-                    cnpj = dados.CNPJ,
-                    razaoSosial = dados.razaoSosial,
-                    rua = dados.rua,
-                    bairro = dados.bairro,
-                    numeroEndereco = dados.numeroEndereco,
-                    complemento = dados.complemento,
-                    email = dados.email,
-                    telefone = dados.telefone,
-                    nomeFantasia = dados.nomeFantasia,
-                    idcidade = dados.idCidade,
-                    updateEmpresa = DateTime.Now,
-                    id = dados.id
-                }), Encoding.UTF8, "application/json");
-
-                var response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Empresas/"+dados.id, formContentString);
-
-                response.Wait();
-
-                if (response.Result.IsSuccessStatusCode)
-                {
-                    var stringResult = response.Result.Content.ReadAsStringAsync();
-
-                    var objectJson = JsonConvert.DeserializeObject<fooEmpresaDTO>(stringResult.Result);
+                    mensagemErro = stringRetorno;
                 }
                 else
                 {
-                    stringRetorno = "Erro ao realizar o atualização da empresa: " + response.Result.ReasonPhrase;
+                    mensagemSucesso = "Dados salvos com sucesso";
                 }
-            }
-            return stringRetorno;
-        }
 
-        //método para cadastrar empresa
-        public string cadastrarEmpresa(CadastroEmpresaViewModel dados)
-        {
-            var stringRetorno = "";
-            using (var client = new HttpClient())
+                return RedirectToAction("Index", new { mensagemErro = mensagemErro, mensagemSucesso = mensagemSucesso });
+            }
+
+
+            //método para atualizar empresa
+            public string updateEmpresa(CadastroEmpresaViewModel dados)
             {
-                var formContentString = new StringContent(JsonConvert.SerializeObject(new
+                var stringRetorno = "";
+                using (var client = new HttpClient())
                 {
-                    cnpj = dados.CNPJ,
-                    razaoSosial = dados.razaoSosial,
-                    rua = dados.rua,
-                    bairro = dados.bairro,
-                    numeroEndereco = dados.numeroEndereco,
-                    complemento = dados.complemento,
-                    email = dados.email,
-                    telefone = dados.telefone,
-                    nomeFantasia = dados.nomeFantasia,
-                    idcidade = dados.idCidade,
-                    createEmpresa = DateTime.Now,
-                }), Encoding.UTF8, "application/json");
+                    var formContentString = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        cnpj = dados.CNPJ,
+                        razaoSosial = dados.razaoSosial,
+                        rua = dados.rua,
+                        bairro = dados.bairro,
+                        numeroEndereco = dados.numeroEndereco,
+                        complemento = dados.complemento,
+                        email = dados.email,
+                        telefone = dados.telefone,
+                        nomeFantasia = dados.nomeFantasia,
+                        idcidade = dados.idCidade,
+                        updateEmpresa = DateTime.Now,
+                        id = dados.id
+                    }), Encoding.UTF8, "application/json");
 
-                var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Empresas", formContentString);
+                    var response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + dados.id, formContentString);
 
-                response.Wait();
+                    response.Wait();
 
-                if (response.Result.IsSuccessStatusCode)
-                {
-                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        var stringResult = response.Result.Content.ReadAsStringAsync();
 
-                    var objectJson = JsonConvert.DeserializeObject<fooEmpresaDTO>(stringResult.Result);
+                        var objectJson = JsonConvert.DeserializeObject<fooEmpresaDTO>(stringResult.Result);
+                    }
+                    else
+                    {
+                        stringRetorno = "Erro ao realizar o atualização da empresa: " + response.Result.ReasonPhrase;
+                    }
                 }
-                else
-                {
-                    stringRetorno = "Erro ao realizar o cadastro: " + response.Result.ReasonPhrase;
-                }
+                return stringRetorno;
             }
-            return stringRetorno;
-        }
 
-
-        //gerar uma lista de cidades 
-        public List<Cidade> getListaCidade()
-        {
-            var listaCidade = new List<Cidade>();
-
-            using (var client = new HttpClient())
+            //método para cadastrar empresa
+            public string cadastrarEmpresa(CadastroEmpresaViewModel dados)
             {
-                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Cidades");
-
-                response.Wait();
-
-                if (response.Result.IsSuccessStatusCode)
+                var stringRetorno = "";
+                using (var client = new HttpClient())
                 {
-                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    var formContentString = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        cnpj = dados.CNPJ,
+                        razaoSosial = dados.razaoSosial,
+                        rua = dados.rua,
+                        bairro = dados.bairro,
+                        numeroEndereco = dados.numeroEndereco,
+                        complemento = dados.complemento,
+                        email = dados.email,
+                        telefone = dados.telefone,
+                        nomeFantasia = dados.nomeFantasia,
+                        idcidade = dados.idCidade,
+                        createEmpresa = DateTime.Now,
+                    }), Encoding.UTF8, "application/json");
 
-                    var objectJson = JsonConvert.DeserializeObject<List<Cidade>>(stringResult.Result);
+                    var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Empresas", formContentString);
 
-                    objectJson.ForEach(item => listaCidade.Add(
-                        new Cidade()
-                        {
-                            id = item.id,
-                            descricaoCidade = item.descricaoCidade
-                        }));
+                    response.Wait();
+
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                        var objectJson = JsonConvert.DeserializeObject<fooEmpresaDTO>(stringResult.Result);
+                    }
+                    else
+                    {
+                        stringRetorno = "Erro ao realizar o cadastro: " + response.Result.ReasonPhrase;
+                    }
                 }
-                else
-                {
-                    throw new Exception(response.Result.ReasonPhrase);
-                }
+                return stringRetorno;
             }
 
-            return listaCidade;
+
+            //gerar uma lista de cidades 
+            public List<Cidade> getListaCidade()
+            {
+                var listaCidade = new List<Cidade>();
+
+                using (var client = new HttpClient())
+                {
+                    var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Cidades");
+
+                    response.Wait();
+
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                        var objectJson = JsonConvert.DeserializeObject<List<Cidade>>(stringResult.Result);
+
+                        objectJson.ForEach(item => listaCidade.Add(
+                            new Cidade()
+                            {
+                                id = item.id,
+                                descricaoCidade = item.descricaoCidade
+                            }));
+                    }
+                    else
+                    {
+                        throw new Exception(response.Result.ReasonPhrase);
+                    }
+                }
+
+                return listaCidade;
+            }
+
+        }
+
+
+
+
+
+        public class fooEmpresaDTO
+        {
+            public int id { get; set; }
+            public string CNPJ { get; set; }
+            public string razaoSosial { get; set; }
+            public string rua { get; set; }
+            public string bairro { get; set; }
+            public int? numeroEndereco { get; set; }
+            public string complemento { get; set; }
+            public string nomeFantasia { get; set; }
+            public string telefone { get; set; }
+            public string email { get; set; }
+            public fooEstadoRequestDTO cidade { get; set; }
+        }
+
+        public class fooCidadeRequestDTO
+        {
+            public int id { get; set; }
+            public string descricaoCidade { get; set; }
+            public int idEstado { get; set; }
+            public fooEstadoRequestDTO estado { get; set; }
+        }
+
+        public class fooEstadoRequestDTO
+        {
+            public int id { get; set; }
+            public string descricaoEstado { get; set; }
+            public int idPais { get; set; }
+            public fooPaisRequestDTO pais { get; set; }
+        }
+
+        public class fooPaisRequestDTO
+        {
+            public int id { get; set; }
+            public string descricaoPais { get; set; }
         }
 
     }
-
-
-
-
-   
-    public class fooEmpresaDTO
-    {
-        public int id { get; set; }
-        public string CNPJ { get; set; }
-        public string razaoSosial { get; set; }
-        public string rua { get; set; }
-        public string bairro { get; set; }
-        public int? numeroEndereco { get; set; }
-        public string complemento { get; set; }
-        public string nomeFantasia { get; set; }
-        public string telefone { get; set; }
-        public string email { get; set; }
-        public fooEstadoRequestDTO cidade { get; set; }
-    }
-
-    public class fooCidadeRequestDTO
-    {
-        public int id { get; set; }
-        public string descricaoCidade { get; set; }
-        public int idEstado { get; set; }
-        public fooEstadoRequestDTO estado { get; set; }
-    }
-
-    public class fooEstadoRequestDTO
-    {
-        public int id { get; set; }
-        public string descricaoEstado { get; set; }
-        public int idPais { get; set; }
-        public fooPaisRequestDTO pais { get; set; }
-    }
-
-    public class fooPaisRequestDTO
-    {
-        public int id { get; set; }
-        public string descricaoPais { get; set; }
-    }
-
-}
