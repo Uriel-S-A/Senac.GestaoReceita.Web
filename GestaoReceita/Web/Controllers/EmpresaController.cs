@@ -96,7 +96,6 @@ namespace CadEmpresa.Controllers
 
 
 
-
         //método para pegar todas as empresas
         public List<CadastroEmpresaViewModel> getEmpresa()
         {
