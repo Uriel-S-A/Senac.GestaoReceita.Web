@@ -215,33 +215,6 @@ namespace Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //DELETE --------------------------------------------------
-        //public JsonResult DeleteDadosIngrediente(DadosIngrediente dados)
-        //{
-        //    using (var client = new HttpClient())
-        //    {
-        //        var formContentString = new StringContent(JsonConvert.SerializeObject(new { Id = dados.Id }), Encoding.UTF8, "application/json");
-
-        //        var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id);
-
-        //        response.Wait();
-
-        //        if (response.Result.IsSuccessStatusCode)
-        //        {
-        //            var stringResult = response.Result.Content.ReadAsStringAsync();
-        //        }
-        //        else
-        //        {
-        //            //Erro de requisicao
-        //            var content = response.Result.Content.ReadAsStringAsync();
-
-        //            var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-        //        }
-        //    }
-
-        //    return Json(new { });
-        //}
-
         public ActionResult DeleteDadosIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())
@@ -262,69 +235,5 @@ namespace Web.Controllers
                 return RedirectToAction("Index");
             }
         }
-
-
-        // GET by Id ----------------------------------------------------------------------
-        //public JsonResult getIngredienteById()
-        //{
-        //    using (var client = new HttpClient())
-        //    {
-        //        //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
-
-        //        var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/3");
-
-        //        response.Wait();
-
-        //        if (response.Result.IsSuccessStatusCode)
-        //        {
-        //            var stringResult = response.Result.Content.ReadAsStringAsync();
-
-        //            var objectJson = JsonConvert.DeserializeObject<fooCidadeDTO>(stringResult.Result);
-        //        }
-        //        else
-        //        {
-        //            //Erro de requisicao
-        //            var content = response.Result.Content.ReadAsStringAsync();
-
-        //            var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-        //        }
-        //    }
-
-        //    return Json(new { });
-        //}
-
-
-        // GET --------------------------------------------------------------------
-        //public JsonResult getIngredientes()
-        //{
-        //    using (var client = new HttpClient())
-        //    {
-        //        //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
-
-        //        var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes");
-
-        //        response.Wait();
-
-        //        if (response.Result.IsSuccessStatusCode)
-        //        {
-        //            var stringResult = response.Result.Content.ReadAsStringAsync();
-
-
-
-
-
-        //            var objectJson = JsonConvert.DeserializeObject<List<fooCidadeDTO>>(stringResult.Result);
-        //        }
-        //        else
-        //        {
-        //            //Erro de requisicao
-        //            var content = response.Result.Content.ReadAsStringAsync();
-
-        //            var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-        //        }
-        //    }
-
-        //    return Json(new { });
-        //}
     }
 }

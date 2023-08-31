@@ -18,12 +18,12 @@ namespace Web.Models
 
         public float QuantidadeUnidade { get; set; }
 
-        public DadosEmpresa Empresa { get; set; }
-
         public int EmpresaId { get; set; }
 
-        public DadosUnidadeMedida UnidadeMedida { get; set; }
+        public DadosEmpresa Empresa { get; set; }
 
         public int UnidadeMedidaId { get; set; }
+
+        public DadosUnidadeMedida UnidadeMedida { get; set; }
     }
 }
