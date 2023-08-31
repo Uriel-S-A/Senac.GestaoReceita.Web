@@ -17,7 +17,7 @@
     </div>
 
     <!-- TABELA -->
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th class="visually-hidden" scope="col">ID</th>
@@ -34,7 +34,7 @@
             {
                 <tr>
                     <td class="visually-hidden">
-                        <input data-item="item_id" value="@item.Id" type="hidden" />
+                        <input name="Id" data-item="item_id" value="@item.Id" type="hidden" />
                     </td>
                     <td>
                         @item.NomeIngrediente
@@ -59,6 +59,7 @@
                         <input data-item="item_empresa" value="@item.EmpresaId" type="hidden" />
                     </td>
                     <td>
+                        <!-- BOTÃO EDITAR  -->
                         <button type="button"
                                 class=" EditarIngrediente m-1"
                                 data-bs-toggle="modal"
@@ -66,10 +67,11 @@
                                 onclick="editarIngrediente(this, 'editar')">
                             Editar
                         </button>
-                        <button disabled type="button"
-                                class=" EditarIngrediente m-1 bg-dark-subtle"
+                        <!-- BOTÃO EXCLUIR -->
+                        <button type="button"
+                                class=" EditarIngrediente m-1 bg-danger border-danger"
                                 data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"
+                                data-bs-target="#staticBackdrop"
                                 onclick="excluirIngrediente(this)">
                             Excluir
                         </button>
@@ -99,11 +101,8 @@
                         </div>
                         <div class="col">
                             <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
-                            @*<input type="text" name="NomeEmpresa" placeholder="Nome empresa" required />*@
                             <select id="selectEmpresa" name="EmpresaId" required>
-                                <option selected value="">Selecione a empresa</option>
-                                @*<option value="4">EmpresaTeste</option>*@
-
+                                <option selected disabled value="">Selecione a empresa</option>
                                 @foreach (var item in Model.listaDadosEmpresa)
                                 {
                                     <option value="@item.id">@item.nomeFantasia</option>
@@ -120,9 +119,7 @@
                             <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
                             @*<input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
                             <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
-                                <option selected value="">Unidade de Medida</option>
-                                @*<option value="2">Kilo</option>*@
-
+                                <option selected disabled value="">Unidade de Medida</option>
                                 @foreach (var item in Model.listaDadosUnidadeMedida)
                                 {
                                     <option value="@item.Id">@item.descUnidMedIngrediente</option>
@@ -133,7 +130,7 @@
                     <div class="row">
                         <label class="labelModalEditarU" for="modalPreco">Preço</label>
                         <div class="col">
-                            <input type="number" name="PrecoIngrediente" id="modalPreco" placeholder="Preço" required />
+                            <input type="number" step=".01" name="PrecoIngrediente" id="modalPreco" placeholder="Preço" required />
                         </div>
                     </div>
                 </div>
@@ -141,23 +138,48 @@
                     <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Salvar</button>
                     <button type="reset" class="btn btn-primary" id="limparCamposButton">Limpar</button>
-
-                    @*@if ("variavelBotaoClicado" == "Novo Ingrediente")
-                        {
-                            <button type="submit" class="btn btn-primary">Cadastar</button>
-                            <button type="reset" class="btn btn-primary">Limpar</button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="btn btn-primary">Editar</button>
-                        }*@
                 </div>
             </div>
         }
     </div>
 </div>
 
-<!-- NOVA MODAL DE CONFIRMAÇÃO -->
+<!-- MODAL DE CONFIRMAÇÃO -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("DeleteDadosIngrediente", "Ingrediente", FormMethod.Post))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Excluir Ingrediente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="inputId"/>
+                    <p>
+                        Tem certeza que deseja excluir o ingrediente
+                        <strong><span id="spanIngrediente"></span></strong>
+                        <strong>(<span id="spanUnidadeMedida"></span>)</strong>
+                        da empresa
+                        <strong><span id="spanEmpresa"></span></strong>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary bg-danger border-danger">Excluir</button>
+                </div>
+            </div>
+        }
+     </div>
+</div>
 
+
+<!-- Success Alert -->
+<div class="alert alert-success d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+    <div>
+        Ação efetuada com sucesso!
+    </div>
+</div>
 
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>

@@ -34,6 +34,7 @@ namespace Web.Controllers
             return View(indexViewModel);
         }
 
+        // GET: Ingrediente
         public List<DadosIngrediente> GetDadosIngrediente()
         {
             List<DadosIngrediente> listaDadosIngrediente = new List<DadosIngrediente>();
@@ -50,7 +51,7 @@ namespace Web.Controllers
 
                     var objectJson = JsonConvert.DeserializeObject<List<DadosIngredienteRequest>>(stringResult.Result);
 
-                    foreach(var item in objectJson)
+                    foreach (var item in objectJson)
                     {
                         listaDadosIngrediente.Add(
                             new DadosIngrediente()
@@ -58,7 +59,7 @@ namespace Web.Controllers
                                 EmpresaId = item.empresaId,
                                 Id = item.id,
                                 NomeIngrediente = item.nomeIngrediente,
-                                PrecoIngrediente = item.precoIngrediente,
+                                PrecoIngrediente = item.precoIngrediente.ToString(),
                                 QuantidadeUnidade = item.quantidadeUnidade,
                                 UnidadeMedidaId = item.unidadeMedidaId,
                             }
@@ -74,7 +75,7 @@ namespace Web.Controllers
 
             return listaDadosIngrediente;
         }
-
+        // GET: Empresa
         public List<DadosEmpresa> GetDadosEmpresa()
         {
             List<DadosEmpresa> listaDadosEmpresa = new List<DadosEmpresa>();
@@ -117,7 +118,7 @@ namespace Web.Controllers
 
             return listaDadosEmpresa;
         }
-
+        // GET: UnidadeMedida
         public List<DadosUnidadeMedida> GetDadosUnidadeMedida()
         {
             List<DadosUnidadeMedida> listaDadosUnidadeMedida = new List<DadosUnidadeMedida>();
@@ -153,24 +154,24 @@ namespace Web.Controllers
             }
             return listaDadosUnidadeMedida;
         }
- 
+
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())
             {
                 // json stringify
                 var formContentString = new StringContent(JsonConvert.SerializeObject
-                    (new
-                    {
-                        id = dados.Id,
-                        nomeIngrediente = dados.NomeIngrediente,
-                        precoIngrediente = dados.PrecoIngrediente,
-                        quantidadeUnidade = dados.QuantidadeUnidade,
-                        empresaId = dados.EmpresaId,
-                        unidadeMedidaId = dados.UnidadeMedidaId
-                    }
-                    // cabeçalho da requisição
-                    ), Encoding.UTF8, "application/json"); ;
+                (new
+                {
+                    id = dados.Id,
+                    nomeIngrediente = dados.NomeIngrediente,
+                    precoIngrediente = dados.PrecoIngrediente,
+                    quantidadeUnidade = dados.QuantidadeUnidade,
+                    empresaId = dados.EmpresaId,
+                    unidadeMedidaId = dados.UnidadeMedidaId
+                }
+                // cabeçalho da requisição
+                ), Encoding.UTF8, "application/json");
 
                 // prepara a variável para receber a resposta da requisição
                 Task<HttpResponseMessage> response = null;
@@ -178,7 +179,7 @@ namespace Web.Controllers
                 // verifica se o ingrediente já tem Id, se tiver, significa que já está cadastrado
                 if (dados.Id > 0)
                 { // se está cadastrado, então chama o método PUT para atualizar / editar
-                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/"+dados.Id, formContentString);
+                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id, formContentString);
                 }
                 else
                 { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
@@ -204,16 +205,38 @@ namespace Web.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         //DELETE --------------------------------------------------
-        public JsonResult DeleteDadosIngrediente(DadosIngrediente dados)
+        //public JsonResult DeleteDadosIngrediente(DadosIngrediente dados)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        var formContentString = new StringContent(JsonConvert.SerializeObject(new { Id = dados.Id }), Encoding.UTF8, "application/json");
+
+        //        var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id);
+
+        //        response.Wait();
+
+        //        if (response.Result.IsSuccessStatusCode)
+        //        {
+        //            var stringResult = response.Result.Content.ReadAsStringAsync();
+        //        }
+        //        else
+        //        {
+        //            //Erro de requisicao
+        //            var content = response.Result.Content.ReadAsStringAsync();
+
+        //            var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+        //        }
+        //    }
+
+        //    return Json(new { });
+        //}
+
+        public ActionResult DeleteDadosIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())
             {
-                var formContentString = new StringContent(JsonConvert.SerializeObject(new { Id = dados.Id }), Encoding.UTF8, "application/json");
-
-                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/"+dados.Id);
+                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id);
 
                 response.Wait();
 
@@ -223,15 +246,13 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    //Erro de requisicao
-                    var content = response.Result.Content.ReadAsStringAsync();
-
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                    throw new Exception(response.Result.ReasonPhrase);
                 }
-            }
 
-            return Json(new { });
+                return RedirectToAction("Index");
+            }
         }
+
 
         // GET by Id ----------------------------------------------------------------------
         //public JsonResult getIngredienteById()
