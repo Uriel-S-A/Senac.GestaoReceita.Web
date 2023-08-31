@@ -18,9 +18,15 @@ namespace Web.Controllers
     public class IngredienteController : Controller
     {
         // GET: Ingrediente
-        public ActionResult Index()
+        public ActionResult Index(string BuscaIngredientes)
         {
             List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
+
+            if (!string.IsNullOrEmpty(BuscaIngredientes))
+            {
+                listaIngredientesCadastrados = listaIngredientesCadastrados.Where(w => w.NomeIngrediente.Contains(BuscaIngredientes)).ToList();
+            }
+
             List<DadosEmpresa> listaDadosEmpresa = GetDadosEmpresa();
             List<DadosUnidadeMedida> listaDadosUnidadeMedida = GetDadosUnidadeMedida();
 
@@ -62,6 +68,8 @@ namespace Web.Controllers
                                 PrecoIngrediente = item.precoIngrediente.ToString(),
                                 QuantidadeUnidade = item.quantidadeUnidade,
                                 UnidadeMedidaId = item.unidadeMedidaId,
+                                Empresa = item.empresa,
+                                UnidadeMedida = item.unidadeMedida
                             }
                         );
                     }
@@ -75,6 +83,7 @@ namespace Web.Controllers
 
             return listaDadosIngrediente;
         }
+
         // GET: Empresa
         public List<DadosEmpresa> GetDadosEmpresa()
         {
@@ -118,6 +127,7 @@ namespace Web.Controllers
 
             return listaDadosEmpresa;
         }
+
         // GET: UnidadeMedida
         public List<DadosUnidadeMedida> GetDadosUnidadeMedida()
         {

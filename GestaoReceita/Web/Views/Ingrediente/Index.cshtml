@@ -9,10 +9,17 @@
 <div class="container ingredienteContainer">
     <div class="row">
         <div class="col-12 m-2">
-            <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" />
-            <button onclick="editarIngrediente(this, 'cadastro')" type="button" class="NovoIngrediente w-25 m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Novo Ingrediente
-            </button>
+            @using (Html.BeginForm("Index", "Ingrediente", FormMethod.Post))
+            {
+                <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" value="" />
+                <button type="submit" class="NovoIngrediente w-25 m-1">
+                    Buscar
+                </button>
+                <button onclick="editarIngrediente(this, 'cadastro')" type="button" class="NovoIngrediente w-25 m-1 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Novo Ingrediente
+                </button>
+            }
+
         </div>
     </div>
 
@@ -47,7 +54,7 @@
                         <input data-item="item_quantidade" value="@item.QuantidadeUnidade" type="hidden" />
                     </td>
                     <td>
-                        @item.UnidadeMedidaId
+                        @item.UnidadeMedida.descUnidMedIngrediente
                         <input data-item="item_unidade_medida" value="@item.UnidadeMedidaId" type="hidden" />
                     </td>
                     <td>
@@ -55,7 +62,7 @@
                         <input data-item="item_preco" value="@item.PrecoIngrediente" type="hidden" />
                     </td>
                     <td>
-                        @item.EmpresaId
+                        @item.Empresa.nomeFantasia
                         <input data-item="item_empresa" value="@item.EmpresaId" type="hidden" />
                     </td>
                     <td>
@@ -77,7 +84,7 @@
                         </button>
                     </td>
                 </tr>
-            }
+                }
         </tbody>
     </table>
 </div>
@@ -117,7 +124,6 @@
                         </div>
                         <div class="col">
                             <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
-                            @*<input type="text" name="UnidadeMedidaIngrediente" placeholder="Unidade de Medida" required />*@
                             <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
                                 <option selected disabled value="">Unidade de Medida</option>
                                 @foreach (var item in Model.listaDadosUnidadeMedida)
@@ -155,7 +161,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="inputId"/>
+                    <input type="hidden" id="inputId" name="id"/>
                     <p>
                         Tem certeza que deseja excluir o ingrediente
                         <strong><span id="spanIngrediente"></span></strong>
@@ -172,7 +178,6 @@
         }
      </div>
 </div>
-
 
 <!-- Success Alert -->
 <div class="alert alert-success d-flex align-items-center" role="alert">
