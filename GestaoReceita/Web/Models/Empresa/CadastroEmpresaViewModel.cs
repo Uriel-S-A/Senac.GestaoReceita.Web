@@ -20,6 +20,7 @@ namespace CadEmpresa.Models
         public string email { get; set; }
         public int idCidade { get; set; }
 
+        public string inputCNPJ { get; set; }
 
         public List<Cidade> listaCidade { get; set; }
     }

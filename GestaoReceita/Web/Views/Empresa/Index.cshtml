@@ -14,7 +14,7 @@
         @using (Html.BeginForm("Pesquisar", "Empresa", FormMethod.Post, new { @class = "d-flex" }))
         {
             <input type="text" class="form-control" id="inputCNPJ" name="inputCNPJ" required placeholder="CNPJ" />
-            <input class="btn btn-primary" type="submit" value="Pesquisar" />
+            <input class="btn btn-primary" type="submit" value="Pesquisar" id="inputCNPJ" onclick="pesquisar()"/>
         }
     </div>
 </div>
@@ -100,11 +100,6 @@
     </div>
 }
 
-<script>
-    function setIdDelete(id) {
-        document.getElementById("idItemDeletar").value = id;
-    }
-</script>
 
-
+<script src="~/Scripts/pesquisarItem.js"></script>
 <script src="~/Scripts/CadastrarEmpresaJs.js"></script>

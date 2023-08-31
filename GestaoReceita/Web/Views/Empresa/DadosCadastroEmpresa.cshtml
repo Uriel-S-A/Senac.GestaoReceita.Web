@@ -12,8 +12,8 @@
     <div class="row g-3">
         <div class="col-md-3">
             <label>CNPJ</label>
+            <input type="hidden" name="id" value="@Model.CNPJ">
             <input type="text" class="form-control" id="inputCNPJ" name="CNPJ" required value="@Model.CNPJ">
-            <input type="hidden" name="id" value="@Model.id" />
         </div>
 
         <div class="col-md-5">
@@ -71,7 +71,7 @@
                 {
                     var selecionado = item.id == Model.idCidade ? "selected" : "";
 
-                    <option value="@item.id" @Html.Raw(selecionado)>@item.descricaoCidade</option>
+                    <option value="@item.id" @Html.Raw(selecionado)> @item.descricaoCidade</option>
                 }
             </select>
         </div>
