@@ -117,6 +117,7 @@
     </Compile>
     <Compile Include="Model\CadastroUnidadeMedida\CadastrarUnidadeMedidaViewModel.cs" />
     <Compile Include="Model\CadastroUnidadeMedida\UnidadeMedida.cs" />
+    <Compile Include="Model\CadastroUnidadeMedida\UnidadeMedidaRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

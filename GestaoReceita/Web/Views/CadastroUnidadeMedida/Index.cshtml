@@ -6,7 +6,7 @@
 
 <div class="container">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="clearCamposFormulario()">
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="clearCamposFormulario()">
         Adicionar
     </button>
     <table class="table">
@@ -29,10 +29,13 @@
                     </th>
                     <td data-item="descricao_unidade_medida">@item.Descricao</td>
                     <td data-item="sigla_unidade_medida">@item.Sigla</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editar(this)">
-                            Editar
-                        </button>
+                    <td>                
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editar(this)">
+                                Editar
+                            </button>
+                            <button type="button" class="btn btn-danger"  onclick="deletar(@item.Id)">
+                                Deletar
+                            </button>                           
                     </td>
                 </tr>
 
@@ -68,7 +71,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="submit" class="btn btn-primary">Concluir</button>
                 </div>
             }
         </div>
@@ -84,10 +87,36 @@
         var colDescricao = tr.querySelector("td[data-item='descricao_unidade_medida']");
         var colSigla = tr.querySelector("td[data-item='sigla_unidade_medida']");
 
-        console.log(inputId.value + " " + colDescricao.innerText + " " + colSigla.innerText);
+        document.getElementById("idUnidadeMedida").value = inputId.value;
+        document.getElementById("unidadeMedidaDescricao").value = colDescricao.innerText;
+        document.getElementById("unidadeMedidaSigla").value = colSigla.innerText;
     }
 
     function clearCamposFormulario() {
+        document.getElementById("idUnidadeMedida").value = "";
+        document.getElementById("unidadeMedidaDescricao").value = "";
+        document.getElementById("unidadeMedidaSigla").value = "";
+    }
 
+    function deletar(id) {
+        var conf = confirm("Deseja deletar?");
+
+        if (conf) {
+            //chama ajax passando id /CadastroUnidadeMedida/deletar
+            $.ajax({
+                type: "POST",
+                url: "/CadastroUnidadeMedida/Deletar", // Substitua pela URL correta do endpoint de exclusão
+                data: { id: id },
+                success: function (response) {
+                    alert(response.mensagemRetorno);
+                    setTimeout(function () {
+                        location.href = "/CadastroUnidadeMedida/Index";
+                    }, 500);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
     }
 </script>
