@@ -1,141 +1,163 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "CadastrarEstado";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <head>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     @*alerta de erro*@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/Scripts/Estado/script.js"></script>
-   @* <link rel="stylesheet" href="~/Content/Estado/style.css" />*@
+    <link rel="stylesheet" href="~/Content/Estado/style.css" />
 </head>
 
 
-<div class="container">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Registro</button>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col" class="d-none">Id</th>
-                <th scope="col">País</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Sigla</th>
-                <th scope="col" class="text-center">Ações</th>
-            </tr>
-        </thead>
-        <tbody class="pais-info">
-            @*  'Model' traz a lista de paises e adiciona-os a variável 'pais'.  *@
-            @foreach (var estado in Model)
-            {
+
+
+
+<body>
+    <div class="container my-3">
+
+        @*Modal Cadastrar*@
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="cadastrarModalLabel">Cadastrar Estado</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="mb-3 col">
+                                    <label for="recipient-name" class="col-form-label">País:</label>
+                                    <input type="text" class="form-control" id="estado-pais">
+                                </div>
+                                <div class="mb-3 col">
+                                    <label for="recipient-name" class="col-form-label">Estado:</label>
+                                    <input type="text" class="form-control" id="estado-nome">
+                                </div>
+                                @*<div class="mb-3 col">
+                                        <label for="recipient-name" class="col-form-label">Sigla:</label>
+                                        <input type="text" class="form-control" id="estado-sigla">
+                                    </div>*@
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="createBtn">Tudo Jóia👍</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*modal delete*@
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmação de Exclusão</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Tem certeza de que deseja excluir este registro de Pais?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Excluir</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        @*Modal Editar*@
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editarModalLabel">Editar Estado</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+
+                                <div class="mb-3 col">
+                                    <label for="recipient-name" class="col-form-label">Pais:</label>
+                                    <select class="form-select" id="paises" name="paises">
+                                        @foreach (var estado in Model)
+                                        {
+                                            <option id="@estado.idPais" value="@estado.idPais">@estado.idPais - @estado.pais.descricaoPais</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="mb-3 col">
+                                    <label for="recipient-name" class="col-form-label">Estado:</label>
+                                    <input type="text" class="form-control" id="estado-nome-update">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="updateBtn">Tudo Jóia👍</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Registro</button>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td class="d-none estadoId">@estado.Id</td>
-                    <td class="estadoPais">@estado.Pais</td>
-                    <td class="estadoNome">@estado.Estado</td>
-                    <td class="estadoSigla">@estado.Sigla</td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-modal-edit" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>
-                        <button class="btn btn-danger btn-modal-delete" data-bs-toggle="modal" data-bs-target="#confirmModal">Deletar</button>
-                    </td>
+                    <th scope="col" class="d-none">Id</th>
+                    <th scope="col">País</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" class="text-center">Ações</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="pais-info">
+                @foreach (var estado in Model)
+                {
+                    <tr>
+                        <td class="d-none estadoId">@estado.idPais</td>
+                        <td class="estadoPais">@estado.pais.descricaoPais</td>
 
-    @*Modal Cadastrar*@
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+                        <td class="d-none estadoId">@estado.id</td>
+                        <td class="estadoPais">@estado.descricaoEstado</td>
 
-
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="cadastrarModalLabel">Cadastrar Estado</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="mb-3 col">
-                                <label for="recipient-name" class="col-form-label">País:</label>
-                                <input type="text" class="form-control" id="estado-pais">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="recipient-name" class="col-form-label">Estado:</label>
-                                <input type="text" class="form-control" id="estado-nome">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="recipient-name" class="col-form-label">Sigla:</label>
-                                <input type="text" class="form-control" id="estado-sigla">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="createBtn">Tudo Jóia👍</button>
-                </div>
-            </div>
-        </div>
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-modal-edit" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>
+                            <button class="btn btn-danger btn-modal-delete" data-bs-toggle="modal" data-bs-target="#confirmModal">Deletar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-
-    @*Modal Editar*@
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+</body>
 
 
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editarModalLabel">Editar Estado</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="mb-3 col">
-                                <label for="recipient-name" class="col-form-label">País:</label>
-                                <input type="text" class="form-control" id="estado-pais-update">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="recipient-name" class="col-form-label">Estado:</label>
-                                <input type="text" class="form-control" id="estado-nome-update">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="recipient-name" class="col-form-label">Sigla:</label>
-                                <input type="text" class="form-control" id="estado-sigla-update">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="updateBtn">Tudo Jóia👍</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    @*modal delete*@
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmação de Exclusão</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
 
-                <div class="modal-body">
-                    Tem certeza de que deseja excluir este registro de Pais?
-                </div>
+<div class="container">
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmDelete">Excluir</button>
-                </div>
 
-            </div>
-        </div>
-    </div>
+
 </div>

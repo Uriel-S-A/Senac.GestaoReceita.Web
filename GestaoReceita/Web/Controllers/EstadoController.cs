@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
+using System.Net.Http;
+using System.Text;
 using System.Web.Mvc;
+using Web.Models.Estado;
 using Web.Models.Pais;
-using Web.Models.Estado;    
 
 namespace Web.Controllers
 {
@@ -13,100 +16,179 @@ namespace Web.Controllers
         // GET: Estado
         public ActionResult Index()
         {
-            List<EstadoViewModel> minhaLista = ObterListaEstados();
-            return View(minhaLista);
-        }
-        private void SalvarListaEstados(List<EstadoViewModel> lista)
-        {
-            Session["ListaEstados"] = lista;
+            List<EstadoViewModel> minhaLista = getEstados();
+            return View(minhaLista);            
         }
 
-        private List<EstadoViewModel> ObterListaEstados()
+        public List<EstadoViewModel> getEstados()
         {
-            var lista = Session["ListaEstados"] as List<EstadoViewModel>;
+            List<EstadoViewModel> estadoViewModel = new List<EstadoViewModel>();
 
-            if (lista == null)
+            using (var client = new HttpClient())
             {
-                lista = new List<EstadoViewModel>
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Estados");
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
                 {
-                    new EstadoViewModel { Id = 1, Pais = "Brasil", Estado = "Rio Grande do Sul" ,Sigla = "BRA" },
-                    new EstadoViewModel { Id = 2, Pais = "Estados Unidos", Estado = "Rio de Janeiro" ,Sigla = "EUA" }
-                };
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
 
-                SalvarListaEstados(lista);
-            }
-            return lista;
-        }
+                    var estadoToList = JsonConvert.DeserializeObject<List<EstadoTO>>(stringResult.Result);
+                    List<EstadoViewModel> estadoViewModelList = new List<EstadoViewModel>();
 
-        public ActionResult AdicionarNovoEstado(EstadoViewModel novoEstado)
-        {
-            if (ModelState.IsValid)
-            {
-                List<EstadoViewModel> minhaLista = ObterListaEstados();
-                int novoId = minhaLista.Max(max => max.Id) + 1;
+                    foreach (var estadoTO in estadoToList)
+                    {
+                        EstadoViewModel estadovm = new EstadoViewModel
+                        {
+                            id = estadoTO.id,
+                            descricaoEstado = estadoTO.descricaoEstado,
+                            idPais = estadoTO.idPais,
+                            pais = (PaisViewModel)estadoTO.pais //ver sobre
 
-                novoEstado.Id = novoId;
-                novoEstado.Pais = novoEstado.Pais;
-                novoEstado.Estado = novoEstado.Estado;
-                novoEstado.Sigla = novoEstado.Sigla;
-                minhaLista.Add(novoEstado);
+                        };
 
-                SalvarListaEstados(minhaLista);
+                        estadoViewModelList.Add(estadovm);
+                    }
 
-                return RedirectToAction("Index");
-            }
-
-            return View("Index", ObterListaEstados());
-        }
-
-        public ActionResult EditarEstado(EstadoViewModel EstadoEditar)
-        {
-            //if (ModelState.IsValid)
-            //{
-                List<EstadoViewModel> listaEstados = ObterListaEstados();
-
-                var estadoToUpdate = listaEstados.FirstOrDefault(fd => fd.Id == EstadoEditar.Id);
-
-                if (estadoToUpdate != null)
-                {
-                    estadoToUpdate.Pais = EstadoEditar.Pais;
-                    estadoToUpdate.Estado = EstadoEditar.Estado;
-                    estadoToUpdate.Sigla = EstadoEditar.Sigla;
-
-                    // Salva a lista atualizada na session
-                    SalvarListaEstados(listaEstados);
-
-                    return RedirectToAction("Index");
+                    return estadoViewModel = estadoViewModelList;
                 }
-            //}
-
-            return View("Index", ObterListaEstados());
-        }
-
-        public ActionResult DeletarEstado(EstadoViewModel EstadoDeletar)
-        {
-            //precisa haver uma validação se o pais que está sendo deletado
-            //possui algum vinculo com algum estado ou cidade
-
-            //fazendo sem a validação por enquanto
-
-            if (ModelState.IsValid)
-            {
-                List<EstadoViewModel> listaEstados = ObterListaEstados();
-
-                var estadoToDelete = listaEstados.FirstOrDefault(fd => fd.Id == EstadoDeletar.Id);
-
-                if (estadoToDelete != null)
+                else
                 {
-                    listaEstados.Remove(estadoToDelete);
+                    //mensagem de erro de validação
 
-                    SalvarListaEstados(listaEstados);
+                    var content = response.Result.Content.ReadAsStringAsync();
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
 
-                    return RedirectToAction("Index");
                 }
             }
 
-            return View("Index", ObterListaEstados());
+            return estadoViewModel;
+        }
+
+        public ActionResult AdicionarEstado(EstadoViewModel novoEstado)
+        {
+            if (ModelState.IsValid)
+            {
+                List<EstadoViewModel> minhaLista = getEstados();
+
+                //comparação será sensível a maiúsculas e minúsculas usando StringComparison.OrdinalIgnoreCase
+                bool estadoJaExiste = minhaLista.Any(p => p.descricaoEstado.Equals(novoEstado.descricaoEstado, StringComparison.OrdinalIgnoreCase));
+
+                if (estadoJaExiste)
+                {
+                    //não aparece na tela
+                    ModelState.AddModelError("descricaoPais", "O país já existe na lista.");
+                    List<EstadoViewModel> lista = getEstados();
+                    return View("Index", lista);
+                }
+
+                int novoId = minhaLista.Max(max => max.id) + 1;
+
+                using (var client = new HttpClient())
+                {
+                    //idPais precisa vir preenchido quando eviado pela view model, deixei fixo
+
+                    var formContentString = new StringContent(JsonConvert.SerializeObject(new { idPais = 1 , descricaoEstado = novoEstado.descricaoEstado, id = novoId }), Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Estados", formContentString);
+
+                    response.Wait();
+
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        // adicionar mensagem de sucesso
+
+                        var stringResult = response.Result.Content.ReadAsStringAsync();
+                        var objectJson = JsonConvert.DeserializeObject<EstadoTO>(stringResult.Result); 
+                        //todas info que vem do banco devem ser armazenadas num TO.
+                        //
+                    }
+                    else
+                    {
+                        // adicionar mensagem de erro
+                        var content = response.Result.Content.ReadAsStringAsync();
+                        var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                    }
+                }
+            }
+
+            return Index();
+        }
+
+        public ActionResult EditarEstado(EstadoViewModel estadoEditar)
+        {
+            //já chegando id e descrição do pais.
+
+            var dados = getEstadoById(estadoEditar.id);
+
+            //dados
+            //var Id = dados.id = estadoEditar.id;
+            //var DescricaoPais = dados.descricaoPais = estadoEditar.descricaoPais;
+
+            using (var client = new HttpClient())
+            {
+                var formContentString = new StringContent(JsonConvert.SerializeObject(new { idPais = 1, descricaoEstado = estadoEditar.descricaoEstado, id = estadoEditar.id}), Encoding.UTF8, "application/json");
+
+                var response = client.PutAsync(new Uri("http://gestaoreceitaapi.somee.com/api/Estados/" + dados.id), formContentString);
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    // adicionar mensagem de sucesso
+
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    var objectJson = JsonConvert.DeserializeObject<EstadoTO>(stringResult.Result);
+                }
+                else
+                {
+                    // adicionar mensagem de erro
+                    var content = response.Result.Content.ReadAsStringAsync();
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                }
+            }
+
+            return Json(new { });
+        }
+
+        public EstadoViewModel getEstadoById(int id)
+        {
+            EstadoViewModel estadoViewModel = new EstadoViewModel();
+
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Estados/" + id);
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                    var estadoTO = JsonConvert.DeserializeObject<EstadoTO>(stringResult.Result);
+
+                    EstadoViewModel paisView = (EstadoViewModel)estadoTO;
+
+                    return estadoViewModel = paisView;
+                }
+                else
+                {
+                    //tratar erro de requisicao
+                    var content = response.Result.Content.ReadAsStringAsync();
+
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                }
+            }
+
+            return estadoViewModel;
+        }
+
+
+
+        public ActionResult DeletarEstado(PaisViewModel paisDeletar)
+        {
+            return Json(new { });
         }
     }
 }

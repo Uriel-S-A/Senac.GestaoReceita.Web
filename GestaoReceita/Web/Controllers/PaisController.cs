@@ -96,7 +96,7 @@ namespace Web.Controllers
                         // adicionar mensagem de sucesso
 
                         var stringResult = response.Result.Content.ReadAsStringAsync();
-                        var objectJson = JsonConvert.DeserializeObject<PaisViewModel>(stringResult.Result); //todas info que vem do banco devem ser armazenadas num TO.
+                        var objectJson = JsonConvert.DeserializeObject<PaisTO>(stringResult.Result); //todas info que vem do banco devem ser armazenadas num TO.
                     }
                     else
                     {

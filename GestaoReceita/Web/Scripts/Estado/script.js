@@ -1,6 +1,4 @@
-﻿//java será organizado corretamente
-
-//Button Create
+﻿
 
 function buttonCreate() {
     $('#createBtn').on('click', function () {

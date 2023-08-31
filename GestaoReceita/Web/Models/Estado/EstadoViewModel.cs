@@ -1,15 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Web.Models.Pais;
 
 namespace Web.Models.Estado
 {
     public class EstadoViewModel
     {
-        public int Id { get; set; }
-        public string Pais { get; set; }
-        public string Estado { get; set; }
-        public string Sigla { get; set; }
+        public int id { get; set; }
+        public string descricaoEstado { get; set; }
+        public int idPais { get; set; }
+        public PaisViewModel pais { get; set; }
+
+        public static explicit operator EstadoViewModel(EstadoTO v)
+        {
+            if (v == null) return null;
+
+            return new EstadoViewModel
+            {
+                id = v.id,
+                descricaoEstado = v.descricaoEstado,
+                idPais = v.idPais,
+                pais = (PaisViewModel)v.pais //ver sobre
+            };
+        }
     }
 }

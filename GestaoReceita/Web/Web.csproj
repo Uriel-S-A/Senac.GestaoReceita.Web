@@ -116,6 +116,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Estado\EstadoTO.cs" />
     <Compile Include="Models\Estado\EstadoViewModel.cs" />
     <Compile Include="Models\Pais\PaisTO.cs" />
     <Compile Include="Models\Pais\PaisViewModel.cs" />
@@ -138,6 +139,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Estado\style.css" />
     <Content Include="Content\Pais\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
