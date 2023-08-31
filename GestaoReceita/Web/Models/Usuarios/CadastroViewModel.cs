@@ -20,5 +20,7 @@ namespace SolutionWebCadastroLogin.Models.UsuariosCadastro
         public List<Empresa> listaEmpresas { get; set; } 
 
         public string mensagemErro { get; set; }
+
+        public string mensagemSucesso { get; set; }
     }
 }

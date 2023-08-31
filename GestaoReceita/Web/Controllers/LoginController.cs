@@ -65,7 +65,7 @@ namespace SolutionWebCadastroLogin.Controllers
 
             var usuario = GetUsuarioById(id.GetValueOrDefault());
            
-            return RedirectToAction("Usuarios", usuario);
+            return RedirectToAction("Cadastro", usuario);
         }
 
         public ActionResult Logout()
@@ -127,18 +127,6 @@ namespace SolutionWebCadastroLogin.Controllers
                 }
             }
             return listaUsuarios;
-        }
-
-        public void saveUsuarioSessao(string Username, int id)
-        {
-            Session["Username"] = Username;
-            Session["IdUsuario"] = id;
-        }
-
-        public void limparUsuarioSessao()
-        {
-            Session["Username"] = null;
-            Session["IdUsuario"] = null;
         }
 
         public ActionResult Cadastro(CadastroViewModel cadastro)
@@ -206,10 +194,11 @@ namespace SolutionWebCadastroLogin.Controllers
                     username = Usuario,
                     senha = Senha,
                     mensagemErro = mensagemErro,
+                    mensagemSucesso = "Dados salvos com sucesso",
                 });
             }
 
-            return RedirectToAction("Index", new { mensagemSucesso = "Dados salvos com sucesso" });
+            return RedirectToAction("Cadastro");
         }
 
         public string updateUsuario(int id, string Nome, string Usuario, string Senha, int Empresa)
@@ -232,7 +221,7 @@ namespace SolutionWebCadastroLogin.Controllers
                     }
                 ), Encoding.UTF8, "application/json");
 
-                var response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Usuarios", formContentString);
+                var response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Usuarios/"+id, formContentString);
 
                 response.Wait();
 

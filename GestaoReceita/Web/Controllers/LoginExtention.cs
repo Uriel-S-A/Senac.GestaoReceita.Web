@@ -16,14 +16,26 @@ namespace SolutionWebCadastroLogin.Controllers
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            //base.OnActionExecuted(filterContext);
+            base.OnActionExecuted(filterContext);
 
-            //if (false && filterContext.ActionDescriptor.ControllerDescriptor.ControllerName != "Login")
-            //{
+            if (Session["Username"] as string == null || Session["Username"] as string == "")
+            {
+                if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName != "Login")
+                    filterContext.Result = new RedirectToRouteResult(
+                        new System.Web.Routing.RouteValueDictionary(new { action = "Index", Controller = "Login" }));
+            }
+        }
 
-            //    filterContext.Result = new RedirectToRouteResult(
-            //        new System.Web.Routing.RouteValueDictionary(new { action = "Index", Controller = "Login" }));
-            //}            
+        public void saveUsuarioSessao(string Username, int id)
+        {
+            Session["Username"] = Username;
+            Session["IdUsuario"] = id;
+        }
+
+        public void limparUsuarioSessao()
+        {
+            Session["Username"] = null;
+            Session["IdUsuario"] = null;
         }
     }
 }
