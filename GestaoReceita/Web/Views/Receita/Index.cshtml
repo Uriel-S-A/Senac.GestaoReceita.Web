@@ -1,16 +1,16 @@
 ﻿@model List<ReceitaFrontEnd.Models.DadosReceitaViewModel>
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
 }
-@Styles.Render("~/Content/css")
-@Scripts.Render("~/bundles/modernizr")
+
 <script src="https://www.google.com/recaptcha/enterprise.js?render=6LdD-78nAAAAAFsoghhAlZeIJaJuapMXSopJVt_K"></script>
 
 <noscript>
     <p>Por favor, habilite o JavaScript para ter a melhor experiência.</p>
 </noscript>
 
-  
+
 @using (Html.BeginForm("Cadastro", "Receita", FormMethod.Post))
 {
     <form class="align-content-center">
@@ -76,7 +76,7 @@
 <div class="container sla" id="vazio" overflow: auto; height: 550px;">
     @if (Model.Any())
     {
-       
+
         <table class="table" id="tables">
             <thead>
                 <tr>
@@ -86,7 +86,7 @@
                     <th scope="col" style="text-align:center">Ações</th>
                 </tr>
             </thead>
-            
+
             <tbody class="table-group-divider" id="conteudoTbody">
                 @foreach (var receita in Model)
                 {
@@ -105,28 +105,22 @@
     }
     else
     {
-    <script>
-        var myButton = document.getElementById("excluirReceita");
-        myButton.disabled = true;
+        <script>
+            var myButton = document.getElementById("excluirReceita");
+            myButton.disabled = true;
 
-        
-        myButton.style.backgroundColor = "#ccc"; 
-        myButton.style.color = "#666";          
-        myButton.style.cursor = "not-allowed";
-        myButton.style.border = "none";
-    </script>
-    <div class="sla12">
-        <img src="~/Imagens/OIG-removebg-preview.png"/>
-    </div>
-        
+
+            myButton.style.backgroundColor = "#ccc";
+            myButton.style.color = "#666";
+            myButton.style.cursor = "not-allowed";
+            myButton.style.border = "none";
+        </script>
+        <div class="sla12">
+            <img src="~/Imagens/OIG-removebg-preview.png" />
+        </div>
+
     }
 </div>
-<script>
-
-
-</script>
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
 
 
 

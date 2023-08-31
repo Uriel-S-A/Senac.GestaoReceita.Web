@@ -33,7 +33,7 @@ namespace ReceitaFrontEnd.Controllers
         {
             //Chamar API
             var list = pegarListaIngredientes();
-
+            
             ////Chamar API
             //var litaIngredientesDaReceita = pegarIngredientesDaReceita(idReceita.getValueOrDefault());
 
