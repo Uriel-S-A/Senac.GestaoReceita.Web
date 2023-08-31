@@ -103,7 +103,6 @@ namespace CadEmpresa.Controllers
 
             using (var client = new HttpClient())
             {
-                //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
 
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Empresas");
 
@@ -222,6 +221,7 @@ namespace CadEmpresa.Controllers
             if (dados.id != null && dados.id > 0)
             {
                 stringRetorno = updateEmpresa(dados);
+                mensagemSucesso = "Dados salvos com sucesso!";
             }
 
             else
@@ -235,7 +235,7 @@ namespace CadEmpresa.Controllers
             }
             else
             {
-                mensagemSucesso = "Dados salvos com sucesso";
+                mensagemSucesso = "Empresa cadastrada com sucesso!";
             }
 
             return RedirectToAction("Index", new { mensagemErro = mensagemErro, mensagemSucesso = mensagemSucesso });
@@ -276,7 +276,7 @@ namespace CadEmpresa.Controllers
                 }
                 else
                 {
-                    stringRetorno = "Erro ao realizar o atualização da empresa: " + response.Result.ReasonPhrase;
+                    stringRetorno = "Erro ao atualizar empresa: " + response.Result.ReasonPhrase;
                 }
             }
             return stringRetorno;
@@ -355,20 +355,6 @@ namespace CadEmpresa.Controllers
             return listaCidade;
         }
 
-
-
-        //pega os dados das empresas e converte em um json
-        //public JsonResult pesquisarEmpresas()
-        //{
-        //    var listaEmpresas = getEmpresa();
-
-
-        //    JavaScriptSerializer ser = new JavaScriptSerializer();
-        //    var jsonString = ser.Serialize<CadastroEmpresaViewModel>(listaEmpresas);
-
-
-        //    return Json(new { jsonString });
-        //}
     }
 
 
