@@ -172,7 +172,6 @@ namespace Web.Controllers
                 }
                 // cabeçalho da requisição
                 ), Encoding.UTF8, "application/json");
-                ;
 
                 // prepara a variável para receber a resposta da requisição
                 Task<HttpResponseMessage> response = null;
@@ -207,12 +206,36 @@ namespace Web.Controllers
         }
 
         //DELETE --------------------------------------------------
-        public JsonResult DeleteDadosIngrediente(DadosIngrediente dados)
+        //public JsonResult DeleteDadosIngrediente(DadosIngrediente dados)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        var formContentString = new StringContent(JsonConvert.SerializeObject(new { Id = dados.Id }), Encoding.UTF8, "application/json");
+
+        //        var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id);
+
+        //        response.Wait();
+
+        //        if (response.Result.IsSuccessStatusCode)
+        //        {
+        //            var stringResult = response.Result.Content.ReadAsStringAsync();
+        //        }
+        //        else
+        //        {
+        //            //Erro de requisicao
+        //            var content = response.Result.Content.ReadAsStringAsync();
+
+        //            var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+        //        }
+        //    }
+
+        //    return Json(new { });
+        //}
+
+        public ActionResult DeleteDadosIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())
             {
-                var formContentString = new StringContent(JsonConvert.SerializeObject(new { Id = dados.Id }), Encoding.UTF8, "application/json");
-
                 var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id);
 
                 response.Wait();
@@ -223,15 +246,13 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    //Erro de requisicao
-                    var content = response.Result.Content.ReadAsStringAsync();
-
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                    throw new Exception(response.Result.ReasonPhrase);
                 }
-            }
 
-            return Json(new { });
+                return RedirectToAction("Index");
+            }
         }
+
 
         // GET by Id ----------------------------------------------------------------------
         //public JsonResult getIngredienteById()
