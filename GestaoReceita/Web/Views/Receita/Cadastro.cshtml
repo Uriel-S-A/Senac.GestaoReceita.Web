@@ -1,0 +1,289 @@
+﻿@model ReceitaFrontEnd.Models.CadastroViewModel
+
+@{
+    ViewBag.Title = "Cadastro";
+}
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+<div id="liveAlertPlaceholder"></div>
+
+<div style="display:flex; justify-content:center; margin-bottom:20px">
+    @*<input id="nomeReceita" style="width:300px; margin-bottom:20px" placeholder="Digite a receita" />*@
+    <input id="nomeReceita" placeholder="Digite a Receita" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+</div>
+<div style="display:flex; justify-content:space-between">
+    <span style="font-size:30px; font-weight:bold">Tabela de Ingredientes</span>
+    <span style="font-size:30px; font-weight:bold">Ingredientes na Receita</span>
+</div>
+<div class="row">
+    <div style="overflow:auto; height:495px" class="col-7">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Unidade</th>
+                    <th scope="col">Qtd.</th>
+                    <th scope="col">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{
+                    for (var pos = 0; pos < Model.DadosIngredientes.Count; pos++)
+                    {
+                        <tr>
+                            <td scope="row">
+                                <span data-name="label_nome_ingrediente" id="sla">@Model.DadosIngredientes[pos].NomeIngrediente</span>
+                                <input type="hidden" data-item="input_ingrediente_id" value="@Model.DadosIngredientes[pos].Id" />
+                            </td>
+                            <td>@Model.DadosIngredientes[pos].PrecoIngrediente</td>
+                            <td>@Model.DadosIngredientes[pos].UnidadeMedida</td>
+                            <td>
+                                <input data-name="input_quantidade_ingrediente" type="number" value="" style="width:50px" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success" onclick="adicionar(this)">+</button>
+                            </td>
+                        </tr>
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="overflow:auto; height:495px" class="col">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nome Ingrediente</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Ação</th>
+                </tr>
+            </thead>
+            <tbody id="form_ingredientes_receita">
+                @*<tr>
+                        <td scope="row">
+                            Maça
+                            <input type="hidden" data-item="input_ingrediente_id_receita" />
+                        </td>
+                        <td>5</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger">X</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="row">Farinha</td>
+                        <td>10</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger">X</button>
+                        </td>
+                    </tr>*@
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="display:flex; justify-content:center;">
+    <button type="submit" class="btn btn-success" onclick="cadastrar()">Cadastrar</button>
+</div>
+
+
+<script>
+    var itens = [];
+    var quantidade = [];
+    function adicionar(button) {
+        // pega dados ingrediente
+        // repetir o input data-item com o campo da quantidade
+
+        var tr = button.closest("tr");
+        var inputIdReceita = tr.querySelector("input[data-item='input_ingrediente_id']");
+        var spanDescricaoReceita = tr.querySelector("span[data-name='label_nome_ingrediente']");
+        var inputQuantidadeReceita = tr.querySelector("input[data-name='input_quantidade_ingrediente']");
+
+        controlaAlertErro(inputQuantidadeReceita);
+
+        //pega tbody dos igredientes da receita para adicionar o ingrediente
+        var tbody_add_ingrediente = document.getElementById("form_ingredientes_receita");
+
+        var listaInputsIdReceitasJaAdicionadas = tbody_add_ingrediente.querySelectorAll("input[data-item='id_ingredientes_receita']");
+
+        var existeReceitaAdicionada = false;
+
+        var inputItemId = null;
+        for (var pos = 0; pos < listaInputsIdReceitasJaAdicionadas.length; pos++) {
+            inputItemId = listaInputsIdReceitasJaAdicionadas[pos];
+            if (inputItemId.value == inputIdReceita.value) {
+                existeReceitaAdicionada = true;
+                break;
+            }
+        }
+
+        if (existeReceitaAdicionada) {
+            incrementaQuantidade(inputItemId, inputQuantidadeReceita.value);
+        } else {
+            adicionarReceita(tbody_add_ingrediente, inputIdReceita, spanDescricaoReceita, inputQuantidadeReceita);
+        }
+    }
+
+    function incrementaQuantidade(inputItemId, valorIncrementar) {
+
+        var tr = inputItemId.closest("tr");
+        var td = tr.querySelector("td[data-item='quantidade_ingrediente_" + inputItemId.value + "']");
+        var valorExistente = td.innerText;
+
+        var novoValor = Number(valorExistente) + Number(valorIncrementar);
+        td.innerText = novoValor;
+    }
+
+    function adicionarReceita(tbody_add_ingrediente, inputIdReceita, spanDescricaoReceita, inputQuantidadeReceita) {
+        var new_tr = document.createElement("tr");
+
+        var new_td_nome_ingrediente = document.createElement("td");
+        new_td_nome_ingrediente.setAttribute("scope", "row");
+        new_td_nome_ingrediente.innerText = spanDescricaoReceita.innerText;
+        var td_botao_container = document.createElement("td");
+        var botao_excluir_ingrediente = document.createElement("button");
+        botao_excluir_ingrediente.setAttribute("type", "button");
+        botao_excluir_ingrediente.setAttribute("class", "btn btn-outline-danger");
+        botao_excluir_ingrediente.setAttribute("onclick", "deletarIngrediente(this)");
+        botao_excluir_ingrediente.innerHTML = "X";
+
+        quantidade.push(inputQuantidadeReceita.value)
+        var new_td_quantidade_ingrediente = document.createElement("td");
+        new_td_quantidade_ingrediente.setAttribute("data-item", "quantidade_ingrediente_" + inputIdReceita.value);
+        new_td_quantidade_ingrediente.setAttribute("style", "text-align:center");
+        new_td_quantidade_ingrediente.innerText = inputQuantidadeReceita.value;
+
+        var newInput = document.createElement("input");
+        newInput.setAttribute("type", "hidden");
+        newInput.setAttribute("data-item", "id_ingredientes_receita");
+        newInput.value = inputIdReceita.value;
+        td_botao_container.appendChild(newInput);
+
+        new_tr.appendChild(new_td_nome_ingrediente);
+        new_tr.appendChild(new_td_quantidade_ingrediente);
+        new_tr.appendChild(td_botao_container);
+        td_botao_container.appendChild(botao_excluir_ingrediente);
+
+        tbody_add_ingrediente.appendChild(new_tr);
+    }
+
+
+    function controlaAlertErro(inputQuantidadeReceita) {
+        //monta o alert dismissible de acordo com o valor validando
+        if (inputQuantidadeReceita.value == null || inputQuantidadeReceita.value == "" || inputQuantidadeReceita.value <= 0) {
+            const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+            const appendAlert = (message, type) => {
+                const wrapper = document.createElement('div')
+                wrapper.innerHTML = [
+                    `<div id="myAlert" class="alert alert-${type} alert-dismissible fade show" data-bs-trigger="focus" role="alert">`,
+                    `   <div>${message}</div>`,
+                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                    '</div>'
+                ].join('')
+
+                alertPlaceholder.innerHTML = "";
+
+                const myTimeout = setTimeout(function () {
+                    if ($(wrapper).find("div > button.btn-close")[0] != undefined) {
+                        $(wrapper).find("div > button.btn-close")[0].click();
+                    }
+                    clearTimeout(myTimeout);
+                }, 3000);
+
+                alertPlaceholder.append(wrapper)
+            }
+
+            const alertTrigger = document.getElementById('liveAlertBtn')
+            appendAlert('Insira um valor válido para adicionar o ingrediente', 'danger');
+            return;
+
+        }
+    }
+
+    function deletarIngrediente(button) {
+        var tr = button.closest("tr");
+        tr.remove();
+    }
+
+    function cadastrar() {
+        var bodyTabelaIgredientes = document.getElementById("form_ingredientes_receita");
+
+        var listaImputIdIngredienteReceita = bodyTabelaIgredientes.querySelectorAll("input[data-item='id_ingredientes_receita']");
+
+        var listaIngredientesReceita = [];
+
+        for (var pos = 0; pos < listaImputIdIngredienteReceita.length; pos++) {
+            var idIngrediente = listaImputIdIngredienteReceita[0].value;
+            var tdQuantidadeReceita = bodyTabelaIgredientes.querySelector("td[data-item='quantidade_ingrediente_" + idIngrediente + "']");
+
+            //objeto javascript
+            var item = { Id: idIngrediente, Quantidade: tdQuantidadeReceita.innerText };
+
+            listaIngredientesReceita.push(item);
+        }
+
+        var cadastro = document.getElementById("nomeReceita")
+        console.log(cadastro);
+        if (cadastro.value == null || cadastro.value == '') {
+            const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+            const appendAlert = (message, type) => {
+                const wrapper = document.createElement('div')
+                wrapper.innerHTML = [
+                    `<div id="myAlert" class="alert alert-${type} alert-dismissible fade show" data-bs-trigger="focus" role="alert">`,
+                    `   <div>${message}</div>`,
+                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                    '</div>'
+                ].join('')
+
+                alertPlaceholder.innerHTML = "";
+
+                const myTimeout = setTimeout(function () {
+                    if ($(wrapper).find("div > button.btn-close")[0] != undefined) {
+                        $(wrapper).find("div > button.btn-close")[0].click();
+                    }
+                    clearTimeout(myTimeout);
+                }, 3000);
+
+                alertPlaceholder.append(wrapper)
+            }
+
+            const alertTrigger = document.getElementById('liveAlertBtn')
+            appendAlert('Insira um valor válido para adicionar a receita', 'danger');
+            return;
+        }
+
+
+
+        var nomeReceita = document.getElementById("nomeReceita").value;
+        var data = { nomereceita: nomeReceita, listaingredientes: listaIngredientesReceita };
+
+
+
+        $.ajax({
+            url: '/Receita/cadastrarReceita',
+            type: 'POST',
+            data: data,
+            success: function (data) {
+
+                location.href = "/Receita/Index";
+
+            },
+            error: function (error) {
+                console.error('Erro ao enviar dados:', error);
+            }
+        });
+
+        console.log(data);
+    }
+
+
+
+
+</script>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+
+

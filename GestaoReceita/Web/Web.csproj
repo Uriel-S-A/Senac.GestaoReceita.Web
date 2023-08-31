@@ -111,9 +111,15 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReceitaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\cadReceita\CadastrarIngredientesViewModel.cs" />
+    <Compile Include="Models\cadReceita\CadastroViewModel.cs" />
+    <Compile Include="Models\cadReceita\DadosIngredientes.cs" />
+    <Compile Include="Models\cadReceita\IngredienteResponse.cs" />
+    <Compile Include="Models\cadReceita\UnidadeMedidaRequeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -191,10 +197,10 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Receita\Cadastro.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -217,7 +223,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50624</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50624/</IISUrl>
+          <IISUrl>http://localhost:44341/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
