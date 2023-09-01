@@ -17,8 +17,6 @@ namespace Web.Controllers
 {
     public class IngredienteController : Controller
     {
-        bool sucesso = false;
-
         public ActionResult Index(string BuscaIngredientes)
         {
             // chama o método GetDadosIngrediente e passa a resposta pra lista
@@ -66,6 +64,7 @@ namespace Web.Controllers
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
 
+                    // retorno da API
                     var objectJson = JsonConvert.DeserializeObject<List<DadosIngredienteRequest>>(stringResult.Result);
 
                     foreach (var item in objectJson)
@@ -239,12 +238,10 @@ namespace Web.Controllers
                 if (response.Result.IsSuccessStatusCode)
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
-                    sucesso = true;
                 }
                 else
                 {
                     throw new Exception(response.Result.ReasonPhrase);
-                    sucesso = false;
                 }
                 // chama a index novamente para atualizar a tela
                 return RedirectToAction("Index");

@@ -7,7 +7,7 @@ function editarIngrediente(button, opcao) {
     opcao == 'cadastro' ? editar = false : editar = true;
 
     // se foi o de editar, ele vai preencher os campos da modal com os dados do ingrediente selecionado
-    if (editar == true) {
+    if (editar) {
         // esconde o botão de limpar, pois ele não é necessário na tela de editar
         document.getElementById("limparCamposButton").style.display = "none";
 
@@ -32,10 +32,10 @@ function editarIngrediente(button, opcao) {
         var modalQuantidade = document.getElementById("modalQuantidade");
         modalQuantidade.value = inputQuantidade.value;
 
-        var modalMedida = document.getElementById("selectUnidadeMedida");
+        var modalMedida = document.getElementById("modalMedida");
         modalMedida.value = inputUnidadeMedida.value;
 
-        var modalEmpresa = document.getElementById("selectEmpresa");
+        var modalEmpresa = document.getElementById("modalEmpresa");
         modalEmpresa.value = inputEmpresa.value;
 
         var modalPreco = document.getElementById("modalPreco");
@@ -56,10 +56,10 @@ function editarIngrediente(button, opcao) {
         var modalQuantidade = document.getElementById("modalQuantidade");
         modalQuantidade.value = '';
 
-        var modalMedida = document.getElementById("selectUnidadeMedida");
+        var modalMedida = document.getElementById("modalMedida");
         modalMedida.value = '';
 
-        var modalEmpresa = document.getElementById("selectEmpresa");
+        var modalEmpresa = document.getElementById("modalEmpresa");
         modalEmpresa.value = '';
 
         var modalPreco = document.getElementById("modalPreco");
@@ -90,4 +90,8 @@ function excluirIngrediente(button) {
 
     var spanUnidadeMedida = document.getElementById("spanUnidadeMedida");
     spanUnidadeMedida.innerText = unidadeMedida.value;
+}
+
+function exibeAlert() {
+
 }

@@ -51,8 +51,6 @@
                     </td>
                     <td>
                         @item.NomeIngrediente
-                        @*@Html.Editor(item.NomeIngrediente);
-                            @Html.Display(item.NomeIngrediente);*@
                         <input data-item="item_nome" value="@item.NomeIngrediente" type="hidden" />
                     </td>
                     <td>
@@ -119,7 +117,7 @@
                         <div class="col">
                             <!-- Campo Empresa -->
                             <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
-                            <select id="selectEmpresa" name="EmpresaId" required>
+                            <select id="modalEmpresa" name="EmpresaId" required>
                                 <option selected disabled value="">Selecione a empresa</option>
                                 <!-- Loop para criar as opções no menu dropdown -->
                                 @foreach (var item in Model.listaDadosEmpresa)
@@ -138,7 +136,7 @@
                         <div class="col">
                             <!-- Campo Unidade de Medida -->
                             <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
-                            <select id="selectUnidadeMedida" name="UnidadeMedidaId" required>
+                            <select id="modalMedida" name="UnidadeMedidaId" required>
                                 <option selected disabled value="">Unidade de Medida</option>
                                 <!-- Loop para criar as opções no menu dropdown -->
                                 @foreach (var item in Model.listaDadosUnidadeMedida)
