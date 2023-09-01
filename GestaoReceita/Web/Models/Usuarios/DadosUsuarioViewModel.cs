@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SolutionWebCadastroLogin.Models.UsuariosCadastro
 {
-    public class CadastroViewModel
+    public class DadosUsuarioViewModel
     {
         public int id { get; set; }
         public string nome { get; set; }

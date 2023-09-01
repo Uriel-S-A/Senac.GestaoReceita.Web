@@ -11,6 +11,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Web.Models.Usuario;
 
 namespace SolutionWebCadastroLogin.Controllers
 {
@@ -75,9 +76,9 @@ namespace SolutionWebCadastroLogin.Controllers
             return RedirectToAction("Index");
         }
 
-        private CadastroViewModel GetUsuarioById(int id)
+        private DadosUsuarioViewModel GetUsuarioById(int id)
         {
-            var usuario = new CadastroViewModel();
+            var usuario = new DadosUsuarioViewModel();
 
             using (var client = new HttpClient())
             {
@@ -89,7 +90,7 @@ namespace SolutionWebCadastroLogin.Controllers
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
 
-                    usuario = JsonConvert.DeserializeObject<CadastroViewModel>(stringResult.Result);
+                    usuario = JsonConvert.DeserializeObject<DadosUsuarioViewModel>(stringResult.Result);
                 }
                 else
                 {
@@ -102,9 +103,9 @@ namespace SolutionWebCadastroLogin.Controllers
             return usuario;
         }
 
-        private List<UsuarioEdit> GetListaUsuarios()
+        private List<DadosUsuarioViewModel> GetListaUsuarios()
         {
-            var listaUsuarios = new List<UsuarioEdit>();
+            var listaUsuarios = new List<DadosUsuarioViewModel>();
 
             using (var client = new HttpClient())
             {
@@ -116,7 +117,7 @@ namespace SolutionWebCadastroLogin.Controllers
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
 
-                    listaUsuarios = JsonConvert.DeserializeObject<List<UsuarioEdit>>(stringResult.Result);
+                    listaUsuarios = JsonConvert.DeserializeObject<List<DadosUsuarioViewModel>>(stringResult.Result);
                 }
                 else
                 {
@@ -129,16 +130,37 @@ namespace SolutionWebCadastroLogin.Controllers
             return listaUsuarios;
         }
 
-        public ActionResult Cadastro(CadastroViewModel cadastro)
+        public ActionResult Cadastro(DadosUsuarioViewModel cadastro)
         {
             var listaEmpresas = getListaEmpresas();
 
-            CadastroViewModel cadastroViewModel = cadastro != null ? cadastro : new CadastroViewModel();
+            DadosUsuarioViewModel dadosViewModel = cadastro != null ? cadastro : new DadosUsuarioViewModel();
 
-            cadastroViewModel.listaEmpresas = listaEmpresas;
+            dadosViewModel.listaEmpresas = listaEmpresas;
 
-            return View(cadastroViewModel);
+            return View(dadosViewModel);
         }
+
+
+
+
+
+        public ActionResult Usuario()
+        {
+            var listaUsuarios = GetListaUsuarios();
+
+            UsuarioViewModel usuarioViewModel = new UsuarioViewModel();
+
+            usuarioViewModel.ListaUsuarios = listaUsuarios;
+
+            return View(usuarioViewModel);
+
+        }
+
+
+
+
+
 
         private List<Empresa> getListaEmpresas()
         {
@@ -183,7 +205,7 @@ namespace SolutionWebCadastroLogin.Controllers
 
             if (!string.IsNullOrEmpty(mensagemErro))
             {
-                return RedirectToAction("Cadastro", new CadastroViewModel()
+                return RedirectToAction("Cadastro", new DadosUsuarioViewModel()
                 {
                     id = Id.GetValueOrDefault(),
                     nome = Nome,
@@ -282,32 +304,28 @@ namespace SolutionWebCadastroLogin.Controllers
 
             return mensagemErro;
         }
+
+        public JsonResult DeletarUsuario(int id)
+        {
+            var msg = "Deletado com sucesso";
+            using (var client = new HttpClient())
+            {
+                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Usuarios/" + id);
+                response.Wait();
+
+                if (!response.Result.IsSuccessStatusCode)
+                {
+                    msg = response.Result.ReasonPhrase;
+
+                }
+
+            }
+            return Json(new { msgRetorno = msg });
+        }
+
     }
 }
-//   
 
-//public JsonResult DeleteUsers(int id)
-//{
-//    using (var email = new HttpClient())
-//    {
-//        var response = email.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Usuarios/" + id);
-//            response.Wait();
-
-//        if (response.Result.IsSuccessStatusCode)
-//        {
-//            var stringResult = response.Result.Content.ReadAsStringAsync();
-//            var objectJason = JsonConvert.DeserializeObject<LoginUsuario>(stringResult.Result);
-
-//        }
-//        else
-//        {
-
-//            var content = response.Result.Content.ReadAsStringAsync();
-
-//            var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-//        }
-//    }
-//}
 
 
 
