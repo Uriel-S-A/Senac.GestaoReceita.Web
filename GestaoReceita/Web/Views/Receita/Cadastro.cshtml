@@ -9,7 +9,8 @@
 
 <div style="display:flex; justify-content:center; margin-bottom:20px">
     @*<input id="nomeReceita" style="width:300px; margin-bottom:20px" placeholder="Digite a receita" />*@
-    <input id="nomeReceita" placeholder="Digite a Receita" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+    <input id="nomeReceita" placeholder="Digite a Receita" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="@Model.NomeReceita">
+    <input id="idReceita" value="@Model.Id" type="hidden"/>
 </div>
 <div style="display:flex; justify-content:space-between">
     <span style="font-size:30px; font-weight:bold">Tabela de Ingredientes</span>
@@ -62,23 +63,21 @@
                 </tr>
             </thead>
             <tbody id="form_ingredientes_receita">
-                @*<tr>
-                        <td scope="row">
-                            Maça
-                            <input type="hidden" data-item="input_ingrediente_id_receita" />
-                        </td>
-                        <td>5</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-danger">X</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td scope="row">Farinha</td>
-                        <td>10</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-danger">X</button>
-                        </td>
-                    </tr>*@
+                @{
+                    for (var pos = 0; pos < Model.DadosIngredientesDaReceita.Count; pos++)
+                    {
+                        <tr>
+                            <td scope="row">
+                                <span data-name="label_nome_ingrediente" id="sla">@Model.DadosIngredientesDaReceita[pos].NomeIngrediente</span>
+                                <input type="hidden" data-item="id_ingredientes_receita" value="@Model.DadosIngredientesDaReceita[pos].Id" />
+                            </td>
+                            <td data-item="quantidade_ingrediente_@Model.DadosIngredientesDaReceita[pos].Id">@Model.DadosIngredientesDaReceita[pos].Quantidade</td>
+                            <td>
+                                <button type="button" class="btn btn-success" onclick="adicionar(this)">+</button>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </div>
@@ -255,9 +254,9 @@
         }
 
 
-
+        var idReceita = document.getElementById("idReceita").value;
         var nomeReceita = document.getElementById("nomeReceita").value;
-        var data = { nomereceita: nomeReceita, listaingredientes: listaIngredientesReceita };
+        var data = { nomereceita: nomeReceita, listaingredientes: listaIngredientesReceita, id: idReceita };
 
 
 

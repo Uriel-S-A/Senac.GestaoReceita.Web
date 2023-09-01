@@ -12,5 +12,10 @@ namespace ReceitaFrontEnd.Models
         public string NomeIngrediente { get; set; }
         public decimal PrecoIngrediente { get; set; }
         public string UnidadeMedida { get; set; }
+
+        public int Quantidade { get; set; }
+
+        public string NomeReceita { get; set; }
+        public int? IdReceita { get; set; }
     }
 }

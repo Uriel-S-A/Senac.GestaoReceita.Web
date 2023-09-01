@@ -116,6 +116,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\cadReceita\CadastrarIngredientesViewModel.cs" />
+    <Compile Include="Models\cadReceita\ReceitaIngredienteResponse.cs" />
+    <Compile Include="Models\cadReceita\ReceitaRequest.cs" />
     <Compile Include="Models\cadReceita\CadastroViewModel.cs" />
     <Compile Include="Models\cadReceita\DadosIngredientes.cs" />
     <Compile Include="Models\cadReceita\DadosReceitaViewModel.cs" />
@@ -231,7 +233,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50624</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:44341/</IISUrl>
+          <IISUrl>http://localhost:44342/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

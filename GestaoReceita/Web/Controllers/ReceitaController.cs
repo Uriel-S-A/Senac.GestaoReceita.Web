@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ReceitaFrontEnd.Controllers
 {
@@ -31,17 +32,69 @@ namespace ReceitaFrontEnd.Controllers
 
         public ActionResult Cadastro(int? idReceita)
         {
-            //Chamar API
-            var list = pegarListaIngredientes();
-            
-            ////Chamar API
-            //var litaIngredientesDaReceita = pegarIngredientesDaReceita(idReceita.getValueOrDefault());
-
             CadastroViewModel cadastroViewModel = new CadastroViewModel();
 
+            //Chamar API
+            var list = pegarListaIngredientes();
+
+            ////Chamar API
+            var listaIngredientesDaReceita = new List<DadosIngredientes>();
+            if (idReceita != null && idReceita > 0)
+            {
+                listaIngredientesDaReceita = pegarIngredientesDaReceita(idReceita.GetValueOrDefault());
+                cadastroViewModel.NomeReceita = listaIngredientesDaReceita.Count > 0 ? listaIngredientesDaReceita[0].NomeReceita : "";
+                cadastroViewModel.Id = listaIngredientesDaReceita.Count > 0 ? listaIngredientesDaReceita[0].IdReceita : null;
+            }
+
             cadastroViewModel.DadosIngredientes = list;
+            cadastroViewModel.DadosIngredientesDaReceita = listaIngredientesDaReceita;
+
 
             return View(cadastroViewModel);
+        }
+
+        public List<DadosIngredientes> pegarIngredientesDaReceita(int idReceita)
+        {
+
+            var listaIgredientes = new List<DadosIngredientes>();
+
+            using (var client = new HttpClient())
+            {
+                //client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", token.token_type, token.access_token));
+
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Receita/"+idReceita);
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                    var receita = JsonConvert.DeserializeObject<ReceitaRequest>(stringResult.Result);
+
+                    foreach (var item in receita.receitaIngrediente)
+                    {
+                        listaIgredientes.Add(new DadosIngredientes()
+                        {
+                            Id = item.idingrediente,
+                            NomeIngrediente = item.ingrediente.nomeIngrediente,
+                            PrecoIngrediente = item.ingrediente.precoIngrediente,
+                            UnidadeMedida = item.ingrediente.unidadeMedida.sigla,
+                            Quantidade = item.ingrediente.quantidadeUnidade,
+                            NomeReceita = receita.nomeReceita,
+                            IdReceita = receita.id
+                        });
+                    }
+
+                }
+                else
+                {
+                    //Erro de requisicao
+                    var content = response.Result.Content.ReadAsStringAsync();
+                }
+            }
+
+            return listaIgredientes;
         }
 
         public bool excluirTudo(List<int> listaId)
@@ -258,7 +311,7 @@ namespace ReceitaFrontEnd.Controllers
         }
 
 
-        public JsonResult cadastrarReceita(string nomereceita, List<CadastrarIngredientesViewModel> listaingredientes)
+        public JsonResult cadastrarReceita(string nomereceita, List<CadastrarIngredientesViewModel> listaingredientes, int? id)
         {
 
             var msgRetorno = "";
@@ -272,25 +325,28 @@ namespace ReceitaFrontEnd.Controllers
                     listaParametro.Add(
                     new
                     {
-                        id = 0,
-                        idReceita = 0,
                         idingrediente = item.Id,
                         quantidadeIngrediente = item.Quantidade,
-                        idGastoVariado = 0,
-                        qntGastoVariado = 0
                     });
                 }
                 var objetoData = new
                 {
                     nomeReceita = nomereceita,
                     modoPreparo = "aaaa",
-                    valorTotalReceita = 0,
                     receitaIngrediente = listaParametro
                 };
 
-                var formContentString = new StringContent(JsonConvert.SerializeObject(objetoData), Encoding.UTF8, "application/json");
+                Task<HttpResponseMessage> response;
 
-                var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Receita", formContentString);
+                var formContentString = new StringContent(JsonConvert.SerializeObject(objetoData), Encoding.UTF8, "application/json");
+                if(id != null && id > 0)
+                {
+                    response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Receita/"+ id, formContentString);
+                }
+                else
+                {
+                    response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Receita", formContentString);
+                }
 
                 response.Wait();
 

@@ -77,31 +77,34 @@
     @if (Model.Any())
     {
 
-        <table class="table" id="tables">
-            <thead>
-                <tr>
-                    <th scope="col" style="width:30px">ID</th>
-                    <th scope="col" style="width:850px">Nome da Receita</th>
-                    <th scope="col">Valor da Receita</th>
-                    <th scope="col" style="text-align:center">Ações</th>
-                </tr>
-            </thead>
-
-            <tbody class="table-group-divider" id="conteudoTbody">
-                @foreach (var receita in Model)
-                {
+        using (Html.BeginForm("Cadastro", "Receita", FormMethod.Post))
+        {
+            <table class="table" id="tables">
+                <thead>
                     <tr>
-                        <td>@receita.Id</td>
-                        <td>@receita.nomeReceita</td>
-                        <td class="ajusteTamanhoPreco">@receita.valorTotalReceita</td>
-                        <td style="text-align:center">
-                            <button type="button" class="btn btn-outline-primary" style="margin-bottom: 1px;">Editar</button>
-                            <button type="button" class="btn btn-outline-danger test">Deletar</button>
-                        </td>
+                        <th scope="col" style="width:30px">ID</th>
+                        <th scope="col" style="width:850px">Nome da Receita</th>
+                        <th scope="col">Valor da Receita</th>
+                        <th scope="col" style="text-align:center">Ações</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody class="table-group-divider" id="conteudoTbody">
+                    @foreach (var receita in Model)
+                    {
+                        <tr>
+                            <td>@receita.Id</td>
+                            <td>@receita.nomeReceita</td>
+                            <td class="ajusteTamanhoPreco">@receita.valorTotalReceita</td>
+                            <td style="text-align:center">
+                                <button type="submit" name="idReceita" value="@receita.Id" class="btn btn-outline-primary" style="margin-bottom: 1px;">Editar</button>
+                                <button type="button" class="btn btn-outline-danger test">Deletar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     }
     else
     {
