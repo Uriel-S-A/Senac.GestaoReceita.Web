@@ -1,62 +1,20 @@
-﻿//function controle(opcao) {
-//    var editar = false;
-
-//    opcao == 'cadastro' ? editar = false : editar = true;
-
-//    return editar;
-//}
-
+﻿// Função para editar o ingrediente selecionado
 function editarIngrediente(button, opcao) {
+    // seta a variável de controle para false
     var editar = false;
 
+    // verifica se o botão clicado foi o de cadastro ou o de editar
     opcao == 'cadastro' ? editar = false : editar = true;
 
-    //const modais = ['modalId', 'modalNome', 'modalQuantidade', 'modalMedida', 'modalEmpresa', 'modalPreco'];
-
-    //const Ids = ["idIngredienteModal", "modalNome", "modalQuantidade", "selectUnidadeMedida", "selectEmpresa", "modalPreco"];
-
-    //var inputs = ['inputId', 'inputNome', 'inputQuantidade', 'inputUnidadeMedida', 'inputPreco', 'inputEmpresa'];
-
-    //var inputs = [];
-
-    //var inputId = linhaItemClicado.querySelector("input[data-item='item_id']");
-    //var inputNome = linhaItemClicado.querySelector("input[data-item='item_nome']");
-    //var inputQuantidade = linhaItemClicado.querySelector("input[data-item='item_quantidade']")
-    //var inputUnidadeMedida = linhaItemClicado.querySelector("input[data-item='item_unidade_medida']");
-    //var inputPreco = linhaItemClicado.querySelector("input[data-item='item_preco']");
-    //var inputEmpresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
-
-    //for (var p = 0; p < Ids.length; p++) {
-    //    inputs[p] = inputNomes[p].value;
-    //}
-
-    //if (editar == true) {
-    //    document.getElementById("limparCamposButton").style.display = "none";
-
-    //    var linhaItemClicado = button.closest("tr");
-
-    //    for (var i = 0; i < modais.length; i++) {
-    //        var modal = document.getElementById(Ids[i]);
-    //        modal.value = inputs[i].value;
-    //    }
-    //}
-    //else {
-    //    document.getElementById("limparCamposButton").style.display = "block";
-
-    //    for (var j = 0; j < modais.length; j++) {
-    //        var modal = document.getElementById(Ids[j]);
-    //        modal.value = '';
-    //    }
-    //}
-    
-
-    // ---------------------------------------------------------------------------------------------
-
+    // se foi o de editar, ele vai preencher os campos da modal com os dados do ingrediente selecionado
     if (editar == true) {
+        // esconde o botão de limpar, pois ele não é necessário na tela de editar
         document.getElementById("limparCamposButton").style.display = "none";
 
+        // passa os dados contidos na linha da tabela em que o botão está presente para uma variável
         var linhaItemClicado = button.closest("tr");
 
+        // obtém os dados necessários da linha
         var inputId = linhaItemClicado.querySelector("input[data-item='item_id']");
         var inputNome = linhaItemClicado.querySelector("input[data-item='item_nome']");
         var inputQuantidade = linhaItemClicado.querySelector("input[data-item='item_quantidade']")
@@ -64,6 +22,7 @@ function editarIngrediente(button, opcao) {
         var inputPreco = linhaItemClicado.querySelector("input[data-item='item_preco']");
         var inputEmpresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
 
+        // passa os valores para a modal de editar para ela exibir os campos preenchidos
         var modalId = document.getElementById("idIngredienteModal");
         modalId.value = inputId.value;
 
@@ -82,9 +41,12 @@ function editarIngrediente(button, opcao) {
         var modalPreco = document.getElementById("modalPreco");
         modalPreco.value = Number(inputPreco.value.replace(",", "."));
     }
-    else {
+    else {// se não, ele vai chamar a tela de cadastro e todos os campos estarão vazios
+
+        // o botão limpar aparece na tela
         document.getElementById("limparCamposButton").style.display = "block";
 
+        // limpa todos os campos
         var modalId = document.getElementById("idIngredienteModal");
         modalId.value = '';
 
@@ -105,14 +67,18 @@ function editarIngrediente(button, opcao) {
     }
 }
 
+// Função para excluir o ingrediente selecionado
 function excluirIngrediente(button) {
+    // passa os dados contidos na linha da tabela em que o botão está presente para uma variável
     var linhaItemClicado = button.closest("tr");
 
+    // obtém os dados necessários da linha
     var id = linhaItemClicado.querySelector("input[data-item='item_id']");
     var ingrediente = linhaItemClicado.querySelector("input[data-item='item_nome']");
     var empresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
     var unidadeMedida = linhaItemClicado.querySelector("input[data-item='item_unidade_medida']");
 
+    // passa os valores para a modal de confirmação de excluir
     var inputId = document.getElementById("inputId");
     inputId.value = id.value;
 

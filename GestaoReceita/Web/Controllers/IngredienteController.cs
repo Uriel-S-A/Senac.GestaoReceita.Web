@@ -17,19 +17,27 @@ namespace Web.Controllers
 {
     public class IngredienteController : Controller
     {
-        // GET: Ingrediente
+        bool sucesso = false;
+
         public ActionResult Index(string BuscaIngredientes)
         {
+            // chama o método GetDadosIngrediente e passa a resposta pra lista
             List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
 
+            // verifica se o campo buscar NÃO está nulo ou vazio
             if (!string.IsNullOrEmpty(BuscaIngredientes))
             {
+                // passa pra lista apenas os ingredientes que contém o que foi digitado no campo buscar
                 listaIngredientesCadastrados = listaIngredientesCadastrados.Where(w => w.NomeIngrediente.Contains(BuscaIngredientes)).ToList();
             }
 
+            // chama o método GetDadosEmpresa e passa a resposta pra lista
             List<DadosEmpresa> listaDadosEmpresa = GetDadosEmpresa();
+
+            // chama o método GetDadosUnidadeMedida e passa a resposta pra lista
             List<DadosUnidadeMedida> listaDadosUnidadeMedida = GetDadosUnidadeMedida();
 
+            // passa pra indexViewModel todas as listas com todos os dados necessários
             IndexViewModel indexViewModel = new IndexViewModel()
             {
                 listaIngredientesCadastrados = listaIngredientesCadastrados,
@@ -37,20 +45,23 @@ namespace Web.Controllers
                 listaDadosUnidadeMedida = listaDadosUnidadeMedida,
             };
 
+            // retorna a indexViewModel pra index
             return View(indexViewModel);
         }
 
-        // GET: Ingrediente
+        // Método GET: Ingrediente
         public List<DadosIngrediente> GetDadosIngrediente()
         {
             List<DadosIngrediente> listaDadosIngrediente = new List<DadosIngrediente>();
 
             using (var client = new HttpClient())
             {
+                // envia a requisição pra API para receber os dados dos ingredientes através do método GET
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes");
-
+                // espera receber uma resposta
                 response.Wait();
 
+                // verifica se a requisição foi efetuada com sucesso
                 if (response.Result.IsSuccessStatusCode)
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
@@ -76,15 +87,15 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    //Erro de requisicao
+                    // erro na requisicao
                     throw new Exception(response.Result.ReasonPhrase);
                 }
             }
-
+            // retorna a listaDadosIngrediente
             return listaDadosIngrediente;
         }
 
-        // GET: Empresa
+        // Método GET: Empresa
         public List<DadosEmpresa> GetDadosEmpresa()
         {
             List<DadosEmpresa> listaDadosEmpresa = new List<DadosEmpresa>();
@@ -128,7 +139,7 @@ namespace Web.Controllers
             return listaDadosEmpresa;
         }
 
-        // GET: UnidadeMedida
+        // Método GET: UnidadeMedida
         public List<DadosUnidadeMedida> GetDadosUnidadeMedida()
         {
             List<DadosUnidadeMedida> listaDadosUnidadeMedida = new List<DadosUnidadeMedida>();
@@ -165,6 +176,7 @@ namespace Web.Controllers
             return listaDadosUnidadeMedida;
         }
 
+        // Método PersistirIngrediente (POST / PUT)
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())
@@ -195,7 +207,6 @@ namespace Web.Controllers
                 { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
                     response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
                 }
-
                 // espera a resposta da requisição
                 response.Wait();
 
@@ -206,32 +217,36 @@ namespace Web.Controllers
                 }
                 else
                 { // se não, joga um erro na tela
-                    //Erro de requisicao
+                    // erro de requisicao
                     throw new Exception(response.Result.ReasonPhrase);
                 }
             }
-
             // chama a index novamente para atualizar a tela
             return RedirectToAction("Index");
         }
 
+        // Método DELETE: Ingrediente
         public ActionResult DeleteDadosIngrediente(DadosIngrediente dados)
         {
             using (var client = new HttpClient())
             {
+                // envia a requisição pra API para deletar os dados dos ingredientes através do método DELETE
                 var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes/" + dados.Id);
-
+                // espera a resposta da requisição
                 response.Wait();
 
+                // verifica se a requisição teve sucesso ou não
                 if (response.Result.IsSuccessStatusCode)
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
+                    sucesso = true;
                 }
                 else
                 {
                     throw new Exception(response.Result.ReasonPhrase);
+                    sucesso = false;
                 }
-
+                // chama a index novamente para atualizar a tela
                 return RedirectToAction("Index");
             }
         }
