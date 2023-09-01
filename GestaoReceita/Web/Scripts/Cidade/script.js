@@ -131,8 +131,11 @@ function enviarRequisicaoDeletar(data) {
         url: '/Cidade/DeletarCidade',
         type: 'POST',
         data: data,
-        success: function () {
+        success: function (response) {
             $('#confirmModal').modal('hide');
+            if (response.mensagemRetorno != null && response.mensagemRetorno != "") {
+                alert(response.mensagemRetorno)
+            }
             window.location.href = "/Cidade/Index";
         },
         error: function (error) {

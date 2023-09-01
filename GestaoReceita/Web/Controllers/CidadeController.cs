@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -185,10 +186,24 @@ namespace Web.Controllers
         }
 
 
-
-        public ActionResult DeletarEstado(CidadeViewModel cidadeDeletar)
+        public JsonResult DeletarCidade(int Id)
         {
-            return Json(new { });
+            var retorno = "";
+
+            using (var client = new HttpClient())
+            {
+                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Cidades/" + Id);
+
+                response.Wait();
+
+                retorno = "Cidade deletada com sucesso";
+
+                if (!response.Result.IsSuccessStatusCode)
+                {
+                    retorno = "Erro: " + response.Result.ReasonPhrase;
+                }
+            }
+            return Json(new { mensagemRetorno = retorno });
         }
     }
 }

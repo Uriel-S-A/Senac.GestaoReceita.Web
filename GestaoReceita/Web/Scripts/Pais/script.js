@@ -100,17 +100,21 @@ function buttonDeletar() {
             }
 
             enviarRequisicaoDeletar(data);
-        })              
+        })
     });
 }
+
 
 function enviarRequisicaoDeletar(data) {
     $.ajax({
         url: '/Pais/DeletarPais',
         type: 'POST',
         data: data,
-        success: function () {
+        success: function (response) {
             $('#confirmModal').modal('hide');
+            if (response.mensagemRetorno != null && response.mensagemRetorno != "") {
+                alert(response.mensagemRetorno)
+            }
             window.location.href = "/Pais/Index";
         },
         error: function (error) {

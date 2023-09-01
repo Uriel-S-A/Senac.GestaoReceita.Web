@@ -186,9 +186,24 @@ namespace Web.Controllers
 
 
 
-        public ActionResult DeletarEstado(PaisViewModel paisDeletar)
+        public JsonResult DeletarEstado(int Id)
         {
-            return Json(new { });
+            var retorno = "";
+
+            using (var client = new HttpClient())
+            {
+                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Estados/" + Id);
+
+                response.Wait();
+
+                retorno = "Estado deletado com sucesso";
+
+                if (!response.Result.IsSuccessStatusCode)
+                {
+                    retorno = "Erro: " + response.Result.ReasonPhrase;
+                }
+            }
+            return Json(new { mensagemRetorno = retorno });
         }
     }
 }

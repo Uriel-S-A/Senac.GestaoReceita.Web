@@ -33,18 +33,24 @@
                         <form>
                             <div class="row">
                                 <div class="mb-3 col">
+                                    <label for="recipient-name" class="col-form-label">Estados:</label>
+                                    <select class="form-select" id="paises" name="paises">
+                                        @foreach (var cidade in Model)
+                                        {
+                                            <option id="@cidade.id" value="@cidade.idEstado">@cidade.estado.descricaoEstado</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3 col">
                                     <label for="recipient-name" class="col-form-label">Cidade:</label>
                                     <input type="text" class="form-control" id="cidade-nome">
                                 </div>
-                                <div class="mb-3 col">
-                                    <label for="recipient-name" class="col-form-label">Estado:</label>
-                                    <input type="text" class="form-control" id="estado-nome">
-                                </div>
+                                
 
                                 @*<div class="mb-3 col">
-                                    <label for="recipient-name" class="col-form-label">Sigla:</label>
-                                    <input type="text" class="form-control" id="estado-sigla">
-                                                         </div>*@
+        <label for="recipient-name" class="col-form-label">Sigla:</label>
+        <input type="text" class="form-control" id="estado-sigla">
+                             </div>*@
                             </div>
                         </form>
                     </div>

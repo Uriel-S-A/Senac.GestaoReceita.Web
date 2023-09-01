@@ -113,7 +113,7 @@
                 <tr>
                     <th scope="col" class="d-none">Id</th>
                     <th scope="col">Nome</th>
-                    @*<th scope="col">Sigla</th>*@
+                
                     <th scope="col" class="text-center">Ações</th>
                 </tr>
             </thead>
@@ -121,8 +121,7 @@
                 @foreach (var pais in Model)
                 {
                     <tr>
-                        @*<td class="d-none paisId">@pais.Id</td>
-                        <td class="paisNome">@pais.PaisNome</td>*@
+                        
                         <td class="d-none paisId">@pais.id</td>
                         <td class="paisNome">@pais.descricaoPais</td>
                         @*<td class="paisSigla">@pais.PaisSigla</td>*@
