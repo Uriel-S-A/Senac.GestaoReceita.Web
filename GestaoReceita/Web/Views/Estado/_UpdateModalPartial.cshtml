@@ -1,0 +1,35 @@
+﻿@using Web.Models.Estado
+
+@model EstadoViewModel
+
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="cadastrarModalLabel">Editar Estado</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="row">
+            <div class="mb-3 col">
+                <label for="recipient-name" class="col-form-label">Pais:</label>
+                <select class="form-select" id="paises" name="paises">
+                    @foreach (var pais in Model.listaPaises)
+                    {
+                        <option value="@pais.id" @(pais.id == Model.idPais ? "selected" : "")>@pais.descricaoPais</option>
+
+                    }
+                </select>
+            </div>
+            <div class="mb-3 col">
+                <label for="recipient-name" class="col-form-label">Estado:</label>
+                <input type="text" class="form-control button-update-estado " id="@Model.id" value="@Model.descricaoEstado">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="button" class="btn btn-primary" id="createBtn" onclick="buttonUpdateEstado()">Alterar</button>
+</div>
+
+
+

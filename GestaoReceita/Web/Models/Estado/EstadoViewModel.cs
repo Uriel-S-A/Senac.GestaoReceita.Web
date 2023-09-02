@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Web.Models.Pais;
 
 namespace Web.Models.Estado
@@ -10,6 +11,11 @@ namespace Web.Models.Estado
         public int idPais { get; set; }
         public PaisViewModel pais { get; set; }
 
+
+        public string descricaoPais { get; set; }
+        public List<PaisViewModel> listaPaises { get; set; }
+
+
         public static explicit operator EstadoViewModel(EstadoTO v)
         {
             if (v == null) return null;
@@ -19,7 +25,7 @@ namespace Web.Models.Estado
                 id = v.id,
                 descricaoEstado = v.descricaoEstado,
                 idPais = v.idPais,
-                pais = (PaisViewModel)v.pais //ver sobre
+                pais = (PaisViewModel)v.pais
             };
         }
     }

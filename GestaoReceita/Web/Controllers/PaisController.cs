@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Mvc;
+using Web.Models.Estado;
 using Web.Models.Pais;
 
 namespace Web.Controllers
@@ -52,8 +53,6 @@ namespace Web.Controllers
                 }
                 else
                 {                    
-                    //mensagem de erro de validação
-
                     var content = response.Result.Content.ReadAsStringAsync();
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
                     
@@ -64,88 +63,122 @@ namespace Web.Controllers
         }
 
         public ActionResult AdicionarPais(PaisViewModel novoPais)
-        {            
-            if (ModelState.IsValid)
-            {
-                List<PaisViewModel> minhaLista = getPaises();
+        {
+            List<PaisViewModel> minhaLista = getPaises();
 
-                //comparação será sensível a maiúsculas e minúsculas usando StringComparison.OrdinalIgnoreCase
+            if (ModelState.IsValid)
+            {                                
                 bool paisJaExiste = minhaLista.Any(p => p.descricaoPais.Equals(novoPais.descricaoPais, StringComparison.OrdinalIgnoreCase));
 
                 if (paisJaExiste)
                 {
-                    //não aparece na tela
-                    ModelState.AddModelError("descricaoPais", "O país já existe na lista.");
-                    List<PaisViewModel> lista = getPaises();
-                    return View("Index", lista);
-                }
+                    ModelState.AddModelError("paisExistente", "Este pais já existe.");
 
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+                    return Json(new { success = false, erros });
+                }
+                    
                 int novoId = minhaLista.Max(max => max.id) + 1;
 
-                using (var client = new HttpClient())
+                this.CadastrarNovoPais(novoPais, novoId);
+
+                if (!ModelState.IsValid)
                 {
-                    var formContentString = new StringContent(JsonConvert.SerializeObject(new { descricaoPais = novoPais.descricaoPais, id = novoId }), Encoding.UTF8, "application/json");
+                    ModelState.AddModelError("paisExistente", "Este pais já existe.");
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
 
-                    var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Pais", formContentString);
-                    
-
-                    response.Wait();
-
-                    if (response.Result.IsSuccessStatusCode)
-                    {
-                        // adicionar mensagem de sucesso
-
-                        var stringResult = response.Result.Content.ReadAsStringAsync();
-                        var objectJson = JsonConvert.DeserializeObject<PaisTO>(stringResult.Result); //todas info que vem do banco devem ser armazenadas num TO.
-                    }
-                    else
-                    {
-                        // adicionar mensagem de erro
-                        var content = response.Result.Content.ReadAsStringAsync();
-                        var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-                    }
+                    return Json(new { success = false, erros });
                 }
             }
-
-            return Index();
+            
+            return View("Index", minhaLista);
         }
-        
-        public ActionResult EditarPais(PaisViewModel paisEditar)
+
+        private void CadastrarNovoPais(PaisViewModel novoPais, int novoId)
         {
-            //já chegando id e descrição do pais.
-                       
-            var dados = getCidadeById(paisEditar.id);
-
-            var Id = dados.id = paisEditar.id;
-            var DescricaoPais =  dados.descricaoPais = paisEditar.descricaoPais;            
-
             using (var client = new HttpClient())
             {
-                var formContentString = new StringContent(JsonConvert.SerializeObject(new { descricaoPais = DescricaoPais, id = Id }), Encoding.UTF8, "application/json");
-                
-                var response = client.PutAsync(new Uri("http://gestaoreceitaapi.somee.com/api/Pais/" + dados.id), formContentString);                
+                var formContentString = new StringContent(JsonConvert.SerializeObject(new { descricaoPais = novoPais.descricaoPais, id = novoId }), Encoding.UTF8, "application/json");
+
+                var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Pais", formContentString);
 
                 response.Wait();
 
                 if (response.Result.IsSuccessStatusCode)
-                {
-                    // adicionar mensagem de sucesso
-
+                {                    
                     var stringResult = response.Result.Content.ReadAsStringAsync();
-                    var objectJson = JsonConvert.DeserializeObject<PaisViewModel>(stringResult.Result);
+                    var objectJson = JsonConvert.DeserializeObject<PaisTO>(stringResult.Result); 
                 }
                 else
-                {
-                    // adicionar mensagem de erro
+                {                    
                     var content = response.Result.Content.ReadAsStringAsync();
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
                 }
             }
-
-            return Json(new { });
         }
 
-        public PaisViewModel getCidadeById(int id)
+        public ActionResult EditarPais(PaisViewModel paisEditar)
+        {
+
+            List<PaisViewModel> minhaLista = getPaises();
+
+            if (ModelState.IsValid)
+            {                                
+                bool paisJaExiste = minhaLista.Any(p => p.descricaoPais.Equals(paisEditar.descricaoPais, StringComparison.OrdinalIgnoreCase));
+
+                if (paisJaExiste)
+                {
+                    ModelState.AddModelError("paisExistente", "Este pais já existe.");
+
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+                    return Json(new { success = false, erros });
+                }
+
+                var dados = getEstadoById(paisEditar.id);
+
+                var Id = dados.id = paisEditar.id;
+                var DescricaoPais = dados.descricaoPais = paisEditar.descricaoPais;
+
+                EditarNovoPais(dados, DescricaoPais, Id);
+
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("paisExistente", "Este pais já existe.");
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+                    return Json(new { success = false, erros });
+                }
+            }
+
+            return View("Index", minhaLista);
+        }
+
+        private void EditarNovoPais(PaisViewModel dados, string DescricaoPais, int Id)
+        {
+            using (var client = new HttpClient())
+            {
+                var formContentString = new StringContent(JsonConvert.SerializeObject(new { descricaoPais = DescricaoPais, id = Id }), Encoding.UTF8, "application/json");
+
+                var response = client.PutAsync(new Uri("http://gestaoreceitaapi.somee.com/api/Pais/" + dados.id), formContentString);
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {                    
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    var objectJson = JsonConvert.DeserializeObject<PaisViewModel>(stringResult.Result);
+                }
+                else
+                {                    
+                    var content = response.Result.Content.ReadAsStringAsync();
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                }
+            }
+        }
+
+        public PaisViewModel getEstadoById(int id)
         {
             PaisViewModel paisViewModel = new PaisViewModel();
 
@@ -166,8 +199,7 @@ namespace Web.Controllers
                     return paisViewModel = paisView;
                 }
                 else
-                {
-                    //tratar erro de requisicao
+                {                    
                     var content = response.Result.Content.ReadAsStringAsync();
 
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
@@ -177,29 +209,10 @@ namespace Web.Controllers
             return paisViewModel;
         }
 
-
-
         public ActionResult DeletarPais(PaisViewModel paisDeletar)
         {
             return Json(new { });
         }
 
     }
-}
-
-
-public class fooCidadeDTO
-{
-    public int id { get; set; }
-    public string descricaoCidade { get; set; }
-    public int idEstado { get; set; }
-    public fooEstadoRequestDTO estado { get; set; }
-}
-
-public class fooEstadoRequestDTO
-{
-    public int id { get; set; }
-    public string descricaoEstado { get; set; }
-    public int idPais { get; set; }
-    public PaisTO pais { get; set; }
 }

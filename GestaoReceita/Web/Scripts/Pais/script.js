@@ -1,6 +1,27 @@
 ﻿
-//ver sobre sigla, se confirmar que não terá
-//daí remover do front e back todos as "siglas".
+function mostrarMensagemErro(mensagem, redirecionarURL) {
+    Swal.fire({
+        timer: 3000,
+        icon: 'error',
+        text: mensagem,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    }).then(() => {
+        window.location.href = redirecionarURL;
+    });
+}
+
+function mostrarMensagemSucesso(mensagem, redirecionarURL) {
+    Swal.fire({
+        icon: 'success',
+        text: mensagem,
+        timer: 2000,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    }).then(() => {
+        window.location.href = redirecionarURL;
+    });
+}
 
 
 //Button Create
@@ -9,7 +30,7 @@ function buttonCreate() {
         var paisNome = $('#pais-nome').val();
 
         if (!paisNome) { 
-            mostrarMensagemErro("Por favor, preencha a descrição do País.");
+            mostrarMensagemErro("Por favor, preencha a descrição do País.", "/Pais/Index");
             return false;
         }
 
@@ -17,6 +38,8 @@ function buttonCreate() {
             descricaoPais: paisNome,
             
         };
+
+        $('#exampleModal').modal('hide');
 
         enviarRequisicaoCreate(data);
     });
@@ -26,10 +49,12 @@ function enviarRequisicaoCreate(data) {
         url: '/Pais/AdicionarPais',
         type: 'POST',
         data: data,
-        success: function () {
-            console.log('Dados enviados com sucesso!');
-            $('#exampleModal').modal('hide');
-            window.location.href = "/Pais/Index";
+        success: function (response) {
+            if (response.success === false) {
+                mostrarMensagemErro("O País que deseja cadastrar já existe.", "/Pais/Index");
+            } else {
+                mostrarMensagemSucesso("País adicionado com sucesso.", "/Pais/Index");
+            }                                    
         },
         error: function (error) {
             console.error('Erro ao enviar dados:', error);
@@ -51,7 +76,7 @@ function buttonEditar() {
             var updatedPaisNome = $("#pais-nome-update").val();
 
             if (!updatedPaisNome) {
-                mostrarMensagemErro("Por favor, preencha a descrição do País.");
+                mostrarMensagemErro("Por favor, preencha a descrição do País.", "/Pais/Index");
                 return;
             }
 
@@ -59,6 +84,8 @@ function buttonEditar() {
                 id: id,
                 descricaoPais: updatedPaisNome
             };
+
+            $('#editModal').modal('hide');
 
             enviarRequisicaoEditar(data);
         });
@@ -69,21 +96,16 @@ function enviarRequisicaoEditar(data) {
         url: '/Pais/EditarPais',
         type: 'POST',
         data: data,
-        success: function () {
-            $('#exampleModal').modal('hide');
-            window.location.href = "/Pais/Index";
+        success: function (response) {           
+            if (response.success === false) {
+                mostrarMensagemErro("O País que deseja editar já existe.", "/Pais/Index");
+            } else {
+                mostrarMensagemSucesso("País alterado com sucesso.", "/Pais/Index");
+            }
         },
         error: function (error) {
             console.error('Erro ao enviar dados:', error);
         }
-    });
-}
-
-function mostrarMensagemErro(mensagem) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: mensagem,
     });
 }
 
@@ -103,7 +125,7 @@ function buttonDeletar() {
         })              
     });
 }
-
+//lorenzo fez
 function enviarRequisicaoDeletar(data) {
     $.ajax({
         url: '/Pais/DeletarPais',
