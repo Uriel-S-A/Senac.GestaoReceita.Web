@@ -80,7 +80,7 @@ namespace ReceitaFrontEnd.Controllers
                             NomeIngrediente = item.ingrediente.nomeIngrediente,
                             PrecoIngrediente = item.ingrediente.precoIngrediente,
                             UnidadeMedida = item.ingrediente.unidadeMedida.sigla,
-                            Quantidade = item.ingrediente.quantidadeUnidade,
+                            Quantidade = item.quantidadeIngrediente,
                             NomeReceita = receita.nomeReceita,
                             IdReceita = receita.id
                         });

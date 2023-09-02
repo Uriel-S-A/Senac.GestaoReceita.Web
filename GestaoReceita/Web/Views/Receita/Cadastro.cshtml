@@ -100,7 +100,9 @@
         var spanDescricaoReceita = tr.querySelector("span[data-name='label_nome_ingrediente']");
         var inputQuantidadeReceita = tr.querySelector("input[data-name='input_quantidade_ingrediente']");
 
-        controlaAlertErro(inputQuantidadeReceita);
+        var isErro = controlaAlertErro(inputQuantidadeReceita);
+
+        if (isErro) return;
 
         //pega tbody dos igredientes da receita para adicionar o ingrediente
         var tbody_add_ingrediente = document.getElementById("form_ingredientes_receita");
@@ -196,8 +198,9 @@
 
             const alertTrigger = document.getElementById('liveAlertBtn')
             appendAlert('Insira um valor válido para adicionar o ingrediente', 'danger');
-            return;
-
+            return true;
+        } else {
+            return false;
         }
     }
 

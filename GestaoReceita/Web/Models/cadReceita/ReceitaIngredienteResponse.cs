@@ -8,6 +8,7 @@ namespace ReceitaFrontEnd.Models
     public class ReceitaIngredienteResponse
     {
         public int idingrediente { get; set; }
+        public int quantidadeIngrediente { get; set; }
         public IngredienteResponse ingrediente { get; set; }
         
     }
