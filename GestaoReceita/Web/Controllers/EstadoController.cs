@@ -45,7 +45,7 @@ namespace Web.Controllers
                             id = estadoTO.id,
                             descricaoEstado = estadoTO.descricaoEstado,
                             idPais = estadoTO.idPais,
-                            pais = (PaisViewModel)estadoTO.pais //ver sobre
+                            pais = (PaisViewModel)estadoTO.pais
 
                         };
 
@@ -55,9 +55,7 @@ namespace Web.Controllers
                     return estadoViewModel = estadoViewModelList;
                 }
                 else
-                {
-                    //mensagem de erro de validação
-
+                {                    
                     var content = response.Result.Content.ReadAsStringAsync();
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
 
@@ -336,8 +334,7 @@ namespace Web.Controllers
                     return estadoViewModel = paisView;
                 }
                 else
-                {
-                    //tratar erro de requisicao
+                {                    
                     var content = response.Result.Content.ReadAsStringAsync();
 
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);

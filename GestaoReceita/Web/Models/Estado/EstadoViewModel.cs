@@ -11,10 +11,8 @@ namespace Web.Models.Estado
         public int idPais { get; set; }
         public PaisViewModel pais { get; set; }
 
-
         public string descricaoPais { get; set; }
         public List<PaisViewModel> listaPaises { get; set; }
-
 
         public static explicit operator EstadoViewModel(EstadoTO v)
         {
