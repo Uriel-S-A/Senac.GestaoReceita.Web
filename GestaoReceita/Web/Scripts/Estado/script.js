@@ -157,11 +157,50 @@ function RequisicaoModalUpdate(data) {
     });
 }
 
+//Button Delete
+
+function buttonDeletar() {
+    $('.btn-modal-delete').on('click', function () {
+
+        var rowSelected = this.parentNode.parentNode;
+        var id = $(rowSelected).find("td.estadoId").text();
+
+        $("#btnConfirmDelete").on("click", function () {
+            var data = {
+                Id: id
+            }
+
+            enviarRequisicaoDeletar(data);
+        })
+    });
+}
+
+
+function enviarRequisicaoDeletar(data) {
+    $.ajax({
+        url: '/Estado/DeletarEstado',
+        type: 'POST',
+        data: data,
+        success: function (response) {
+            $('#confirmModal').modal('hide');
+            if (response.mensagemRetorno != null && response.mensagemRetorno != "") {
+                alert(response.mensagemRetorno)
+            }
+            window.location.href = "/Estado/Index";
+        },
+        error: function (error) {
+            console.error('Erro ao enviar dados:', error);
+        }
+    });
+}
+
+
 
 function onLoad() {
     //Partial Views    
     ModalCreate();
     ModalUpdate();    
+    buttonDeletar();
 }
 
 $(document).ready(function () {
