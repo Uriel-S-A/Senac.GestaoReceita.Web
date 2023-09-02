@@ -32,10 +32,10 @@ function editarIngrediente(button, opcao) {
         var modalQuantidade = document.getElementById("modalQuantidade");
         modalQuantidade.value = inputQuantidade.value;
 
-        var modalMedida = document.getElementById("modalMedida");
+        var modalMedida = document.getElementById("selectMedida");
         modalMedida.value = inputUnidadeMedida.value;
 
-        var modalEmpresa = document.getElementById("modalEmpresa");
+        var modalEmpresa = document.getElementById("selectEmpresa");
         modalEmpresa.value = inputEmpresa.value;
 
         var modalPreco = document.getElementById("modalPreco");
@@ -56,10 +56,10 @@ function editarIngrediente(button, opcao) {
         var modalQuantidade = document.getElementById("modalQuantidade");
         modalQuantidade.value = '';
 
-        var modalMedida = document.getElementById("modalMedida");
+        var modalMedida = document.getElementById("selectMedida");
         modalMedida.value = '';
 
-        var modalEmpresa = document.getElementById("modalEmpresa");
+        var modalEmpresa = document.getElementById("selectEmpresa");
         modalEmpresa.value = '';
 
         var modalPreco = document.getElementById("modalPreco");
@@ -90,8 +90,4 @@ function excluirIngrediente(button) {
 
     var spanUnidadeMedida = document.getElementById("spanUnidadeMedida");
     spanUnidadeMedida.innerText = unidadeMedida.value;
-}
-
-function exibeAlert() {
-
 }

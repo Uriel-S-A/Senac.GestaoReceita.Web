@@ -93,7 +93,7 @@
     </table>
 </div>
 
-<!-- MODAL EDITAR / EXCLUIR -->
+<!-- MODAL EDITAR / CADASTRAR -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <!-- Form que envia os dados para a controller -->
@@ -116,8 +116,8 @@
                         </div>
                         <div class="col">
                             <!-- Campo Empresa -->
-                            <label class="labelModalEditar" for="modalEmpresa">Nome Empresa</label>
-                            <select id="modalEmpresa" name="EmpresaId" required>
+                            <label class="labelModalEditar" for="selectEmpresa">Nome Empresa</label>
+                            <select id="selectEmpresa" name="EmpresaId" required>
                                 <option selected disabled value="">Selecione a empresa</option>
                                 <!-- Loop para criar as opções no menu dropdown -->
                                 @foreach (var item in Model.listaDadosEmpresa)
@@ -135,8 +135,8 @@
                         </div>
                         <div class="col">
                             <!-- Campo Unidade de Medida -->
-                            <label class="labelModalEditar" for="modalMedida">Unidade de Medida</label>
-                            <select id="modalMedida" name="UnidadeMedidaId" required>
+                            <label class="labelModalEditar" for="selectMedida">Unidade de Medida</label>
+                            <select id="selectMedida" name="UnidadeMedidaId" required>
                                 <option selected disabled value="">Unidade de Medida</option>
                                 <!-- Loop para criar as opções no menu dropdown -->
                                 @foreach (var item in Model.listaDadosUnidadeMedida)
