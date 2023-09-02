@@ -142,6 +142,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Cidade\style.css" />
     <Content Include="Content\Estado\style.css" />
     <Content Include="Content\Pais\style.css" />
     <Content Include="favicon.ico" />

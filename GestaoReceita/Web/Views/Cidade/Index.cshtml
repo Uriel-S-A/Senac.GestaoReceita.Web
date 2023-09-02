@@ -9,12 +9,8 @@
     @*alerta de erro*@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/Scripts/Cidade/script.js"></script>
-    @*<link rel="stylesheet" href="~/Content/Cidade/style.css" />*@
+    <link rel="stylesheet" href="~/Content/Cidade/style.css" />
 </head>
-
-
-
-
 
 <body>
     <div class="container my-3">
@@ -44,13 +40,7 @@
                                 <div class="mb-3 col">
                                     <label for="recipient-name" class="col-form-label">Cidade:</label>
                                     <input type="text" class="form-control" id="cidade-nome">
-                                </div>
-                                
-
-                                @*<div class="mb-3 col">
-        <label for="recipient-name" class="col-form-label">Sigla:</label>
-        <input type="text" class="form-control" id="estado-sigla">
-                             </div>*@
+                                </div>                                                                
                             </div>
                         </form>
                     </div>
@@ -61,7 +51,6 @@
                 </div>
             </div>
         </div>
-
 
         @*modal delete*@
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -109,11 +98,7 @@
                                                 <option id="@cidade.id" value="@cidade.idEstado">@cidade.estado.descricaoEstado</option>
                                             }
                                         </select>
-                                    </div>
-                                @*<div class="mb-3 col">
-                                    <label for="recipient-name" class="col-form-label">Estado:</label>
-                                    <input type="text" class="form-control" id="estado-nome-update">
-                                </div>*@
+                                    </div>                                
                                 <div class="mb-3 col">
                                     <label for="recipient-name" class="col-form-label">Cidade:</label>
                                     <input type="text" class="form-control" id="cidade-nome-update">

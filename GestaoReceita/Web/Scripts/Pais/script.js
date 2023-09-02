@@ -116,10 +116,14 @@ function buttonDeletar() {
         var rowSelected = this.parentNode.parentNode;
         var id = $(rowSelected).find("td.paisId").text();
 
+        
         $("#btnConfirmDelete").on("click", function () {
+
             var data = {
                 Id: id
             }
+
+            $('#confirmModal').modal('hide');
 
             enviarRequisicaoDeletar(data);
         })
@@ -132,12 +136,11 @@ function enviarRequisicaoDeletar(data) {
         url: '/Pais/DeletarPais',
         type: 'POST',
         data: data,
-        success: function (response) {
-            $('#confirmModal').modal('hide');
+        success: function (response) {            
             if (response.mensagemRetorno != null && response.mensagemRetorno != "") {
-                alert(response.mensagemRetorno)
-            }
-            window.location.href = "/Pais/Index";
+                var mensagem = (response.mensagemRetorno)
+                mostrarMensagemSucesso(mensagem, "/Pais/Index");
+            }                  
         },
         error: function (error) {
             console.error('Erro ao enviar dados:', error);

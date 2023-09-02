@@ -208,12 +208,7 @@ namespace Web.Controllers
 
             return paisViewModel;
         }
-
-        public ActionResult DeletarPais(PaisViewModel paisDeletar)
-        {
-            return Json(new { });
-
-
+        
         public JsonResult DeletarPais(int Id)
         {
             var retorno = "";

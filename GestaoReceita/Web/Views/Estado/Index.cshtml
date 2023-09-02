@@ -16,8 +16,6 @@
 
 <body>
     <div class="container my-3">
-        </div>
-
 
         @*modal delete*@
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -40,6 +38,9 @@
 
         @*modal create*@
         <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="exibe-modal-create">
+
                 </div>
             </div>
         </div>
@@ -49,14 +50,12 @@
             <div class="modal-dialog">
                 <div class="modal-content" id="exibe-modal-update">
 
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="updateBtn">Tudo Jóia👍</button>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <button class="btn btn-primary" id="modal-create">Novo Resgistro</button>
+
+        <button type="button" class="btn btn-primary" id="modal-create">Novo Resgistro</button>        
         <table class="table">
             <thead>
                 <tr>
@@ -66,7 +65,7 @@
                     <th scope="col" class="text-center">Ações</th>
                 </tr>
             </thead>
-            <tbody class="pais-info">                
+            <tbody class="pais-info">
                 @foreach (var estado in Model)
                 {
                     <tr>
@@ -84,6 +83,6 @@
                 }
             </tbody>
         </table>
-    </div>
+    </div>    
 </body>
 
