@@ -30,6 +30,7 @@ function buttonCreate() {
         var paisNome = $('#pais-nome').val();
 
         if (!paisNome) { 
+            $('#exampleModal').modal('hide');
             mostrarMensagemErro("Por favor, preencha a descrição do País.", "/Pais/Index");
             return false;
         }
@@ -76,6 +77,7 @@ function buttonEditar() {
             var updatedPaisNome = $("#pais-nome-update").val();
 
             if (!updatedPaisNome) {
+                $('#editModal').modal('hide');
                 mostrarMensagemErro("Por favor, preencha a descrição do País.", "/Pais/Index");
                 return;
             }
@@ -115,7 +117,6 @@ function buttonDeletar() {
 
         var rowSelected = this.parentNode.parentNode;
         var id = $(rowSelected).find("td.paisId").text();
-
         
         $("#btnConfirmDelete").on("click", function () {
 
@@ -157,5 +158,3 @@ function onLoad() {
 $(document).ready(function () {
     onLoad();
 });
-
-

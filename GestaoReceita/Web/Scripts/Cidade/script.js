@@ -1,114 +1,109 @@
-﻿function buttonCreate() {
-    $('#createBtn').on('click', function () {
-        var cidadeNome = $('#cidade-nome').val();
-        var estadoNome = $('#estado-nome').val();
-
-        if (!cidadeNome || !estadoNome) {
-            swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'por favor, preencha todos os campos.',
-            });
-            return false;
-        }
-
-        var data = {
-            Cidade: cidadeNome,
-            Estado: estadoNome,
-
-        };
-
-        $.ajax({
-            url: '/Cidade/AdicionarNovoCidade',
-            type: 'POST',
-            data: data,
-            success: function () {
-                console.log('Dados enviados com sucesso!');
-                $('#exampleModal').modal('hide');
-                window.location.href = "/Cidade/Index";
-            },
-            error: function (error) {
-                console.error('Erro ao enviar dados:', error);
-            }
-        });
+﻿
+function mostrarMensagemErro(mensagem, redirecionarURL) {
+    Swal.fire({
+        timer: 3000,
+        icon: 'error',
+        text: mensagem,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    }).then(() => {
+        window.location.href = redirecionarURL;
     });
 }
 
-//Button Update
-function buttonEditar() {
-    $(".btn-modal-edit").on('click', function () {
-        //pegando valores da linha selecionada.
-
-        var rowSelected = this.parentNode.parentNode;
-
-        var id = $(rowSelected).find("td.cidadeId").text();
-        var cidadeNome = $(rowSelected).find("td.cidadeNome").text();
-        var estadoNome = $(rowSelected).find("td.estadoNome").text();
-
-        preencherCamposEdicao(id, cidadeNome, estadoNome);
+function mostrarMensagemSucesso(mensagem, redirecionarURL) {
+    Swal.fire({
+        icon: 'success',
+        text: mensagem,
+        timer: 2000,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    }).then(() => {
+        window.location.href = redirecionarURL;
     });
 }
 
-function preencherCamposEdicao(id, cidadeNome, estadoNome) {
-    //preenchendo valores na modal.
-    $("#cidade-nome-update").val(cidadeNome);
-    $("#estado-nome-update").val(estadoNome);
+//Create
+function buttonCreateCidade() {
 
-    //quando clicar em update.
-    $('#updateBtn').on('click', function () {
-        //quando validar campos, deve vir diferente de falso.
-        if (!validarCamposEdicao()) {
-            return false;
-        }
+    var estadoNome = $('#estados').val();
+    var cidadeNome = $('#cidade-nome').val();
 
-        var data = {
-            Id: id,
-            Cidade: $('#cidade-nome-update').val(),
-            Estado: $('#estado-nome-update').val(),
-        };
-
-        enviarRequisicaoEditar(data);
-    });
-}
-
-function validarCamposEdicao() {
-    //valores que estão na modal
-    var cidadeNomeUpdate = $("#cidade-nome-update").val();
-    var estadoNomeUpdate = $("#estado-nome-update").val();
-
-    if (!cidadeNomeUpdate) {
-
-        //REMOVER FORMATO DE ERRO, FAZER EXIBIÇÃO VIA MODAL(mensagem de erro com modal de cor vermelha ou ver sobre)
-
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Por favor, preencha todos os campos.',
-        });
-        return false;
+    if (!cidadeNome) {
+        $('#createModal').modal('hide');
+        mostrarMensagemErro("Por favor, preencha o campo Cidade.", "/Cidade/Index");
+        return;
     }
 
-    return true;
+    $('#createModal').modal('hide');
+
+    var data = {
+        descricaoCidade: cidadeNome,
+        descricaoEstado: estadoNome
+    };
+
+    enviarRequisicaoCreate(data);
 }
 
-function enviarRequisicaoEditar(data) {
+function enviarRequisicaoCreate(data) {
+    $.ajax({
+        url: '/Cidade/AdicionarCidade',
+        type: 'POST',
+        data: data,
+        success: function (response) {
+            if (response.success === false) {
+                mostrarMensagemErro("A Cidade que deseja criar já existe.", "/Cidade/Index");
+            } else {
+                mostrarMensagemSucesso("Cidade criada com sucesso.", "/Cidade/Index");
+            }
+        },
+        error: function (error) {
+            window.Error('Erro ao enviar dados:', error);
+        }
+    });
+}
 
+function buttonUpdateEstado() {
+    var idEstado = $('#estados').val();
+    var idCidade = $(".button-update-cidade").attr('id');
+    var nomeCidade = $(".button-update-cidade").val()
+
+    if (!nomeCidade) {
+        $('#updateModal').modal('hide');
+        mostrarMensagemErro("Por favor, preencha o campo Cidade.", "/Cidade/Index");
+        return;
+    }
+
+    $('#updateModal').modal('hide');
+
+    var data = {
+        id: idCidade,
+        descricaoCidade: nomeCidade,
+        idEstado: idEstado
+    };
+
+    enviarRequisicaoUpdate(data);
+}
+
+function enviarRequisicaoUpdate(data) {
     $.ajax({
         url: '/Cidade/EditarCidade',
         type: 'POST',
         data: data,
-        success: function () {
-            $('#exampleModal').modal('hide');
-            window.location.href = "/Cidade/Index";
+        success: function (response) {
+            if (response.success === false) {
+                mostrarMensagemErro("A Cidade que deseja editar já existe.", "/Cidade/Index");
+            } else {
+                mostrarMensagemSucesso("Cidade alterada com sucesso.", "/Cidade/Index");
+            }
         },
         error: function (error) {
-            console.error('Erro ao enviar dados:', error);
+            window.Error('Erro ao enviar dados:', error);
         }
     });
 }
 
 //Button Delete
-
 function buttonDeletar() {
     $('.btn-modal-delete').on('click', function () {
 
@@ -120,11 +115,12 @@ function buttonDeletar() {
                 Id: id
             }
 
+            $('#confirmModal').modal('hide');
+
             enviarRequisicaoDeletar(data);
         })
     });
 }
-
 
 function enviarRequisicaoDeletar(data) {
     $.ajax({
@@ -134,9 +130,10 @@ function enviarRequisicaoDeletar(data) {
         success: function (response) {
             $('#confirmModal').modal('hide');
             if (response.mensagemRetorno != null && response.mensagemRetorno != "") {
-                alert(response.mensagemRetorno)
+                var mensagem = (response.mensagemRetorno)
+                mostrarMensagemSucesso(mensagem, "/Cidade/Index");       
             }
-            window.location.href = "/Cidade/Index";
+            
         },
         error: function (error) {
             console.error('Erro ao enviar dados:', error);
@@ -144,9 +141,61 @@ function enviarRequisicaoDeletar(data) {
     });
 }
 
+//Carrega Modal Create
+function ModalCreate() {
+    $("#modal-create").click(function () {
+        $.ajax({
+            url: "/Cidade/getModalEstados",
+            type: "GET",
+            success: function (data) {
+                $("#exibe-modal-create").html(data);
+                $("#createModal").modal("show");
+            },
+            error: function (error) {
+                window.Error('Erro ao enviar dados:', error);
+            }
+        });
+    });
+}
+
+//Carrega Modal Update
+function ModalUpdate() {
+    $(".btn-modal-edit").click(function () {
+
+        var rowSelected = this.parentNode.parentNode;
+
+        var estadoIdTela = $(rowSelected).find("td.estadoId").text();
+        var cidadeIdTela = $(rowSelected).find("td.cidadeId").text();
+        var estadoDescricaoTela = $(rowSelected).find("td.descricaoCidade").text();
+
+        var data = {
+            id: cidadeIdTela,
+            descricaoCidade: estadoDescricaoTela,
+            idEstado: estadoIdTela
+        };
+
+        RequisicaoModalUpdate(data);
+    });
+}
+function RequisicaoModalUpdate(data) {
+
+    $.ajax({
+        url: "/Cidade/getEstadosAndById",
+        type: "GET",
+        data: data,
+        success: function (data) {
+            $("#exibe-modal-update").html(data);
+            $("#updateModal").modal("show");
+        },
+        error: function (error) {
+            window.Error('Erro ao enviar dados:', error);
+        }
+    });
+}
+
 function onLoad() {
-    buttonCreate();
-    buttonEditar();
+    ModalCreate();
+    ModalUpdate();
     buttonDeletar();
 }
 

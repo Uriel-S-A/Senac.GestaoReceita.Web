@@ -58,7 +58,6 @@ namespace Web.Controllers
                 {                    
                     var content = response.Result.Content.ReadAsStringAsync();
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-
                 }
             }
 
@@ -107,7 +106,7 @@ namespace Web.Controllers
                 }
             }
 
-            return PartialView("_CreateModalPartial", minhaLista);
+            return PartialView("_CreateEstadoPartial", minhaLista);
         }
 
         private void CadastrarNovoEstado(EstadoViewModel novoEstado, int novoId)
@@ -174,7 +173,7 @@ namespace Web.Controllers
                 }
             }
 
-            return PartialView("_UpdateModalPartial", estadoView);
+            return PartialView("_UpdateEstadoPartial", estadoView);
         }
 
         private void NovaEdicaoEstado(EstadoViewModel estadoEditar, EstadoViewModel dadosEstado)
@@ -200,11 +199,24 @@ namespace Web.Controllers
             }
         }
 
-
-        //Lorenzo disse que Nairo comentou sobre ser problema na API.
-        public ActionResult DeletarEstado(PaisViewModel paisDeletar)
+        public JsonResult DeletarEstado(int Id)
         {
-            return Json(new { });
+            var retorno = "";
+
+            using (var client = new HttpClient())
+            {
+                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Estados/" + Id);
+
+                response.Wait();
+
+                retorno = "Estado deletado com sucesso";
+
+                if (!response.Result.IsSuccessStatusCode)
+                {
+                    retorno = "Erro: " + response.Result.ReasonPhrase;
+                }
+            }
+            return Json(new { mensagemRetorno = retorno });
         }
 
         //Partial Create
@@ -234,14 +246,12 @@ namespace Web.Controllers
                         paisViewModelList.Add(paisvm);
                     }
 
-                    return PartialView("_CreateModalPartial", paisViewModelList);
+                    return PartialView("_CreateEstadoPartial", paisViewModelList);
                 }
                 else
-                {
-                    //mensagem de erro de validação
+                {                    
                     var content = response.Result.Content.ReadAsStringAsync();
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-
                 }
             }
 
@@ -264,7 +274,7 @@ namespace Web.Controllers
                 listaPaises = paises
             };
 
-            return PartialView("_UpdateModalPartial", EstadoView);
+            return PartialView("_UpdateEstadoPartial", EstadoView);
 
         }
 
@@ -342,28 +352,6 @@ namespace Web.Controllers
             }
 
             return estadoViewModel;
-        }
-
-
-
-        public JsonResult DeletarEstado(int Id)
-        {
-            var retorno = "";
-
-            using (var client = new HttpClient())
-            {
-                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Estados/" + Id);
-
-                response.Wait();
-
-                retorno = "Estado deletado com sucesso";
-
-                if (!response.Result.IsSuccessStatusCode)
-                {
-                    retorno = "Erro: " + response.Result.ReasonPhrase;
-                }
-            }
-            return Json(new { mensagemRetorno = retorno });
-        }
+        }     
     }
 }

@@ -15,42 +15,7 @@
 <body>
     <div class="container my-3">
 
-        @*Modal Cadastrar*@
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
 
-
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="cadastrarModalLabel">Cadastrar Cidade</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="row">
-                                <div class="mb-3 col">
-                                    <label for="recipient-name" class="col-form-label">Estados:</label>
-                                    <select class="form-select" id="paises" name="paises">
-                                        @foreach (var cidade in Model)
-                                        {
-                                            <option id="@cidade.id" value="@cidade.idEstado">@cidade.estado.descricaoEstado</option>
-                                        }
-                                    </select>
-                                </div>
-                                <div class="mb-3 col">
-                                    <label for="recipient-name" class="col-form-label">Cidade:</label>
-                                    <input type="text" class="form-control" id="cidade-nome">
-                                </div>                                                                
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="createBtn">Tudo Jóia👍</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         @*modal delete*@
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -76,48 +41,26 @@
         </div>
 
 
-
-        @*Modal Editar*@
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+        @*modal create*@
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" id="exibe-modal-create">
 
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="editarModalLabel">Editar Cidade</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="row">
+                </div>
+            </div>
+        </div>
 
-                                <div class="mb-3 col">
-                                        <label for="recipient-name" class="col-form-label">Estados:</label>
-                                        <select class="form-select" id="paises" name="paises">
-                                            @foreach (var cidade in Model)
-                                            {
-                                                <option id="@cidade.id" value="@cidade.idEstado">@cidade.estado.descricaoEstado</option>
-                                            }
-                                        </select>
-                                    </div>                                
-                                <div class="mb-3 col">
-                                    <label for="recipient-name" class="col-form-label">Cidade:</label>
-                                    <input type="text" class="form-control" id="cidade-nome-update">
-                                </div>
+        @*modal update*@
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="exibe-modal-update">
 
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="updateBtn">Tudo Jóia👍</button>
-                    </div>
                 </div>
             </div>
         </div>
 
 
-
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Novo Registro</button>
+        <button type="button" class="btn btn-primary" id="modal-create">Novo Resgistro</button>
         <table class="table">
             <thead>
                 <tr>
@@ -131,14 +74,14 @@
                 @foreach (var cidade in Model)
                 {
                     <tr>
-                        <td class="d-none cidadeId">@cidade.id</td>
-                        <td class="cidadeNome">@cidade.descricaoCidade</td>
-
                         <td class="d-none estadoId">@cidade.idEstado</td>
-                        <td class="estadoNome">@cidade.estado.descricaoEstado</td>
+                        <td class="estadoDescricao">@cidade.estado.descricaoEstado</td>
+
+                        <td class="d-none cidadeId">@cidade.id</td>
+                        <td class="descricaoCidade">@cidade.descricaoCidade</td>
 
                         <td class="text-center">
-                            <button class="btn btn-primary btn-modal-edit" data-bs-toggle="modal" data-bs-target="#editModal">Editar</button>
+                            <button class="btn btn-primary btn-modal-edit">Editar</button>
                             <button class="btn btn-danger btn-modal-delete" data-bs-toggle="modal" data-bs-target="#confirmModal">Deletar</button>
                         </td>
                     </tr>

@@ -9,6 +9,7 @@ using System.Text;
 using System.Web.Mvc;
 using Web.Models.Cidade;
 using Web.Models.Estado;
+using Web.Models.Pais;
 
 namespace Web.Controllers
 {
@@ -45,7 +46,7 @@ namespace Web.Controllers
                             id = cidadeTO.id,
                             descricaoCidade = cidadeTO.descricaoCidade,
                             idEstado = cidadeTO.idEstado,
-                            estado = (EstadoViewModel)cidadeTO.estado //ver sobre
+                            estado = (EstadoViewModel)cidadeTO.estado 
 
                         };
 
@@ -55,9 +56,7 @@ namespace Web.Controllers
                     return cidadeViewModel = CidadeViewModelList;
                 }
                 else
-                {
-                    //mensagem de erro de validação
-
+                {                    
                     var content = response.Result.Content.ReadAsStringAsync();
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
 
@@ -67,90 +66,262 @@ namespace Web.Controllers
             return cidadeViewModel;
         }
 
+        //✔
         public ActionResult AdicionarCidade(CidadeViewModel novaCidade)
         {
+            List<CidadeViewModel> minhaLista = getCidades();
+             
             if (ModelState.IsValid)
-            {
-                List<CidadeViewModel> minhaLista = getCidades();
-
-                //comparação será sensível a maiúsculas e minúsculas usando StringComparison.OrdinalIgnoreCase
+            {                                
                 bool cidadeJaExiste = minhaLista.Any(p => p.descricaoCidade.Equals(novaCidade.descricaoCidade, StringComparison.OrdinalIgnoreCase));
 
                 if (cidadeJaExiste)
                 {
-                    //não aparece na tela
-                    ModelState.AddModelError("descrição cidade", "A cidade já existe na lista.");
-                    List<CidadeViewModel> lista = getCidades();
-                    return View("Index", lista);
+                    ModelState.AddModelError("cidadeJaExiste", "Esta cidade já existe.");
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+                    return Json(new { success = false, erros });
+                }
+
+                List<EstadoViewModel> listaEstados = this.getEstados();
+
+                novaCidade.idEstado = 0;
+
+                foreach (var meuEstado in listaEstados)
+                {
+                    if (meuEstado.descricaoEstado == novaCidade.descricaoEstado)
+                    {
+                        novaCidade.idEstado = meuEstado.id;
+                    }
                 }
 
                 int novoId = minhaLista.Max(max => max.id) + 1;
 
-                using (var client = new HttpClient())
+                this.CadastrarNovaCidade(novaCidade, novoId);
+
+                if (!ModelState.IsValid)
                 {
-                    //idPais precisa vir preenchido quando eviado pela view model, deixei fixo
+                    ModelState.AddModelError("erro", "Erro ao cadastrar.");
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
 
-                    var formContentString = new StringContent(JsonConvert.SerializeObject(new { idEstado = 1, descricaoCidade = novaCidade.descricaoCidade, id = novoId }), Encoding.UTF8, "application/json");
+                    return Json(new { success = false, erros });
+                }
+            }
 
-                    var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Cidades", formContentString);
+            return PartialView("_CreateCidadePartial", minhaLista);
+        }
+        private void CadastrarNovaCidade(CidadeViewModel novaCidade, int novoId)
+        {
+            using (var client = new HttpClient())
+            {                
+                var formContentString = new StringContent(JsonConvert.SerializeObject(new { idEstado = novaCidade.idEstado, descricaoCidade = novaCidade.descricaoCidade, id = novoId }), Encoding.UTF8, "application/json");
 
-                    response.Wait();
+                var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Cidades", formContentString);
 
-                    if (response.Result.IsSuccessStatusCode)
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {                    
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    var objectJson = JsonConvert.DeserializeObject<CidadeTO>(stringResult.Result);                    
+                }
+                else
+                {                    
+                    var content = response.Result.Content.ReadAsStringAsync();
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                }
+            }
+        }
+
+
+        public ActionResult EditarCidade(CidadeViewModel cidadeEditar)
+        {
+            var estados = getEstados();
+
+            CidadeViewModel dadosCidade = getCidadeById(cidadeEditar.id);
+
+            CidadeViewModel cidadeView = new CidadeViewModel()
+            {
+                id = dadosCidade.id,
+                descricaoCidade = dadosCidade.descricaoCidade,
+                idEstado = dadosCidade.idEstado,
+                estado = dadosCidade.estado,
+                listaEstados = estados
+            };
+
+            List<CidadeViewModel> minhaLista = getCidades();
+
+            if (this.ModelState.IsValid)
+            {
+                bool cidadeJaExiste = minhaLista.Any(p => p.descricaoCidade.Equals(cidadeEditar.descricaoCidade, StringComparison.OrdinalIgnoreCase));
+
+                if (cidadeJaExiste)
+                {
+                    ModelState.AddModelError("cidadeJaExiste", "Este estado já existe.");
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+                    return Json(new { success = false, erros });
+                }
+
+                this.NovaEdicaoEstado(cidadeEditar, dadosCidade);
+
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("error", "Erro ao editar cidade.");
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+                    return Json(new { success = false, erros });
+                }
+            }
+
+            return PartialView("_UpdateCidadePartial", cidadeView);
+        }
+
+        public void NovaEdicaoEstado(CidadeViewModel cidadeEditar, CidadeViewModel dadosCidade)
+        {
+            using (var client = new HttpClient())
+            {
+                var formContentString = new StringContent(JsonConvert.SerializeObject(new { idEstado = cidadeEditar.idEstado, descricaoCidade = cidadeEditar.descricaoCidade, id = cidadeEditar.id }), Encoding.UTF8, "application/json");
+
+                var response = client.PutAsync(new Uri("http://gestaoreceitaapi.somee.com/api/Cidades/" + dadosCidade.id), formContentString);
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+                    var objectJson = JsonConvert.DeserializeObject<EstadoTO>(stringResult.Result);
+                }
+                else
+                {
+                    var content = response.Result.Content.ReadAsStringAsync();
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                }
+            }
+
+        }
+
+        //✔
+        public JsonResult DeletarCidade(int Id)
+        {
+            var retorno = "";
+
+            using (var client = new HttpClient())
+            {
+                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Cidades/" + Id);
+
+                response.Wait();
+
+                retorno = "Cidade deletada com sucesso";
+
+                if (!response.Result.IsSuccessStatusCode)
+                {
+                    retorno = "Erro: " + response.Result.ReasonPhrase;
+                }
+            }
+            return Json(new { mensagemRetorno = retorno });
+        }
+
+        //Modal Create
+        public ActionResult getModalEstados()
+        {
+            using (var client = new HttpClient())
+            {
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Estados");
+
+                response.Wait();
+
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var stringResult = response.Result.Content.ReadAsStringAsync();
+
+                    var estadoTOList = JsonConvert.DeserializeObject<List<EstadoTO>>(stringResult.Result);
+                    List<EstadoViewModel> estadoViewModelList = new List<EstadoViewModel>();
+
+                    foreach (var estadoTO in estadoTOList)
                     {
-                        // adicionar mensagem de sucesso
+                        EstadoViewModel estadovm = new EstadoViewModel
+                        {
+                            id = estadoTO.id,
+                            descricaoEstado = estadoTO.descricaoEstado,
+                        };
 
-                        var stringResult = response.Result.Content.ReadAsStringAsync();
-                        var objectJson = JsonConvert.DeserializeObject<CidadeTO>(stringResult.Result);
-                        //todas info que vem do banco devem ser armazenadas num TO.
-                        //
+                        estadoViewModelList.Add(estadovm);
                     }
-                    else
-                    {
-                        // adicionar mensagem de erro
-                        var content = response.Result.Content.ReadAsStringAsync();
-                        var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-                    }
+
+                    return PartialView("_CreateCidadePartial", estadoViewModelList);
+                }
+                else
+                {                    
+                    var content = response.Result.Content.ReadAsStringAsync();
+                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
                 }
             }
 
             return Index();
         }
 
-        public ActionResult EditarCidade(CidadeViewModel cidadeEditar)
+        //Modal Update
+        public ActionResult getEstadosAndById(CidadeViewModel cidadeViewModel)
         {
-            //já chegando id e descrição do pais.
+            var estados = getEstados();
 
-            var dados = getCidadeById(cidadeEditar.id);
+            CidadeViewModel CidadesDados = getCidadeById(cidadeViewModel.id);
 
-            //dados
-            //var Id = dados.id = estadoEditar.id;
-            //var DescricaoPais = dados.descricaoPais = estadoEditar.descricaoPais;
+            CidadeViewModel CiadadesView = new CidadeViewModel()
+            {
+                id = CidadesDados.id,
+                descricaoCidade = CidadesDados.descricaoCidade,
+                idEstado = CidadesDados.idEstado,
+                estado = CidadesDados.estado,
+                listaEstados = estados
+            };
+
+            return PartialView("_UpdateCidadePartial", CiadadesView);
+        }
+
+        //CONSULTAS:
+        private List<EstadoViewModel> getEstados()
+        {
+
+            List<EstadoViewModel> listEstadoViewModel = new List<EstadoViewModel>();
 
             using (var client = new HttpClient())
             {
-                var formContentString = new StringContent(JsonConvert.SerializeObject(new { idEstado = 1, descricaoCidade = cidadeEditar.descricaoCidade, id = cidadeEditar.id }), Encoding.UTF8, "application/json");
-
-                var response = client.PutAsync(new Uri("http://gestaoreceitaapi.somee.com/api/Cidades/" + dados.id), formContentString);
+                var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Estados");
 
                 response.Wait();
 
                 if (response.Result.IsSuccessStatusCode)
                 {
-                    // adicionar mensagem de sucesso
-
                     var stringResult = response.Result.Content.ReadAsStringAsync();
-                    var objectJson = JsonConvert.DeserializeObject<CidadeTO>(stringResult.Result);
+
+                    var paisToList = JsonConvert.DeserializeObject<List<EstadoTO>>(stringResult.Result);
+                    List<EstadoViewModel> estadoViewModelList = new List<EstadoViewModel>();
+
+                    foreach (var estadoTO in paisToList)
+                    {
+                        EstadoViewModel estadovm = new EstadoViewModel
+                        {
+                            id = estadoTO.id,
+                            descricaoEstado = estadoTO.descricaoEstado,
+                        };
+
+                        estadoViewModelList.Add(estadovm);
+                    }
+
+                    return listEstadoViewModel = estadoViewModelList;
                 }
                 else
                 {
-                    // adicionar mensagem de erro
+                    //mensagem de erro de validação
                     var content = response.Result.Content.ReadAsStringAsync();
                     var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+
                 }
             }
 
-            return Json(new { });
+            return listEstadoViewModel;
         }
 
         public CidadeViewModel getCidadeById(int id)
@@ -185,25 +356,5 @@ namespace Web.Controllers
             return cidadeViewModel;
         }
 
-
-        public JsonResult DeletarCidade(int Id)
-        {
-            var retorno = "";
-
-            using (var client = new HttpClient())
-            {
-                var response = client.DeleteAsync("http://gestaoreceitaapi.somee.com/api/Cidades/" + Id);
-
-                response.Wait();
-
-                retorno = "Cidade deletada com sucesso";
-
-                if (!response.Result.IsSuccessStatusCode)
-                {
-                    retorno = "Erro: " + response.Result.ReasonPhrase;
-                }
-            }
-            return Json(new { mensagemRetorno = retorno });
-        }
     }
 }

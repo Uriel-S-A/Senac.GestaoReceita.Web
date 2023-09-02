@@ -206,9 +206,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Pais\Index.cshtml" />
     <Content Include="Views\Estado\Index.cshtml" />
-    <Content Include="Views\Estado\_CreateModalPartial.cshtml" />
-    <Content Include="Views\Estado\_UpdateModalPartial.cshtml" />
+    <Content Include="Views\Estado\_CreateEstadoPartial.cshtml" />
+    <Content Include="Views\Estado\_UpdateEstadoPartial.cshtml" />
     <Content Include="Views\Cidade\Index.cshtml" />
+    <Content Include="Views\Cidade\_UpdateCidadePartial.cshtml" />
+    <Content Include="Views\Cidade\_CreateCidadePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

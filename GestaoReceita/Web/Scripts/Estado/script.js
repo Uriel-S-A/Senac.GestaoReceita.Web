@@ -31,6 +31,7 @@ function buttonCreateEstado() {
     var estadoNome = $('#estado-nome').val();
 
     if (!estadoNome) {
+        $('#createModal').modal('hide');
         mostrarMensagemErro("Por favor, preencha o campo Estado.", "/Estado/Index");
         return;
     }
@@ -65,13 +66,13 @@ function enviarRequisicaoCreate(data) {
 
 
 //Update
-
 function buttonUpdateEstado() {
     var idPais = $('#paises').val();
     var idEstado = $(".button-update-estado").attr('id');
     var nomeEstado = $(".button-update-estado").val()
 
     if (!nomeEstado) {
+        $('#updateModal').modal('hide');
         mostrarMensagemErro("Por favor, preencha o campo Estado.", "/Estado/Index");
         return;
     }
@@ -133,7 +134,7 @@ function enviarRequisicaoDeletar(data) {
         success: function (response) {            
             if (response.mensagemRetorno != null && response.mensagemRetorno != "") {                                    
                 var mensagem = (response.mensagemRetorno)
-                mostrarMensagemSucesso(mensagem, "/Estado/Index");                                
+                mostrarMensagemSucesso(mensagem, "/Estado/Index");
             }            
         },
         error: function (error) {
