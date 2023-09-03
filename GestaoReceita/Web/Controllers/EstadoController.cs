@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -16,15 +15,25 @@ namespace Web.Controllers
         // GET: Estado
         public ActionResult Index()
         {
-            List<EstadoViewModel> minhaLista = getEstados();
-            return View(minhaLista);
+            try
+            {
+                List<EstadoViewModel> minhaLista = getEstados();
+                return View(minhaLista);
+            }
+            catch (HttpRequestExceptionEx ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("Index");
+            }            
         }
 
-        //✔
-        public List<EstadoViewModel> getEstados()
+        public class HttpRequestExceptionEx : Exception
         {
-            List<EstadoViewModel> estadoViewModel = new List<EstadoViewModel>();
+            public HttpRequestExceptionEx(string message) : base(message) { }
+        }
 
+        public List<EstadoViewModel> getEstados()
+        {            
             using (var client = new HttpClient())
             {
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Estados");
@@ -52,19 +61,15 @@ namespace Web.Controllers
                         estadoViewModelList.Add(estadovm);
                     }
 
-                    return estadoViewModel = estadoViewModelList;
+                    return estadoViewModelList;
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao pegar dados de Estado: " + response.Result.ReasonPhrase);
                 }
-            }
-
-            return estadoViewModel;
+            }            
         }
 
-        //✔
         public ActionResult AdicionarEstado(EstadoViewModel novoEstado)
         {
             List<EstadoViewModel> minhaLista = getEstados();
@@ -125,14 +130,12 @@ namespace Web.Controllers
                     var objectJson = JsonConvert.DeserializeObject<EstadoTO>(stringResult.Result);
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao cadastrar novo Estado: " + response.Result.ReasonPhrase);
                 }
             }
         }
 
-        //✔
         public ActionResult EditarEstado(EstadoViewModel estadoEditar)
         {
             var paises = getPaises();
@@ -192,9 +195,8 @@ namespace Web.Controllers
                     var objectJson = JsonConvert.DeserializeObject<EstadoTO>(stringResult.Result);
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao editar novo Estado: " + response.Result.ReasonPhrase);
                 }
             }
         }
@@ -249,13 +251,10 @@ namespace Web.Controllers
                     return PartialView("_CreateEstadoPartial", paisViewModelList);
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro pegar dados de Modal Paises: " + response.Result.ReasonPhrase);
                 }
-            }
-
-            return Index();
+            }            
         }
 
         //Partial Update
@@ -278,13 +277,9 @@ namespace Web.Controllers
 
         }
 
-
         //CONSULTAS:
         private List<PaisViewModel> getPaises()
         {
-
-            List<PaisViewModel> listPaisViewModel = new List<PaisViewModel>();
-
             using (var client = new HttpClient())
             {
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Pais");
@@ -309,24 +304,17 @@ namespace Web.Controllers
                         paisViewModelList.Add(paisvm);
                     }
 
-                    return listPaisViewModel = paisViewModelList;
+                    return paisViewModelList;
                 }
                 else
                 {
-                    //mensagem de erro de validação
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-
+                    throw new HttpRequestExceptionEx("Erro ao cadastrar novo Estado: " + response.Result.ReasonPhrase);
                 }
-            }
-
-            return listPaisViewModel;
+            }            
         }
 
         public EstadoViewModel getEstadoById(int id)
         {
-            EstadoViewModel estadoViewModel = new EstadoViewModel();
-
             using (var client = new HttpClient())
             {
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Estados/" + id);
@@ -341,17 +329,13 @@ namespace Web.Controllers
 
                     EstadoViewModel paisView = (EstadoViewModel)estadoTO;
 
-                    return estadoViewModel = paisView;
+                    return paisView;
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao pegar Estado By Id: " + response.Result.ReasonPhrase);
                 }
-            }
-
-            return estadoViewModel;
+            }            
         }     
     }
 }

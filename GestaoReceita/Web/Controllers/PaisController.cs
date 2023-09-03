@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Mvc;
-using Web.Models.Estado;
 using Web.Models.Pais;
 
 namespace Web.Controllers
@@ -16,15 +14,28 @@ namespace Web.Controllers
        
         public ActionResult Index()
         {
-            List<PaisViewModel> minhaLista = getPaises();            
-            return View(minhaLista);
+
+            try
+            {
+                List<PaisViewModel> minhaLista = getPaises();
+                return View(minhaLista);
+            }
+            catch (HttpRequestExceptionEx ex)
+            {
+                TempData["ErrorMessage"] = ex.Message; 
+                return RedirectToAction("Index");
+            }
+        }
+
+
+        public class HttpRequestExceptionEx : Exception
+        {
+            public HttpRequestExceptionEx(string message) : base(message) { }
         }
 
 
         public List<PaisViewModel> getPaises()
         {
-            List<PaisViewModel> paisViewModel = new List<PaisViewModel>();
-
             using (var client = new HttpClient())
             {
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Pais");
@@ -34,32 +45,29 @@ namespace Web.Controllers
                 if (response.Result.IsSuccessStatusCode)
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
-                                        
+
                     var paisToList = JsonConvert.DeserializeObject<List<PaisTO>>(stringResult.Result);
                     List<PaisViewModel> paisViewModelList = new List<PaisViewModel>();
-                    
+
                     foreach (var paisTo in paisToList)
                     {
                         PaisViewModel paisvm = new PaisViewModel
-                        {                            
+                        {
                             id = paisTo.id,
                             descricaoPais = paisTo.descricaoPais,
                         };
 
                         paisViewModelList.Add(paisvm);
-                    }                        
-                    
-                    return paisViewModel = paisViewModelList;
+                    }
+                    var retornoPais = paisViewModelList;
+
+                    return retornoPais;
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-                    
+                {
+                    throw new HttpRequestExceptionEx("Erro ao pegar dados de País: " + response.Result.ReasonPhrase);
                 }
-            }
-
-            return paisViewModel;
+            }            
         }
 
         public ActionResult AdicionarPais(PaisViewModel novoPais)
@@ -111,9 +119,8 @@ namespace Web.Controllers
                     var objectJson = JsonConvert.DeserializeObject<PaisTO>(stringResult.Result); 
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao cadastrar novo País " + response.Result.ReasonPhrase);                    
                 }
             }
         }
@@ -136,20 +143,13 @@ namespace Web.Controllers
                     return Json(new { success = false, erros });
                 }
 
-                var dados = getEstadoById(paisEditar.id);
+                var dados = getPaisById(paisEditar.id);
 
                 var Id = dados.id = paisEditar.id;
                 var DescricaoPais = dados.descricaoPais = paisEditar.descricaoPais;
 
                 EditarNovoPais(dados, DescricaoPais, Id);
-
-                if (!ModelState.IsValid)
-                {
-                    ModelState.AddModelError("paisExistente", "Este pais já existe.");
-                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
-
-                    return Json(new { success = false, erros });
-                }
+               
             }
 
             return View("Index", minhaLista);
@@ -171,14 +171,13 @@ namespace Web.Controllers
                     var objectJson = JsonConvert.DeserializeObject<PaisViewModel>(stringResult.Result);
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao editar novo País " + response.Result.ReasonPhrase);
                 }
             }
         }
 
-        public PaisViewModel getEstadoById(int id)
+        public PaisViewModel getPaisById(int id)
         {
             PaisViewModel paisViewModel = new PaisViewModel();
 
@@ -199,14 +198,10 @@ namespace Web.Controllers
                     return paisViewModel = paisView;
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao pegar País by Id" + response.Result.ReasonPhrase);
                 }
-            }
-
-            return paisViewModel;
+            }            
         }
         
         public JsonResult DeletarPais(int Id)

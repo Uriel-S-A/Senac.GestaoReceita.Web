@@ -1,15 +1,12 @@
-﻿using Microsoft.Ajax.Utilities;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Mvc;
 using Web.Models.Cidade;
 using Web.Models.Estado;
-using Web.Models.Pais;
 
 namespace Web.Controllers
 {
@@ -18,14 +15,26 @@ namespace Web.Controllers
         // GET: Estado
         public ActionResult Index()
         {
-            List<CidadeViewModel> minhaLista = getCidades();
-            return View(minhaLista);
+
+            try
+            {
+                List<CidadeViewModel> minhaLista = getCidades();
+                return View(minhaLista);
+            }
+            catch (HttpRequestExceptionEx ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("Index");
+            }
+        }
+
+        public class HttpRequestExceptionEx : Exception
+        {
+            public HttpRequestExceptionEx(string message) : base(message) { }
         }
 
         public List<CidadeViewModel> getCidades()
         {
-            List<CidadeViewModel> cidadeViewModel = new List<CidadeViewModel>();
-
             using (var client = new HttpClient())
             {
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Cidades");
@@ -46,27 +55,22 @@ namespace Web.Controllers
                             id = cidadeTO.id,
                             descricaoCidade = cidadeTO.descricaoCidade,
                             idEstado = cidadeTO.idEstado,
-                            estado = (EstadoViewModel)cidadeTO.estado 
+                            estado = (EstadoViewModel)cidadeTO.estado
 
                         };
 
                         CidadeViewModelList.Add(cidadevm);
                     }
 
-                    return cidadeViewModel = CidadeViewModelList;
+                    return CidadeViewModelList;
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-
+                {
+                    throw new HttpRequestExceptionEx("Erro ao pegar dados de Cidade: " + response.Result.ReasonPhrase);
                 }
             }
-
-            return cidadeViewModel;
         }
 
-        //✔
         public ActionResult AdicionarCidade(CidadeViewModel novaCidade)
         {
             List<CidadeViewModel> minhaLista = getCidades();
@@ -126,9 +130,8 @@ namespace Web.Controllers
                     var objectJson = JsonConvert.DeserializeObject<CidadeTO>(stringResult.Result);                    
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao cadastrar nova Cidade: " + response.Result.ReasonPhrase);
                 }
             }
         }
@@ -163,7 +166,7 @@ namespace Web.Controllers
                     return Json(new { success = false, erros });
                 }
 
-                this.NovaEdicaoEstado(cidadeEditar, dadosCidade);
+                this.NovaEdicaoCidade(cidadeEditar, dadosCidade);
 
                 if (!ModelState.IsValid)
                 {
@@ -177,7 +180,7 @@ namespace Web.Controllers
             return PartialView("_UpdateCidadePartial", cidadeView);
         }
 
-        public void NovaEdicaoEstado(CidadeViewModel cidadeEditar, CidadeViewModel dadosCidade)
+        public void NovaEdicaoCidade(CidadeViewModel cidadeEditar, CidadeViewModel dadosCidade)
         {
             using (var client = new HttpClient())
             {
@@ -194,14 +197,11 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                    throw new HttpRequestExceptionEx("Erro ao fazer nova edição de Cidade: " + response.Result.ReasonPhrase);
                 }
             }
-
         }
 
-        //✔
         public JsonResult DeletarCidade(int Id)
         {
             var retorno = "";
@@ -252,13 +252,10 @@ namespace Web.Controllers
                     return PartialView("_CreateCidadePartial", estadoViewModelList);
                 }
                 else
-                {                    
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                {
+                    throw new HttpRequestExceptionEx("Erro ao pegar dados de Modal Creates: " + response.Result.ReasonPhrase);
                 }
             }
-
-            return Index();
         }
 
         //Modal Update
@@ -283,9 +280,6 @@ namespace Web.Controllers
         //CONSULTAS:
         private List<EstadoViewModel> getEstados()
         {
-
-            List<EstadoViewModel> listEstadoViewModel = new List<EstadoViewModel>();
-
             using (var client = new HttpClient())
             {
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Estados");
@@ -310,24 +304,17 @@ namespace Web.Controllers
                         estadoViewModelList.Add(estadovm);
                     }
 
-                    return listEstadoViewModel = estadoViewModelList;
+                    return estadoViewModelList;
                 }
                 else
                 {
-                    //mensagem de erro de validação
-                    var content = response.Result.Content.ReadAsStringAsync();
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
-
+                    throw new HttpRequestExceptionEx("Erro ao pegar dados de Estado: " + response.Result.ReasonPhrase);
                 }
             }
-
-            return listEstadoViewModel;
         }
 
         public CidadeViewModel getCidadeById(int id)
         {
-            CidadeViewModel cidadeViewModel = new CidadeViewModel();
-
             using (var client = new HttpClient())
             {
                 var response = client.GetAsync("http://gestaoreceitaapi.somee.com/api/Cidades/" + id);
@@ -342,19 +329,13 @@ namespace Web.Controllers
 
                     CidadeViewModel estadoView = (CidadeViewModel)cidadeTO;
 
-                    return cidadeViewModel = estadoView;
+                    return estadoView;
                 }
                 else
-                {
-                    //tratar erro de requisicao
-                    var content = response.Result.Content.ReadAsStringAsync();
-
-                    var ret = JsonConvert.DeserializeObject<ValidationResult>(content.Result);
+                { 
+                    throw new HttpRequestExceptionEx("Erro ao pegar Cidade By id: " + response.Result.ReasonPhrase);
                 }
             }
-
-            return cidadeViewModel;
         }
-
     }
 }
