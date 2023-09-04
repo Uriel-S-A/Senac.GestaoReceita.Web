@@ -28,6 +28,11 @@ namespace Web.Controllers
                 // passa pra lista apenas os ingredientes que contém o que foi digitado no campo buscar
                 listaIngredientesCadastrados = listaIngredientesCadastrados.Where(w => w.NomeIngrediente.Contains(BuscaIngredientes)).ToList();
             }
+            else
+            {
+                // chama o método Get novamente, para retornar a lista completa de dados
+                listaIngredientesCadastrados = GetDadosIngrediente();
+            }
 
             // chama o método GetDadosEmpresa e passa a resposta pra lista
             List<DadosEmpresa> listaDadosEmpresa = GetDadosEmpresa();
