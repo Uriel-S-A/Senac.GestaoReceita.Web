@@ -27,12 +27,10 @@ namespace Web.Controllers
             }
         }
 
-
         public class HttpRequestExceptionEx : Exception
         {
             public HttpRequestExceptionEx(string message) : base(message) { }
         }
-
 
         public List<PaisViewModel> getPaises()
         {
@@ -93,7 +91,7 @@ namespace Web.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("paisExistente", "Este pais já existe.");
+                    ModelState.AddModelError("error", "Erro ao cadastrar País.");
                     var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
 
                     return Json(new { success = false, erros });
@@ -124,7 +122,6 @@ namespace Web.Controllers
                 }
             }
         }
-
         public ActionResult EditarPais(PaisViewModel paisEditar)
         {
 
@@ -149,7 +146,15 @@ namespace Web.Controllers
                 var DescricaoPais = dados.descricaoPais = paisEditar.descricaoPais;
 
                 EditarNovoPais(dados, DescricaoPais, Id);
-               
+
+                if (!ModelState.IsValid)
+                {
+                    ModelState.AddModelError("error", "Erro ao editar País.");
+                    var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
+
+                    return Json(new { success = false, erros });
+                }
+
             }
 
             return View("Index", minhaLista);

@@ -103,8 +103,8 @@ namespace Web.Controllers
                 this.CadastrarNovoEstado(novoEstado, novoId);
 
                 if (!ModelState.IsValid)
-                {
-                    ModelState.AddModelError("estadoExistente", "Este estado já existe.");
+                {                    
+                    ModelState.AddModelError("error", "Erro ao cadastrar Estado.");
                     var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
 
                     return Json(new { success = false, erros });
@@ -169,7 +169,7 @@ namespace Web.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError("estadoExistente", "Este estado já existe.");
+                    ModelState.AddModelError("error", "Erro ao editar Estado");
                     var erros = ModelState.Values.SelectMany(v => v.Errors).ToList();
 
                     return Json(new { success = false, erros });
