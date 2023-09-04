@@ -14,10 +14,12 @@
         @using (Html.BeginForm("Pesquisar", "Empresa", FormMethod.Post, new { @class = "d-flex" }))
         {
             <input type="text" class="form-control" id="inputCNPJ" name="inputCNPJ" required placeholder="CNPJ" />
-            <input class="btn btn-primary" type="submit" value="Pesquisar" id="inputCNPJ" onclick="pesquisar()"/>
+            <input class="btn btn-primary" type="submit" value="Pesquisar" id="inputCNPJ" onclick="pesquisar()" />
         }
     </div>
 </div>
+
+@{var dado = 0; }
 
 <div class="row g-6 mt-3 ">
     <div class="input-group mb-2 row">
@@ -28,37 +30,38 @@
 
     @if (@Model.listaEmpresa.Count > 0)
     {
-
-        foreach (var item in Model.listaEmpresa)
+        for (int i = 0; i < Model.listaEmpresa.Count ; i++)
         {
             <div class="input-group mb-2 row">
-                <span class="input-group-text col-2" id="basic-addon1"> @item.CNPJ</span>
-                <span class="input-group-text col-6" id="basic-addon1"> @item.razaoSosial </span>
+                <span class="input-group-text col-2" id="basic-addon1"> @Model.listaEmpresa[i].CNPJ</span>
+                <span class="input-group-text col-6" id="basic-addon1"> @Model.listaEmpresa[i].razaoSosial</span>
                 @using (Html.BeginForm("DadosCadastroEmpresa", "Empresa", FormMethod.Post, new { @class = "col-1 " }))
                 {
-                    <input type="hidden" value="@item.id" name="id" />
+                    <input type="hidden" value="Model.listaEmpresa.id" name="id" />
                     <button type="submit" class="btn btn-success botaoEditar">Editar</button>
                 }
+
                 <div class="col-1">
-                    <button class="btn btn-danger botaoEditar " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setIdDelete(@item.id)">
+                    <button class="btn btn-danger botaoEditar " data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Deletar
                     </button>
                 </div>
             </div>
+
+            dado = Model.listaEmpresa[i].id;
+
         }
+
     }
+
     else
     {
         <div class="alert alert-success alert-dismissible fade show text-center mt-5" role="alert">
-            Nenhume empresa cadastrada
-                
+            Nenhuma empresa cadastrada!
         </div>
     }
 
 </div>
-
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -75,7 +78,7 @@
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
                 @using (Html.BeginForm("DeletarEmpresa", "Empresa", FormMethod.Post))
                 {
-                    <input id="idItemDeletar" name="idDelete" type="hidden" />
+                    <input id="idItemDeletar" name="idDelete" value="@dado" type="hidden" />
                     <button type="submit" class="btn btn-danger">Deletar</button>
                 }
             </div>
@@ -98,7 +101,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
- 
 
 <script src="~/Scripts/pesquisarItem.js"></script>
 <script src="~/Scripts/CadastrarEmpresaJs.js"></script>
