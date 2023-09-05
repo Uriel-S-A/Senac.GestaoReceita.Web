@@ -1,19 +1,11 @@
 ﻿using Newtonsoft.Json;
-using SolutionWebCadastroLogin.Models;
-using SolutionWebCadastroLogin.Models.Usuarios;
-using SolutionWebCadastroLogin.Models.UsuariosCadastro;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net.Http;
-using System.Security.AccessControl;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using Web.Models.Usuario;
+using Web.Models.Usuarios;
 
-namespace SolutionWebCadastroLogin.Controllers
+namespace Web.Controllers
 {
     public class LoginController : LoginExtention
     {
@@ -203,24 +195,28 @@ namespace SolutionWebCadastroLogin.Controllers
                 mensagemErro = cadastrarUsuario(Nome, Usuario, Senha, Empresa);
             }
 
+            var retorno = new DadosUsuarioViewModel()
+            {
+                id = Id.GetValueOrDefault(),
+                nome = Nome,
+                acesso = 0,
+                ativo = 1,
+                empresaId = Empresa,
+                manterLogado = 0,
+                username = Usuario,
+                senha = Senha,
+            };
+
             if (!string.IsNullOrEmpty(mensagemErro))
             {
-                return RedirectToAction("Cadastro", new DadosUsuarioViewModel()
-                {
-                    id = Id.GetValueOrDefault(),
-                    nome = Nome,
-                    acesso = 0,
-                    ativo = 1,
-                    empresaId = Empresa,
-                    manterLogado = 0,
-                    username = Usuario,
-                    senha = Senha,
-                    mensagemErro = mensagemErro,
-                    mensagemSucesso = "Dados salvos com sucesso",
-                });
+                retorno.mensagemErro = mensagemErro;
+
+                return RedirectToAction("Cadastro", retorno);
             }
 
-            return RedirectToAction("Cadastro");
+            retorno.mensagemSucesso = "Dados salvos com sucesso";
+
+            return RedirectToAction("Cadastro", retorno);
         }
 
         public string updateUsuario(int id, string Nome, string Usuario, string Senha, int Empresa)

@@ -14,7 +14,7 @@ using Web.Models.Ingrediente;
 
 namespace Web.Controllers
 {
-    public class IngredienteController : Controller
+    public class IngredienteController : LoginExtention
     {
         public ActionResult Index(string BuscaIngredientes)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SolutionWebCadastroLogin.Models.UsuariosCadastro
+namespace Web.Models.Usuarios
 {
     public class CadastroUsuarioRequest
     {

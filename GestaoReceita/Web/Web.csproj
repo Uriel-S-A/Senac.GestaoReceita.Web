@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DC41FFFD-9C6A-44C8-B591-398232EC01A9}</ProjectGuid>
+    <ProjectGuid>{1D5B155E-6F0B-4440-8660-41AA650D4DA7}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -291,8 +291,6 @@
     <Content Include="Views\Shared\EditorTemplate\inputNumerico.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="obj\Debug\TempPE\" />
     <Content Include="Views\Login\Cadastro.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\Usuario.cshtml" />
@@ -300,6 +298,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

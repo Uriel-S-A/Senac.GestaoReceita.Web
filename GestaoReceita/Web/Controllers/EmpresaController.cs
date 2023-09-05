@@ -1,6 +1,4 @@
-﻿
-using Web.Models.Empresa;
-using Microsoft.Ajax.Utilities;
+﻿using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -13,11 +11,11 @@ using System.Text;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using Web.Models;
+using Web.Models.Empresa;
 
-namespace CadEmpresa.Controllers
+namespace Web.Controllers
 {
-    public class EmpresaController : Controller
+    public class EmpresaController : LoginExtention
     {
 
         public EmpresaController()
@@ -262,7 +260,7 @@ namespace CadEmpresa.Controllers
                     idcidade = dados.idCidade,
                     updateEmpresa = DateTime.Now,
                     id = dados.id,
-                    idUsername = 2
+                    idUsername = Session["IdUsuario"]
                 }), Encoding.UTF8, "application/json");
 
                 var response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + dados.id, formContentString);
@@ -302,7 +300,7 @@ namespace CadEmpresa.Controllers
                     nomeFantasia = dados.nomeFantasia,
                     idcidade = dados.idCidade,
                     createEmpresa = DateTime.Now,
-                    idUsername = 2
+                    idUsername = Session["IdUsuario"]
                 }), Encoding.UTF8, "application/json");
 
                 var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Empresas", formContentString);

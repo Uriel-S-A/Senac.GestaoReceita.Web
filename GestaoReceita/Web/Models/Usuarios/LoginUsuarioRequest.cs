@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SolutionWebCadastroLogin.Models.Usuarios
-{
+namespace Web.Models.Usuarios
+{ 
     public class LoginUsuarioRequest
     {
         public int Id { get; set; }
