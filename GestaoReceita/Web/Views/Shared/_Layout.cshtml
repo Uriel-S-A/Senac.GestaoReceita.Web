@@ -51,13 +51,15 @@
     </nav>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
+        <footer class="fixed-bottom">
+            <hr />
             <p>
-                &copy; @DateTime.Now.Year -
+                <div style="margin-left:85px">
+                    &copy; @DateTime.Now.Year -
 
-         
-                <a class="curson-pointer link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Senac Info - 9</a>
+
+                    <a class="curson-pointer link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Senac Info - 9</a>
+                </div>
             </p>
         </footer>
     </div>
