@@ -10,10 +10,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReceitaFrontEnd.Controllers
+namespace Web.Controllers
 {
 
-    public class ReceitaController : Controller
+    public class ReceitaController : LoginExtention
     {
         private List<ReceitaViewModel> list = new List<ReceitaViewModel>();
         private Random random = new Random();

@@ -9,7 +9,7 @@ using Web.Models.Pais;
 
 namespace Web.Controllers
 {
-    public class PaisController : Controller
+    public class PaisController : LoginExtention
     {
        
         public ActionResult Index()

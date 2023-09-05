@@ -323,9 +323,9 @@ namespace Web.Controllers
 
 
         //gerar uma lista de cidades 
-        public List<Cidade> getListaCidade()
+        public List<Web.Models.Empresa.Cidade> getListaCidade()
         {
-            var listaCidade = new List<Cidade>();
+            var listaCidade = new List<Web.Models.Empresa.Cidade>();
 
             using (var client = new HttpClient())
             {
@@ -337,10 +337,10 @@ namespace Web.Controllers
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
 
-                    var objectJson = JsonConvert.DeserializeObject<List<Cidade>>(stringResult.Result);
+                    var objectJson = JsonConvert.DeserializeObject<List<Web.Models.Empresa.Cidade>>(stringResult.Result);
 
                     objectJson.ForEach(item => listaCidade.Add(
-                        new Cidade()
+                        new Web.Models.Empresa.Cidade()
                         {
                             id = item.id,
                             descricaoCidade = item.descricaoCidade

@@ -449,3 +449,4 @@ C:\Users\Uriel\Source\Repos\Senac.GestaoReceita.Web\GestaoReceita\Web\obj\Debug\
 C:\Users\Uriel\Source\Repos\Senac.GestaoReceita.Web\GestaoReceita\Web\obj\Debug\Web.csproj.CopyComplete
 C:\Users\Uriel\Source\Repos\Senac.GestaoReceita.Web\GestaoReceita\Web\obj\Debug\Web.dll
 C:\Users\Uriel\Source\Repos\Senac.GestaoReceita.Web\GestaoReceita\Web\obj\Debug\Web.pdb
+C:\Users\usilva\Documents\Visual Studio 2017\Repo\Senac.GestaoReceita.Web\GestaoReceita\Web\obj\Debug\Web.csprojAssemblyReference.cache

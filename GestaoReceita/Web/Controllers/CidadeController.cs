@@ -10,7 +10,7 @@ using Web.Models.Estado;
 
 namespace Web.Controllers
 {
-    public class CidadeController : Controller
+    public class CidadeController : LoginController
     {
         // GET: Estado
         public ActionResult Index()
