@@ -111,11 +111,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EmpresaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IngredienteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CadastroEmpresaViewModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\Ingrediente\DadosEmpresa.cs" />
+    <Compile Include="Models\Ingrediente\DadosIngrediente.cs" />
+    <Compile Include="Models\Ingrediente\DadosIngredienteRequest.cs" />
+    <Compile Include="Models\Ingrediente\DadosUnidadeMedida.cs" />
+    <Compile Include="Models\Ingrediente\IndexViewModel.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
@@ -184,6 +190,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\empresa.css" />
+    <Content Include="Content\Ingrediente\Index.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -238,6 +245,7 @@
     <Content Include="obj\Debug\_IsIncrementalBuild" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\pesquisarItem.js" />
+    <Content Include="Scripts\Ingrediente\Ingrediente.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
     <Content Include="Scripts\jquery-3.7.0.slim.js" />
@@ -266,6 +274,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Empresa\DadosCadastroEmpresa.cshtml" />
     <Content Include="Views\Empresa\Index.cshtml" />
+    <Content Include="Views\Ingrediente\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplate\inputNumerico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
