@@ -131,18 +131,15 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LoginExtention.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Models\Usuarios\CadastroUsuarioRequest.cs" />
     <Compile Include="Models\Usuarios\DadosUsuarioViewModel.cs" />
     <Compile Include="Models\Usuarios\Empresa.cs" />
     <Compile Include="Models\Usuarios\LoginUsuario.cs" />
     <Compile Include="Models\Usuarios\LoginUsuarioRequest.cs" />
     <Compile Include="Models\Usuarios\UsuarioViewModel.cs" />
-    <Compile Include="Model\CadastroUnidadeMedida\CadastrarUnidadeMedidaViewModel.cs" />
-    <Compile Include="Model\CadastroUnidadeMedida\UnidadeMedida.cs" />
-    <Compile Include="Model\CadastroUnidadeMedida\UnidadeMedidaRequest.cs" />
+    <Compile Include="Models\CadastroUnidadeMedida\CadastrarUnidadeMedidaViewModel.cs" />
+    <Compile Include="Models\CadastroUnidadeMedida\UnidadeMedida.cs" />
+    <Compile Include="Models\CadastroUnidadeMedida\UnidadeMedidaRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

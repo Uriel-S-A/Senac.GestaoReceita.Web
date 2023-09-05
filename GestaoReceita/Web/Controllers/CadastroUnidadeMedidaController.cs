@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using Web.Model.CadastroUnidadeMedida;
+using Web.Models.CadastroUnidadeMedida;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Collections;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Web.Controllers
 {
-    public class CadastroUnidadeMedidaController : Controller
+    public class CadastroUnidadeMedidaController : LoginExtention
     {
         // GET: CadastroUnidadeMedida
         public ActionResult Index()

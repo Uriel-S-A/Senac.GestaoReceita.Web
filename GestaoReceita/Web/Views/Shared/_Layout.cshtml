@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Meu Aplicativo ASP.NET</title>
+    <title>@ViewBag.Title - Gestão Receita</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -14,10 +14,9 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">Gestão de Receitas</a>
+            @Html.ActionLink("Gestão de Receitas", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Empresas", "Index", "Empresa", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Ingredientes", "Index", "Ingrediente", new { areas = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Cadastrar Unidade Medida", "Index", "CadastroUnidadeMedida", new { area = "" }, new { @class = "nav-link" })</li>

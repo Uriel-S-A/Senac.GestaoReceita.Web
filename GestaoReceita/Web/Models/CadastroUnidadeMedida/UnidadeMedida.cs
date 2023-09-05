@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Web.Model.CadastroUnidadeMedida
+namespace Web.Models.CadastroUnidadeMedida
 {
     public class UnidadeMedida
     {
