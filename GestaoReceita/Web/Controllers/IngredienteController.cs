@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using Web.Models;
 using Web.Models.Ingrediente;
 
 namespace Web.Controllers

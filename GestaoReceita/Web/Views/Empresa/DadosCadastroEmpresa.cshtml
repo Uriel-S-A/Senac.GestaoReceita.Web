@@ -1,8 +1,8 @@
-﻿@model CadEmpresa.Models.CadastroEmpresaViewModel
+﻿@model Web.Models.Empresa.CadastroEmpresaViewModel
 @{
     ViewBag.Title = "Dados Empresa";
 }
-<link href="~/Content/empresa.css" rel="stylesheet" />
+<link href="~/Content/Empresa/empresa.css" rel="stylesheet" />
 
 @using (Html.BeginForm("PersistirCadastro", "Empresa", FormMethod.Post, new { @class = "row g-3 mt-5 needs-validation" }))
 {

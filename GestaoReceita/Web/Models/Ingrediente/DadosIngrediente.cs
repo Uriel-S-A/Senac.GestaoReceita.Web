@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using Web.Models.Ingrediente;
 
-namespace Web.Models
+namespace Web.Models.Ingrediente
 {
     public class DadosIngrediente
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CadEmpresa.Models
+namespace Web.Models.Empresa
 {
     public class IndexViewModel
     {

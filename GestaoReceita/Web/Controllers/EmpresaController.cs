@@ -1,5 +1,5 @@
 ﻿
-using CadEmpresa.Models;
+using Web.Models.Empresa;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using System;
@@ -261,7 +261,8 @@ namespace CadEmpresa.Controllers
                     nomeFantasia = dados.nomeFantasia,
                     idcidade = dados.idCidade,
                     updateEmpresa = DateTime.Now,
-                    id = dados.id
+                    id = dados.id,
+                    idUsername = 2
                 }), Encoding.UTF8, "application/json");
 
                 var response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Empresas/" + dados.id, formContentString);
@@ -301,6 +302,7 @@ namespace CadEmpresa.Controllers
                     nomeFantasia = dados.nomeFantasia,
                     idcidade = dados.idCidade,
                     createEmpresa = DateTime.Now,
+                    idUsername = 2
                 }), Encoding.UTF8, "application/json");
 
                 var response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Empresas", formContentString);
@@ -356,9 +358,6 @@ namespace CadEmpresa.Controllers
         }
 
     }
-
-
-
 
 
     public class fooEmpresaDTO

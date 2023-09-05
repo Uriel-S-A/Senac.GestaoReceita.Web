@@ -115,8 +115,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CadastroEmpresaViewModel.cs" />
-    <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\Empresa\CadastroEmpresaViewModel.cs" />
+    <Compile Include="Models\Empresa\CadastroNovaEmpresa.cs" />
+    <Compile Include="Models\Empresa\Cidade.cs" />
+    <Compile Include="Models\Empresa\IndexViewModel.cs" />
     <Compile Include="Models\Ingrediente\DadosEmpresa.cs" />
     <Compile Include="Models\Ingrediente\DadosIngrediente.cs" />
     <Compile Include="Models\Ingrediente\DadosIngredienteRequest.cs" />
@@ -189,7 +191,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="Content\empresa.css" />
+    <Content Include="Content\Empresa\empresa.css" />
     <Content Include="Content\Ingrediente\Index.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -244,7 +246,7 @@
     <Content Include="obj\Debug\Web.csprojAssemblyReference.cache" />
     <Content Include="obj\Debug\_IsIncrementalBuild" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
-    <Content Include="Scripts\pesquisarItem.js" />
+    <Content Include="Scripts\Empresa\pesquisarItem.js" />
     <Content Include="Scripts\Ingrediente\Ingrediente.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Web.Models;
 
-namespace CadEmpresa.Models
+namespace Web.Models.Empresa
 {
     public class CadastroEmpresaViewModel
     {

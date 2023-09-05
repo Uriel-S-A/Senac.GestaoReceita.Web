@@ -1,4 +1,4 @@
-﻿@model Web.Models.IndexViewModel
+﻿@model Web.Models.Ingrediente.IndexViewModel
 
 <link rel="stylesheet" href="~/Content/Ingrediente/Index.css" />
 
@@ -59,7 +59,7 @@
                     </td>
                     <td>
                         @item.UnidadeMedida.descUnidMedIngrediente
-                        <input data-item="item_unidade_medida" value="@item.UnidadeMedida.descUnidMedIngrediente" type="hidden" />
+                        <input data-item="item_unidade_medida" value="@item.UnidadeMedida.Id" type="hidden" />
                     </td>
                     <td>
                         @item.PrecoIngrediente
@@ -67,7 +67,7 @@
                     </td>
                     <td>
                         @item.Empresa.nomeFantasia
-                        <input data-item="item_empresa" value="@item.Empresa.nomeFantasia" type="hidden" />
+                        <input data-item="item_empresa" value="@item.Empresa.id" type="hidden" />
                     </td>
                     <td>
                         <!-- BOTÃO EDITAR  -->
