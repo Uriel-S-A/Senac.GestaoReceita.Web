@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "CadastrarEstado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    @*jquery*@
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    @*alerta*@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @*rotas*@
+    <script src="~/Scripts/Estado/script.js"></script>
+    <link rel="stylesheet" href="~/Content/Estado/style.css" />
+</head>
+
+<body>
+    <div class="container my-3">
+
+        @*modal delete*@
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmação de Exclusão</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Realmente deseja excluir esse Estado?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Excluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*modal create*@
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="exibe-modal-create">
+
+                </div>
+            </div>
+        </div>
+
+        @*modal update*@
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="exibe-modal-update">
+
+                </div>
+            </div>
+        </div>
+
+
+        <button type="button" class="btn btn-primary" id="modal-create">Novo Resgistro</button>        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="d-none">Id</th>
+                    <th scope="col">País</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col" class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody class="pais-info">
+                @foreach (var estado in Model)
+                {
+                    <tr>
+                        <td class="d-none paisId">@estado.idPais</td>
+                        <td class="paisDescricao">@estado.pais.descricaoPais</td>
+
+                        <td class="d-none estadoId">@estado.id</td>
+                        <td class="estadoDescricao">@estado.descricaoEstado</td>
+
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-modal-edit">Editar</button>
+                            <button class="btn btn-danger btn-modal-delete" data-bs-toggle="modal" data-bs-target="#confirmModal">Deletar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>    
+</body>
+

@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "CadastrarCidade";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    @*alerta de erro*@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/Cidade/script.js"></script>
+    <link rel="stylesheet" href="~/Content/Cidade/style.css" />
+</head>
+
+<body>
+    <div class="container my-3">
+
+
+
+        @*modal delete*@
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmação de Exclusão</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Tem certeza de que deseja excluir este registro de Cidade?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Excluir</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        @*modal create*@
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="exibe-modal-create">
+
+                </div>
+            </div>
+        </div>
+
+        @*modal update*@
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="cadastrarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="exibe-modal-update">
+
+                </div>
+            </div>
+        </div>
+
+
+        <button type="button" class="btn btn-primary" id="modal-create">Novo Resgistro</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="d-none">Id</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Cidade</th>
+                    <th scope="col" class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody class="pais-info">
+                @foreach (var cidade in Model)
+                {
+                    <tr>
+                        <td class="d-none estadoId">@cidade.idEstado</td>
+                        <td class="estadoDescricao">@cidade.estado.descricaoEstado</td>
+
+                        <td class="d-none cidadeId">@cidade.id</td>
+                        <td class="descricaoCidade">@cidade.descricaoCidade</td>
+
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-modal-edit">Editar</button>
+                            <button class="btn btn-danger btn-modal-delete" data-bs-toggle="modal" data-bs-target="#confirmModal">Deletar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
