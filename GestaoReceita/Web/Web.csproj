@@ -116,6 +116,7 @@
     <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredienteController.cs" />
+    <Compile Include="Controllers\ReceitaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -149,6 +150,15 @@
     <Compile Include="Models\CadastroUnidadeMedida\CadastrarUnidadeMedidaViewModel.cs" />
     <Compile Include="Models\CadastroUnidadeMedida\UnidadeMedida.cs" />
     <Compile Include="Models\CadastroUnidadeMedida\UnidadeMedidaRequest.cs" />
+    <Compile Include="Models\cadReceita\CadastrarIngredientesViewModel.cs" />
+    <Compile Include="Models\cadReceita\ReceitaIngredienteResponse.cs" />
+    <Compile Include="Models\cadReceita\ReceitaRequest.cs" />
+    <Compile Include="Models\cadReceita\CadastroViewModel.cs" />
+    <Compile Include="Models\cadReceita\DadosIngredientes.cs" />
+    <Compile Include="Models\cadReceita\DadosReceitaViewModel.cs" />
+    <Compile Include="Models\cadReceita\IngredienteResponse.cs" />
+    <Compile Include="Models\cadReceita\ReceitaViewModel.cs" />
+    <Compile Include="Models\cadReceita\UnidadeMedidaRequeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +206,8 @@
     <Content Include="bin\Web.dll" />
     <Content Include="bin\Web.pdb" />
     <Content Include="bin\WebGrease.dll" />
+    <Content Include="Audio\notification-sound-7062.mp3" />
+    <Content Include="Audio\short-success-sound-glockenspiel-treasure-video-game-6346.mp3" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -217,12 +229,14 @@
     <Content Include="Content\Cidade\style.css" />
     <Content Include="Content\Estado\style.css" />
     <Content Include="Content\Pais\style.css" />
+    <Content Include="Content\ReceitaStyles.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="obj\Debug\Web.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\Web.dll" />
     <Content Include="obj\Debug\Web.pdb" />
+    <Content Include="Imagens\OIG-removebg-preview.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -287,6 +301,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Pais\script.js" />
+    <Content Include="Scripts\ReceitaScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -317,6 +332,8 @@
     <Content Include="Views\Cidade\Index.cshtml" />
     <Content Include="Views\Cidade\_UpdateCidadePartial.cshtml" />
     <Content Include="Views\Cidade\_CreateCidadePartial.cshtml" />
+    <Content Include="Views\Receita\Cadastro.cshtml" />
+    <Content Include="Views\Receita\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

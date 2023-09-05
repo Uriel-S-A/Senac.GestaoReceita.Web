@@ -1,0 +1,129 @@
+﻿@model List<ReceitaFrontEnd.Models.DadosReceitaViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
+}
+
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6LdD-78nAAAAAFsoghhAlZeIJaJuapMXSopJVt_K"></script>
+
+<noscript>
+    <p>Por favor, habilite o JavaScript para ter a melhor experiência.</p>
+</noscript>
+
+
+@using (Html.BeginForm("Cadastro", "Receita", FormMethod.Post))
+{
+    <form class="align-content-center">
+        <div class="container">
+            <div class="container d-flex align-items-start " style="margin-bottom:20px; margin: auto;">
+                <input class="btn btn-outline-primary botaoCadastro" type="submit" value="Cadastrar nova receita!" style="width: 350px" />
+                <button type="button" class="btn btn-outline-danger botaoCadastro" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="margin-left: 10px; width: 280px" id="excluirReceita">
+                    Excluir todas as receitas!
+                </button>
+                <div class="buscar">
+                    <span>Buscar receitas</span>
+                    <input class="form-control" id="chaveInput" type="text" placeholder="Pesquise a receita aqui" aria-label="default input example" oninput="procurarValor()">
+                </div>
+            </div>
+            <div id="meuAlerta" class="alert" role="alert" style="z-index: 2000;"></div>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Excluir todas as receitas?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div style="margin: auto; text-align: center">Digite: <br /><span id="testSocial"></span><br /></div>
+                            <div class="loader-container">
+                                <input class="form-control bow" type="text" placeholder="Insira o codigo aqui" aria-label="default input example" id="verificacao">
+                                <div class="loader"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-outline-danger" id="EXCLUIRTUDO">Deletar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-danger menu" data-bs-toggle="modal" data-bs-target="#exampleModal">PERIGO!</button>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">EXCLUIR?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Tem certeja que deseja excluir a RECEITA? A exclusão da receita sera permanentemente!!!!!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button type="button" class="btn btn-outline-danger" id="EXCLUIR" data-bs-dismiss="modal">Deletar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+<div id="defaut"></div>
+
+<div class="container sla" id="vazio" overflow: auto; height: 550px;">
+    @if (Model.Any())
+    {
+
+        using (Html.BeginForm("Cadastro", "Receita", FormMethod.Post))
+        {
+            <table class="table" id="tables">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:30px">ID</th>
+                        <th scope="col" style="width:850px">Nome da Receita</th>
+                        <th scope="col">Valor da Receita</th>
+                        <th scope="col" style="text-align:center">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-group-divider" id="conteudoTbody">
+                    @foreach (var receita in Model)
+                    {
+                        <tr>
+                            <td>@receita.Id</td>
+                            <td>@receita.nomeReceita</td>
+                            <td class="ajusteTamanhoPreco">@receita.valorTotalReceita</td>
+                            <td style="text-align:center">
+                                <button type="submit" name="idReceita" value="@receita.Id" class="btn btn-outline-primary" style="margin-bottom: 1px;">Editar</button>
+                                <button type="button" class="btn btn-outline-danger test">Deletar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+    else
+    {
+        <script>
+            var myButton = document.getElementById("excluirReceita");
+            myButton.disabled = true;
+
+
+            myButton.style.backgroundColor = "#ccc";
+            myButton.style.color = "#666";
+            myButton.style.cursor = "not-allowed";
+            myButton.style.border = "none";
+        </script>
+        <div class="sla12">
+            <img src="~/Imagens/OIG-removebg-preview.png" />
+        </div>
+
+    }
+</div>
+
+
+
