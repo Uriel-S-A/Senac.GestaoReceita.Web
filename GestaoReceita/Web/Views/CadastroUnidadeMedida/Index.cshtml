@@ -1,0 +1,122 @@
+﻿@model Web.Model.CadastroUnidadeMedida.CadastrarUnidadeMedidaViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="clearCamposFormulario()">
+        Adicionar
+    </button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Unidade de Medida</th>
+                <th scope="col">Sigla</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int contador = 1;}
+            @foreach (var item in Model.listaUnidadeMedida)
+            {
+                <tr>
+                    <th scope="row">
+                        @contador
+                        <input data-item="id_unidade_medida" type="hidden" value="@item.Id"/>
+                    </th>
+                    <td data-item="descricao_unidade_medida">@item.Descricao</td>
+                    <td data-item="sigla_unidade_medida">@item.Sigla</td>
+                    <td>                
+                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editar(this)">
+                                Editar
+                            </button>
+                            <button type="button" class="btn btn-danger"  onclick="deletar(@item.Id)">
+                                Deletar
+                            </button>                           
+                    </td>
+                </tr>
+
+                contador = contador + 1;
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            @using (Html.BeginForm("PersistirUnidadeMedida", "CadastroUnidadeMedida", FormMethod.Post))
+            {
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Formulario Unidade Medida</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Descrição</span>
+                            <input name="descricao" id="unidadeMedidaDescricao" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Sigla</span>
+                            <input name="sigla" id="unidadeMedidaSigla" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                            <input type="hidden" id="idUnidadeMedida" name="id">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Concluir</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function editar(button) {
+        clearCamposFormulario();
+
+        var tr = button.closest("tr");
+        var inputId = tr.querySelector("input[data-item='id_unidade_medida']");
+        var colDescricao = tr.querySelector("td[data-item='descricao_unidade_medida']");
+        var colSigla = tr.querySelector("td[data-item='sigla_unidade_medida']");
+
+        document.getElementById("idUnidadeMedida").value = inputId.value;
+        document.getElementById("unidadeMedidaDescricao").value = colDescricao.innerText;
+        document.getElementById("unidadeMedidaSigla").value = colSigla.innerText;
+    }
+
+    function clearCamposFormulario() {
+        document.getElementById("idUnidadeMedida").value = "";
+        document.getElementById("unidadeMedidaDescricao").value = "";
+        document.getElementById("unidadeMedidaSigla").value = "";
+    }
+
+    function deletar(id) {
+        var conf = confirm("Deseja deletar?");
+
+        if (conf) {
+            //chama ajax passando id /CadastroUnidadeMedida/deletar
+            $.ajax({
+                type: "POST",
+                url: "/CadastroUnidadeMedida/Deletar", // Substitua pela URL correta do endpoint de exclusão
+                data: { id: id },
+                success: function (response) {
+                    alert(response.mensagemRetorno);
+                    setTimeout(function () {
+                        location.href = "/CadastroUnidadeMedida/Index";
+                    }, 500);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+    }
+</script>
