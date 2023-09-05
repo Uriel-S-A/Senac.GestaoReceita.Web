@@ -1,0 +1,44 @@
+﻿@model Web.Models.Usuario.UsuarioViewModel
+
+<h2>Lista de Usuários</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Usuario</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in this.Model.ListaUsuarios)
+        {
+            <tr>
+                <td>@usuario.nome</td>
+                <td>@usuario.username</td>
+                <td><button class="btn btn-danger" onclick="deletar(@usuario.id)">Deletar</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+
+    
+    function deletar(teste) {
+        var confirmacao = confirm("Deseja excluir?");
+
+        if (confirmacao) {
+            $.ajax({
+                type: "POST",
+                url: "/Login/DeletarUsuario", 
+                data: { id: teste },
+                success: function (result) {
+                    alert(result.msgRetorno);
+                    location.href = "/Login/Usuario"
+                }
+            });
+        }
+    }
+
+
+</script>
