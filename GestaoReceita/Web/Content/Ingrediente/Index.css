@@ -1,11 +1,10 @@
-﻿ingredienteContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 30px auto;
-    background-color: white;
+﻿.anti-select {
+    -webkit-user-select: none;
 }
 
+table, td, th {
+    -webkit-user-select: text !important;
+}
 
 .PesquisaIngrediente {
     border-color: #0d6efd;

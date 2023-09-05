@@ -12,8 +12,7 @@ namespace Web.Models
         public List<DadosEmpresa> listaDadosEmpresa { get; set; }
         public List<DadosUnidadeMedida> listaDadosUnidadeMedida { get; set; }
 
-        public string erros { get; set; }
-
-        public List<string> listaErros { get; set; }
+        //public string erros { get; set; }
+        //public List<string> listaErros { get; set; }
     }
 }
