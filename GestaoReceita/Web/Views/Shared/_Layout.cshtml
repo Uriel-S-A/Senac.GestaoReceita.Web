@@ -15,16 +15,15 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             @Html.ActionLink("Gestão de Receitas", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+            <hr class="half-rule" />
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-
-                @*será feito um combobox com as três telas feitas*@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">@Html.ActionLink("Empresas", "Index", "Empresa", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Ingredientes", "Index", "Ingrediente", new { areas = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Cadastrar Unidade Medida", "Index", "CadastroUnidadeMedida", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="dropdown myDropDownCidade">
+                            <button class="btn nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Cadastros de Origem
                             </button>
                             <ul class="dropdown-menu">

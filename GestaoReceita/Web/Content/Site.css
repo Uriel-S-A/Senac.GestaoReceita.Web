@@ -27,3 +27,14 @@ textarea {
     background-color: #777;
     border-color: #fff
 }
+
+.half-rule {
+    background-color: #0c0c0c;
+    /* color: #C80000; */
+    -webkit-transform: rotate(90deg);
+    /* position: absolute; */
+    width: 30px;
+    height: 1px;
+    /* left: 130px; */
+    border: 2px;
+}
