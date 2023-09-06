@@ -9,40 +9,42 @@
     <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="clearCamposFormulario()">
         Adicionar
     </button>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Unidade de Medida</th>
-                <th scope="col">Sigla</th>
-                <th scope="col">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{int contador = 1;}
-            @foreach (var item in Model.listaUnidadeMedida)
-            {
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
                 <tr>
-                    <th scope="row">
-                        @contador
-                        <input data-item="id_unidade_medida" type="hidden" value="@item.Id"/>
-                    </th>
-                    <td data-item="descricao_unidade_medida">@item.Descricao</td>
-                    <td data-item="sigla_unidade_medida">@item.Sigla</td>
-                    <td>                
+                    <th scope="col">#</th>
+                    <th scope="col">Unidade de Medida</th>
+                    <th scope="col">Sigla</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int contador = 1;}
+                @foreach (var item in Model.listaUnidadeMedida)
+                {
+                    <tr>
+                        <th scope="row">
+                            @contador
+                            <input data-item="id_unidade_medida" type="hidden" value="@item.Id" />
+                        </th>
+                        <td data-item="descricao_unidade_medida">@item.Descricao</td>
+                        <td data-item="sigla_unidade_medida">@item.Sigla</td>
+                        <td>
                             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editar(this)">
                                 Editar
                             </button>
-                            <button type="button" class="btn btn-danger"  onclick="deletar(@item.Id)">
+                            <button type="button" class="btn btn-danger" onclick="deletar(@item.Id)">
                                 Deletar
-                            </button>                           
-                    </td>
-                </tr>
+                            </button>
+                        </td>
+                    </tr>
 
-                contador = contador + 1;
-            }
-        </tbody>
-    </table>
+                    contador = contador + 1;
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

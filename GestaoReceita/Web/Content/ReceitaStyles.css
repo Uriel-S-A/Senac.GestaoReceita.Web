@@ -51,7 +51,7 @@ body{
     font-weight: bold;
 }
 .sla {
-    width: 85%;
+    width: 98%;
     white-space: nowrap;
 }
 .bow{
@@ -136,12 +136,4 @@ body{
 .loader-container {
     display: flex;
     margin-top: 15px;
-}
-
-.buscar{
-
-    width: 350px;
-    margin-top: -2px;
-    margin-left: 20px;
-
 }

@@ -15,14 +15,35 @@
 {
     <form class="align-content-center">
         <div class="container">
-            <div class="container d-flex align-items-start " style="margin-bottom:20px; margin: auto;">
-                <input class="btn btn-outline-primary botaoCadastro" type="submit" value="Cadastrar nova receita!" style="width: 350px" />
-                <button type="button" class="btn btn-outline-danger botaoCadastro" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="margin-left: 10px; width: 280px" id="excluirReceita">
-                    Excluir todas as receitas!
-                </button>
-                <div class="buscar">
-                    <span>Buscar receitas</span>
-                    <input class="form-control" id="chaveInput" type="text" placeholder="Pesquise a receita aqui" aria-label="default input example" oninput="procurarValor()">
+            <div class="container" style="margin-bottom:20px; margin: auto;">
+                <div class="row">
+                    <div class="col-sm-3 mt-2">
+                        <div class="d-flex align-items-center h-100">
+                            <button class="btn btn-outline-primary w-100" type="submit">
+                                Cadastrar nova receita!
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 mt-2">
+                        <div class="d-flex align-items-center h-100">
+                            <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="excluirReceita">
+                                Excluir todas as receitas!
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col-sm-3 mt-2">
+                        <div class="d-flex flex-column align-items-start h-100">
+                            <span>Buscar receitas</span>
+                            <input class="form-control" id="chaveInput" type="text" placeholder="Pesquise a receita aqui" aria-label="default input example" oninput="procurarValor()">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                </div>
+                <div class="row">
+
                 </div>
             </div>
             <div id="meuAlerta" class="alert" role="alert" style="z-index: 2000;"></div>
@@ -79,31 +100,33 @@
 
         using (Html.BeginForm("Cadastro", "Receita", FormMethod.Post))
         {
-            <table class="table" id="tables">
-                <thead>
-                    <tr>
-                        <th scope="col" style="width:30px">ID</th>
-                        <th scope="col" style="width:850px">Nome da Receita</th>
-                        <th scope="col">Valor da Receita</th>
-                        <th scope="col" style="text-align:center">Ações</th>
-                    </tr>
-                </thead>
-
-                <tbody class="table-group-divider" id="conteudoTbody">
-                    @foreach (var receita in Model)
-                    {
+            <div class="table-responsive">
+                <table class="table" id="tables">
+                    <thead>
                         <tr>
-                            <td>@receita.Id</td>
-                            <td>@receita.nomeReceita</td>
-                            <td class="ajusteTamanhoPreco">@receita.valorTotalReceita</td>
-                            <td style="text-align:center">
-                                <button type="submit" name="idReceita" value="@receita.Id" class="btn btn-outline-primary" style="margin-bottom: 1px;">Editar</button>
-                                <button type="button" class="btn btn-outline-danger test">Deletar</button>
-                            </td>
+                            <th scope="col" style="width:30px">ID</th>
+                            <th scope="col" style="width:850px">Nome da Receita</th>
+                            <th scope="col">Valor da Receita</th>
+                            <th scope="col" style="text-align:center">Ações</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody class="table-group-divider" id="conteudoTbody">
+                        @foreach (var receita in Model)
+                        {
+                            <tr>
+                                <td>@receita.Id</td>
+                                <td>@receita.nomeReceita</td>
+                                <td class="ajusteTamanhoPreco">@receita.valorTotalReceita</td>
+                                <td style="text-align:center">
+                                    <button type="submit" name="idReceita" value="@receita.Id" class="btn btn-outline-primary" style="margin-bottom: 1px;">Editar</button>
+                                    <button type="button" class="btn btn-outline-danger test">Deletar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
     }
     else

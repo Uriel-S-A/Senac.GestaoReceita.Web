@@ -1,25 +1,27 @@
 ﻿@model Web.Models.Usuarios.UsuarioViewModel
 
 <h2>Lista de Usuários</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Usuario</th>
-            <th>Ação</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var usuario in this.Model.ListaUsuarios)
-        {
+<div class="table-responsive">
+    <table class="table">
+        <thead>
             <tr>
-                <td>@usuario.nome</td>
-                <td>@usuario.username</td>
-                <td><button class="btn btn-danger" onclick="deletar(@usuario.id)">Deletar</button></td>
+                <th>Nome</th>
+                <th>Usuario</th>
+                <th>Ação</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var usuario in this.Model.ListaUsuarios)
+            {
+                <tr>
+                    <td>@usuario.nome</td>
+                    <td>@usuario.username</td>
+                    <td><button class="btn btn-danger" onclick="deletar(@usuario.id)">Deletar</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <script>
 
