@@ -17,6 +17,8 @@ namespace Web.Controllers
 {
     public class IngredienteController : Controller
     {
+        bool erro = false;
+
         public ActionResult Index(string BuscaIngredientes)
         {
             // chama o método GetDadosIngrediente e passa a resposta pra lista
@@ -209,6 +211,19 @@ namespace Web.Controllers
                 }
                 else
                 { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
+                    List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
+
+                    foreach (var item in listaIngredientesCadastrados)
+                    {
+                        if (item.NomeIngrediente.ToLower() == dados.NomeIngrediente.ToLower() &&
+                            item.UnidadeMedidaId == dados.UnidadeMedidaId &&
+                            item.EmpresaId == dados.EmpresaId)
+                        {
+                            Console.WriteLine("ERRO");
+
+                            return RedirectToAction("Index");
+                        }
+                    }
                     response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
                 }
                 // espera a resposta da requisição
