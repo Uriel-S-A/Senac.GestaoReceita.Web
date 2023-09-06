@@ -13,16 +13,24 @@
             <!-- Form que envia os dados para a controller -->
             @using (Html.BeginForm("Index", "Ingrediente", FormMethod.Post))
             {
-                <!-- Campo de busca -->
-                <input type="search" class="w-50 PesquisaIngrediente " name="BuscaIngredientes" placeholder="Buscar Ingrediente" value="" />
-                <!-- Botão Buscar -->
-                <button type="submit" class="NovoIngrediente w-25 m-1">
-                    Buscar
-                </button>
-                <!-- Botão Novo Ingrediente -->
-                <button onclick="editarIngrediente(this, 'cadastro')" type="button" class="NovoIngrediente w-25 m-1 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Novo Ingrediente
-                </button>
+                <div class="row">
+                    <div class="col-sm-6 mt-2">
+                        <!-- Campo de busca -->
+                        <input type="search" class="PesquisaIngrediente w-100" name="BuscaIngredientes" placeholder="Buscar Ingrediente" value="" />
+                    </div>
+                    <div class="col-sm-3 mt-2">
+                        <!-- Botão Buscar -->
+                        <button type="submit" class="NovoIngrediente w-100">
+                            Buscar
+                        </button>
+                    </div>
+                    <div class="col-sm-3 mt-2">
+                        <!-- Botão Novo Ingrediente -->
+                        <button onclick="editarIngrediente(this, 'cadastro')" type="button" class="NovoIngrediente w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Novo Ingrediente
+                        </button>
+                    </div>
+                </div>
             }
         </div>
     </div>
