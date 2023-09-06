@@ -206,13 +206,17 @@
     </div>
 </div>
 
-<!-- Danger Alert  -->
-<div id="alertErro" class="alert alert-danger d-flex align-items-center visually-hidden" role="alert">
-    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
-    <div>
-        Erro ao efetuar a ação!
+@if (Model.erroMensagem != "")
+{
+    <!-- Danger Alert  -->
+    <div id="alertErro" class="alert alert-danger d-flex align-items-center visually-hidden" role="alert">
+        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+        <div>
+            Mensagem: @Model.erroMensagem;
+        </div>
     </div>
-</div>
+}
+
 
 
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>

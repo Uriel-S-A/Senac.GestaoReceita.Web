@@ -17,9 +17,7 @@ namespace Web.Controllers
 {
     public class IngredienteController : Controller
     {
-        bool erro = false;
-
-        public ActionResult Index(string BuscaIngredientes)
+        public ActionResult Index(string BuscaIngredientes, string erros)
         {
             // chama o método GetDadosIngrediente e passa a resposta pra lista
             List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
@@ -48,6 +46,7 @@ namespace Web.Controllers
                 listaIngredientesCadastrados = listaIngredientesCadastrados,
                 listaDadosEmpresa = listaDadosEmpresa,
                 listaDadosUnidadeMedida = listaDadosUnidadeMedida,
+                erroMensagem = erros,
             };
 
             // retorna a indexViewModel pra index
@@ -254,6 +253,9 @@ namespace Web.Controllers
                 // espera a resposta da requisição
                 response.Wait();
 
+                IndexViewModel erros = new IndexViewModel();
+                IndexViewModel sucesso = new IndexViewModel();
+
                 // verifica se a requisição teve sucesso ou não
                 if (response.Result.IsSuccessStatusCode)
                 {
@@ -261,10 +263,12 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    throw new Exception(response.Result.ReasonPhrase);
+                    erros.erroMensagem = response.Result.ReasonPhrase;
+
+                    //throw new Exception(response.Result.ReasonPhrase);
                 }
                 // chama a index novamente para atualizar a tela
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", erros);
             }
         }
     }
