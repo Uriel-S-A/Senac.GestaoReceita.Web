@@ -17,6 +17,8 @@ namespace Web.Controllers
 {
     public class IngredienteController : Controller
     {
+        bool erro = false;
+
         public ActionResult Index(string BuscaIngredientes)
         {
             // chama o método GetDadosIngrediente e passa a resposta pra lista
@@ -183,6 +185,20 @@ namespace Web.Controllers
         // Método PersistirIngrediente (POST / PUT)
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
+            List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
+
+            foreach (var item in listaIngredientesCadastrados)
+            {
+                if (item.NomeIngrediente == dados.NomeIngrediente &&
+                    item.UnidadeMedidaId == dados.UnidadeMedidaId &&
+                    item.EmpresaId == dados.EmpresaId)
+                {
+                    Console.WriteLine("ERRO");
+
+                    return RedirectToAction("Index");
+                }
+            }
+
             using (var client = new HttpClient())
             {
                 // json stringify

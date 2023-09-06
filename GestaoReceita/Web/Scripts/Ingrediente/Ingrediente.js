@@ -22,6 +22,12 @@ function editarIngrediente(button, opcao) {
         var inputPreco = linhaItemClicado.querySelector("input[data-item='item_preco']");
         var inputEmpresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
 
+        var stringEmpresa = String(inputEmpresa.value);
+        var valoresEmpresa = stringEmpresa.split("/", 2);
+
+        var stringUnidadeMedida = String(inputUnidadeMedida.value);
+        var valoresUnidadeMedida = stringUnidadeMedida.split("/", 2);
+
         // passa os valores para a modal de editar para ela exibir os campos preenchidos
         var modalId = document.getElementById("idIngredienteModal");
         modalId.value = inputId.value;
@@ -33,10 +39,10 @@ function editarIngrediente(button, opcao) {
         modalQuantidade.value = inputQuantidade.value;
 
         var modalMedida = document.getElementById("selectMedida");
-        modalMedida.value = inputUnidadeMedida.value;
+        modalMedida.value = valoresUnidadeMedida[0];
 
         var modalEmpresa = document.getElementById("selectEmpresa");
-        modalEmpresa.value = inputEmpresa.value;
+        modalEmpresa.value = valoresEmpresa[0];
 
         var modalPreco = document.getElementById("modalPreco");
         modalPreco.value = Number(inputPreco.value.replace(",", "."));
@@ -78,6 +84,12 @@ function excluirIngrediente(button) {
     var empresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
     var unidadeMedida = linhaItemClicado.querySelector("input[data-item='item_unidade_medida']");
 
+    var stringEmpresa = String(empresa.value);
+    var valoresEmpresa = stringEmpresa.split("/", 2);
+
+    var stringUnidadeMedida = String(unidadeMedida.value);
+    var valoresUnidadeMedida = stringUnidadeMedida.split("/", 2);
+
     // passa os valores para a modal de confirmação de excluir
     var inputId = document.getElementById("inputId");
     inputId.value = id.value;
@@ -86,8 +98,14 @@ function excluirIngrediente(button) {
     spanIngrediente.innerText = ingrediente.value;
 
     var spanEmpresa = document.getElementById("spanEmpresa");
-    spanEmpresa.innerText = empresa.value;
+    spanEmpresa.innerText = valoresEmpresa[1];
 
     var spanUnidadeMedida = document.getElementById("spanUnidadeMedida");
-    spanUnidadeMedida.innerText = unidadeMedida.value;
+    spanUnidadeMedida.innerText = valoresUnidadeMedida[1];
+}
+
+// função para mostrar os alerts ao usuário (NÃO IMPLEMENTADO)
+function mostrarAlert() {
+    var alertSucesso = document.getElementById("alertSucesso");
+    var alertErro = document.getElementById("alertErro");
 }

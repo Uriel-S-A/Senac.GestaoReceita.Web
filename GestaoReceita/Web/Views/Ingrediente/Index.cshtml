@@ -59,7 +59,7 @@
                     </td>
                     <td>
                         @item.UnidadeMedida.descUnidMedIngrediente
-                        <input data-item="item_unidade_medida" value="@item.UnidadeMedida.descUnidMedIngrediente" type="hidden" />
+                        <input data-item="item_unidade_medida" value="@item.UnidadeMedida.Id/@item.UnidadeMedida.descUnidMedIngrediente" type="hidden" />
                     </td>
                     <td>
                         @item.PrecoIngrediente
@@ -67,7 +67,7 @@
                     </td>
                     <td>
                         @item.Empresa.nomeFantasia
-                        <input data-item="item_empresa" value="@item.Empresa.nomeFantasia" type="hidden" />
+                        <input data-item="item_empresa" value="@item.Empresa.id/@item.Empresa.nomeFantasia" type="hidden" />
                     </td>
                     <td>
                         <!-- BOTÃO EDITAR  -->
@@ -197,25 +197,22 @@
     </div>
 </div>
 
-@if ("alo" == "alu")
-{
-    <!-- Success Alert -->
-    <div class="alert alert-success d-flex align-items-center visually-hidden" role="alert">
-        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
-        <div>
-            Ação efetuada com sucesso!
-        </div>
+<!-- NÃO IMPLEMENTADO  -->
+<!-- Success Alert -->
+<div id="alertSucesso" class="alert alert-success d-flex align-items-center visually-hidden" role="alert">
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+    <div>
+        Ação efetuada com sucesso!
     </div>
-}
-else
-{
-    <!-- Danger Alert  -->
-    <div class="alert alert-danger d-flex align-items-center visually-hidden" role="alert">
-        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
-        <div>
-            Erro ao efetuar a ação!
-        </div>
+</div>
+
+<!-- Danger Alert  -->
+<div id="alertErro" class="alert alert-danger d-flex align-items-center visually-hidden" role="alert">
+    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+    <div>
+        Erro ao efetuar a ação!
     </div>
-}
+</div>
+
 
 <script src="~/Scripts/Ingrediente/Ingrediente.js"></script>
