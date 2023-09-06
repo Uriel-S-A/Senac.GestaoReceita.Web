@@ -9,12 +9,12 @@
 <!-- Conteúdo principal da página  -->
 <div class="container anti-select">
     <div class="row">
-        <div class="col-12 m-2">
+        <div class="col-12 mb-2">
             <!-- Form que envia os dados para a controller -->
             @using (Html.BeginForm("Index", "Ingrediente", FormMethod.Post))
             {
                 <div class="row">
-                    <div class="col-sm-6 mt-2">
+                    <div class="col-sm-4 mt-2">
                         <!-- Campo de busca -->
                         <input type="search" class="PesquisaIngrediente w-100" name="BuscaIngredientes" placeholder="Buscar Ingrediente" value="" />
                     </div>
@@ -24,6 +24,7 @@
                             Buscar
                         </button>
                     </div>
+                    <div class="col"></div>
                     <div class="col-sm-3 mt-2">
                         <!-- Botão Novo Ingrediente -->
                         <button onclick="editarIngrediente(this, 'cadastro')" type="button" class="NovoIngrediente w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -79,22 +80,28 @@
                             <input data-item="item_empresa" value="@item.Empresa.id" type="hidden" />
                         </td>
                         <td>
-                            <!-- BOTÃO EDITAR  -->
-                            <button type="button"
-                                    class=" EditarIngrediente m-1"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
-                                    onclick="editarIngrediente(this, 'editar')">
-                                Editar
-                            </button>
-                            <!-- BOTÃO EXCLUIR -->
-                            <button type="button"
-                                    class=" EditarIngrediente m-1 bg-danger border-danger"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop"
-                                    onclick="excluirIngrediente(this)">
-                                Excluir
-                            </button>
+                            <div class="row">
+                                <div class="col">
+                                    <!-- BOTÃO EDITAR  -->
+                                    <button type="button"
+                                            class=" EditarIngrediente m-1  w-100" 
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal"
+                                            onclick="editarIngrediente(this, 'editar')">
+                                        Editar
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <!-- BOTÃO EXCLUIR -->
+                                    <button type="button"
+                                            class=" EditarIngrediente m-1 bg-danger border-danger w-100"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop"
+                                            onclick="excluirIngrediente(this)">
+                                        Excluir
+                                    </button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 }
