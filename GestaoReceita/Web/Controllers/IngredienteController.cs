@@ -185,20 +185,6 @@ namespace Web.Controllers
         // Método PersistirIngrediente (POST / PUT)
         public ActionResult PersistirIngrediente(DadosIngrediente dados)
         {
-            List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
-
-            foreach (var item in listaIngredientesCadastrados)
-            {
-                if (item.NomeIngrediente == dados.NomeIngrediente &&
-                    item.UnidadeMedidaId == dados.UnidadeMedidaId &&
-                    item.EmpresaId == dados.EmpresaId)
-                {
-                    Console.WriteLine("ERRO");
-
-                    return RedirectToAction("Index");
-                }
-            }
-
             using (var client = new HttpClient())
             {
                 // json stringify
@@ -225,6 +211,19 @@ namespace Web.Controllers
                 }
                 else
                 { // se não está cadastrado, chama o método POST para cadastrar no banco de dados
+                    List<DadosIngrediente> listaIngredientesCadastrados = GetDadosIngrediente();
+
+                    foreach (var item in listaIngredientesCadastrados)
+                    {
+                        if (item.NomeIngrediente.ToLower() == dados.NomeIngrediente.ToLower() &&
+                            item.UnidadeMedidaId == dados.UnidadeMedidaId &&
+                            item.EmpresaId == dados.EmpresaId)
+                        {
+                            Console.WriteLine("ERRO");
+
+                            return RedirectToAction("Index");
+                        }
+                    }
                     response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Ingredientes", formContentString);
                 }
                 // espera a resposta da requisição

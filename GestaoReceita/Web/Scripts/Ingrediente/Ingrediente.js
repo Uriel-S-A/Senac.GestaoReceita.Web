@@ -22,10 +22,14 @@ function editarIngrediente(button, opcao) {
         var inputPreco = linhaItemClicado.querySelector("input[data-item='item_preco']");
         var inputEmpresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
 
+        // transforma os valores recebidos para string
         var stringEmpresa = String(inputEmpresa.value);
+        // divide os valores em um array
         var valoresEmpresa = stringEmpresa.split("/", 2);
 
+        // transforma os valores recebidos para string
         var stringUnidadeMedida = String(inputUnidadeMedida.value);
+        // divide os valores em um array
         var valoresUnidadeMedida = stringUnidadeMedida.split("/", 2);
 
         // passa os valores para a modal de editar para ela exibir os campos preenchidos
@@ -84,10 +88,14 @@ function excluirIngrediente(button) {
     var empresa = linhaItemClicado.querySelector("input[data-item='item_empresa']");
     var unidadeMedida = linhaItemClicado.querySelector("input[data-item='item_unidade_medida']");
 
+    // transforma os valores recebidos para string
     var stringEmpresa = String(empresa.value);
+    // divide os valores em um array
     var valoresEmpresa = stringEmpresa.split("/", 2);
 
+    // transforma os valores recebidos para string
     var stringUnidadeMedida = String(unidadeMedida.value);
+    // divide os valores em um array
     var valoresUnidadeMedida = stringUnidadeMedida.split("/", 2);
 
     // passa os valores para a modal de confirmação de excluir
