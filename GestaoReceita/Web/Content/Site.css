@@ -38,3 +38,18 @@ textarea {
     /* left: 130px; */
     border: 2px;
 }
+
+nav.navbar.navbar-expand-lg:has(button.navbar-toggler[aria-expanded='true']) .myDropDownLogin 
+{
+    width: 100%;
+}
+
+nav.navbar.navbar-expand-lg:has(button.navbar-toggler[aria-expanded='true']) hr.half-rule {
+    display:none;
+}
+
+
+.myDropDownLogin {
+    display: flex;
+    justify-content: flex-end;
+}
