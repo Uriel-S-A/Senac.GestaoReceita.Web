@@ -14,9 +14,9 @@ namespace Web.Controllers
 
         }
 
-        protected override void OnActionExecuted(ActionExecutedContext filterContext)
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            base.OnActionExecuted(filterContext);
+            base.OnActionExecuting(filterContext);
 
             if (Session["Username"] as string == null || Session["Username"] as string == "")
             {

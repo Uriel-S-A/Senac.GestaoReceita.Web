@@ -2,9 +2,3 @@
 	width: 800px;
 }
 
-/*adicionado somente pra dar uma aliviada no olho, tela muito branca*/
-body {
-	background: rgb(97,125,197);
-	background: linear-gradient(90deg, rgba(97,125,197,1) 33%, rgba(60,72,184,1) 100%);
-}
-

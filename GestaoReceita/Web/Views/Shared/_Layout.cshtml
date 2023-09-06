@@ -18,6 +18,7 @@
             <hr class="half-rule" />
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">@Html.ActionLink("Usuario", "Usuario", "Login", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Empresas", "Index", "Empresa", new { area = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Ingredientes", "Index", "Ingrediente", new { areas = "" }, new { @class = "nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Cadastrar Unidade Medida", "Index", "CadastroUnidadeMedida", new { area = "" }, new { @class = "nav-link" })</li>
@@ -51,19 +52,18 @@
     </nav>
     <div class="container body-content">
         @RenderBody()
-        <footer class="fixed-bottom">
-            <hr />
-            <p>
-                <div style="margin-left:85px">
-                    &copy; @DateTime.Now.Year -
-
-
-                    <a class="curson-pointer link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Senac Info - 9</a>
-                </div>
-            </p>
-        </footer>
     </div>
+    <footer class="fixed-bottom bg-body-secondary">
+        <hr />
+        <p>
+            <div style="margin-left:85px">
+                &copy; @DateTime.Now.Year -
 
+
+                <a class="curson-pointer link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Senac Info - 9</a>
+            </div>
+        </p>
+    </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

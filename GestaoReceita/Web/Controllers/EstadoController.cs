@@ -10,7 +10,7 @@ using Web.Models.Pais;
 
 namespace Web.Controllers
 {
-    public class EstadoController : Controller
+    public class EstadoController : LoginExtention
     {
         // GET: Estado
         public ActionResult Index()
