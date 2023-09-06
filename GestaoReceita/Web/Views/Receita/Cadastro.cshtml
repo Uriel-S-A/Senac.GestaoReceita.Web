@@ -73,7 +73,7 @@
                             </td>
                             <td data-item="quantidade_ingrediente_@Model.DadosIngredientesDaReceita[pos].Id">@Model.DadosIngredientesDaReceita[pos].Quantidade</td>
                             <td>
-                                <button type="button" class="btn btn-success" onclick="adicionar(this)">+</button>
+                                <button type="button" class="btn btn-danger" onclick="deletarIngrediente(this)">X</button>
                             </td>
                         </tr>
                     }
@@ -84,7 +84,12 @@
 </div>
 
 <div style="display:flex; justify-content:center;">
-    <button type="submit" class="btn btn-success" onclick="cadastrar()">Cadastrar</button>
+    @{string style = "style='display:hidden'";}
+    @if (Model.Id != null && Model.Id > 0)
+    {
+        style = "";
+    }
+    <button type="submit" class="btn btn-success" @Html.Raw(style) onclick="cadastrar()">Salvar</button>
 </div>
 
 
@@ -217,7 +222,7 @@
         var listaIngredientesReceita = [];
 
         for (var pos = 0; pos < listaImputIdIngredienteReceita.length; pos++) {
-            var idIngrediente = listaImputIdIngredienteReceita[0].value;
+            var idIngrediente = listaImputIdIngredienteReceita[pos].value;
             var tdQuantidadeReceita = bodyTabelaIgredientes.querySelector("td[data-item='quantidade_ingrediente_" + idIngrediente + "']");
 
             //objeto javascript
@@ -226,7 +231,7 @@
             listaIngredientesReceita.push(item);
         }
 
-        var cadastro = document.getElementById("nomeReceita")
+        var cadastro = document.getElementById("nomeReceita");
         console.log(cadastro);
         if (cadastro.value == null || cadastro.value == '') {
             const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
@@ -262,15 +267,13 @@
         var data = { nomereceita: nomeReceita, listaingredientes: listaIngredientesReceita, id: idReceita };
 
 
-
         $.ajax({
             url: '/Receita/cadastrarReceita',
             type: 'POST',
             data: data,
             success: function (data) {
-
+                alert(data.result);
                 location.href = "/Receita/Index";
-
             },
             error: function (error) {
                 console.error('Erro ao enviar dados:', error);
@@ -279,10 +282,6 @@
 
         console.log(data);
     }
-
-
-
-
 </script>
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")

@@ -342,10 +342,12 @@ namespace Web.Controllers
                 if(id != null && id > 0)
                 {
                     response = client.PutAsync("http://gestaoreceitaapi.somee.com/api/Receita/"+ id, formContentString);
+                    msgRetorno = "Atualizado com sucesso";
                 }
                 else
                 {
                     response = client.PostAsync("http://gestaoreceitaapi.somee.com/api/Receita", formContentString);
+                    msgRetorno = "Cadastrado com sucesso";
                 }
 
                 response.Wait();
@@ -354,9 +356,7 @@ namespace Web.Controllers
                 {
                     var stringResult = response.Result.Content.ReadAsStringAsync();
 
-                    isSucesso = true;
-
-                    msgRetorno = "Cadastrado com sucesso";
+                    isSucesso = true;                   
                 }
                 else
                 {
